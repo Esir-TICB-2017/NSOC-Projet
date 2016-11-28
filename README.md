@@ -18,7 +18,7 @@ NSOC Projet : Alfred - Majordome de Batman
     - Lancer le ssh-agent : 
         Si vous utilisez git bash : eval $(ssh-agent -s),
         Si vous utilisez votre terminal classique : eval "$(ssh-agent -s)"
-    - Ajouter votre clé ssh au ssh-agent : ssh-add ~/chemin_vers_votre_clé_ssh
+    - Ajouter votre clé ssh au ssh-agent : ssh-add ~/chemin_vers_votre_clé_ssh/nom_de_la_clé
         exemple: ssh-add ~/documents/NSOC/clé_ssh_github
     - Afficher la clé ssh publique : cat ~/chemin_vers_votre_clé_ssh.pub
         exemple : cat ~/documents/NSOC/clé_ssh_github.pub
@@ -27,7 +27,8 @@ NSOC Projet : Alfred - Majordome de Batman
     - Cliquer sur votre avatar en haut à droite, puis cliquer sur "Settings"
     - Aller dans "SSH and GPG keys"
     - Dans l'espace "SSH keys", cliquer sur "New SSH key"
-    - Mettre un titre à votre clé SSH github (exemple : "clé ssh windows asus")
+    - Mettre un titre à votre clé SSH github
+        exemple : "clé ssh windows asus"
     - Copier la clé publique dans l'espace "Key"
     - Cliquer sur "Add SSH key"
 
