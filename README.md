@@ -1,5 +1,5 @@
 # NSOC-Projet
-<h1>NSOC Projet : Alfred - Majordome de Batman</h1>
+NSOC Projet : Alfred - Majordome de Batman
 
 <h2>Installer git</h2>
 
