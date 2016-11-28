@@ -12,7 +12,7 @@ NSOC Projet : Alfred - Majordome de Batman
 <h2>Récupérer le dépôt</h2>
 
     - Se placer à l'endroit où vous voulez copier le projet
-    - git clone https://gitlab.com/Chaille/DETT.git
+    - git clone https://github.com/Esir-TICB-2017/NSOC-Projet.git
 
 <h2>Obtenir une aide pour les commandes git</h2>
 
