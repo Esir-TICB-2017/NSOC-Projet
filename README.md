@@ -10,7 +10,7 @@ NSOC Projet : Alfred - Majordome de Batman
     - Taper l'adresse email que vous utilisez sur github : git config --global user.email "votre_email@votre_email.com"
     
 <h2>Créer une clé SSH et l'ajouter sur son compte Github</h2>
-    - ssh-keygen -t rsa -b 4096 -C "adresse_email_utilisée_sur_github"
+    - Créer une nouvelle clé ssh : ssh-keygen -t rsa -b 4096 -C "adresse_email_utilisée_sur_github"
     - Entrer le chemin où sera enregistrée la clé SSH ainsi que son nom
         exemple : /documents/NSOC/clé_ssh_github
         Généralement sur Linux, l'enregistrer dans ~/.ssh/clé_ssh_github
