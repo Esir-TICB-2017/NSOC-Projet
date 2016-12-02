@@ -40,3 +40,7 @@ NSOC Projet : Alfred - Majordome de Batman
 <h2>Obtenir une aide pour les commandes git</h2>
 
     - git help
+
+## Import the project into Capella
+
+After cloning the repo, simply import the whole folder as a capella project.
