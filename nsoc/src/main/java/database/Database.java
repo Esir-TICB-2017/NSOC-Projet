@@ -1,13 +1,12 @@
 package database;
 import java.sql.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
  * Created by loulou on 16/01/2017.
  */
 public class Database {
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/nsoc_database";
 
     //  Database credentials
     static final String USER = "root";
@@ -20,7 +19,7 @@ public class Database {
             System.out.println("Creating statement...");
             statement = connection.createStatement();
             String sql;
-            sql = "SELECT * FROM temperature";
+            sql = "SELECT * FROM consommation";
             ResultSet rs = statement.executeQuery(sql);
 
             while(rs.next()) {
@@ -45,13 +44,41 @@ public class Database {
         return value;
     }
 
+    public static void writeSensorValue(Connection connection, int value) {
+        String sql = "INSERT INTO consommation"
+                + "(VALUE, SUBMISSION_DATE) VALUES"
+                + "(?, ?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, value);
+            preparedStatement.setTimestamp(2, getCurrentTimeStamp());
+            preparedStatement.executeUpdate();
+
+            System.out.println("Record is inserted into table!");
+
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static java.sql.Timestamp getCurrentTimeStamp() {
+
+        java.util.Date today = new java.util.Date();
+        return new java.sql.Timestamp(today.getTime());
+
+    }
+
     public static void main (String[] args) {
-        Connection connexion = ConnectionManager.getConnection();
-        int value = getValue(connexion);
-        System.out.println(value);
+        Connection connection = ConnectionManager.getConnection();
+        for(int i=1; i<100; i++){
+            int randomNum = ThreadLocalRandom.current().nextInt(0, 300 + 1);
+            writeSensorValue(connection, randomNum);
+        }
+
+        //int value = getValue(connection);
+       // System.out.println(value);
 
 
     }
 
 }
-

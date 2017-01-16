@@ -8,7 +8,7 @@ import java.sql.SQLException;
  * Created by loulou on 16/01/2017.
  */
 public class ConnectionManager {
-    private static String url = "jdbc:mysql://localhost/nsoc_database";
+    private static String url = "jdbc:mysql://127.0.0.1:12345/nsoc_database";
     private static String driverName = "com.mysql.jdbc.Driver";
     private static String username = "root";
     private static String password = "izi";
