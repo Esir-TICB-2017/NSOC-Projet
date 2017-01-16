@@ -15,12 +15,12 @@ public interface InterfaceConsumptionSensor {
      * @param end the end of the period
      * @return a list of data
      **/
-    public ArrayList<Float> getConsumptiomOnPeriod(Date start, Date end);
+    ArrayList<Float> getConsumptiomOnPeriod(Date start, Date end);
 
 
     /**
      * @return the last data
      **/
-    public Float getLastConsumption();
+    Float getLastConsumption();
 
 }
