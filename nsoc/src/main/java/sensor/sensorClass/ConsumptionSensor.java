@@ -1,4 +1,5 @@
 package sensor.sensorClass;
+import javafx.scene.chart.PieChart;
 import sensor.sensorInterface.InterfaceConsumptionSensor;
 import database.Database;
 
@@ -9,15 +10,20 @@ import java.util.Date;
 /**
  * Created by mathieu on 16/01/2017.
  */
-
 /*public class ConsumptionSensor implements InterfaceConsumptionSensor{
+    private Database db;
+
+    public ConsumptionSensor(){
+        db = new Database();
+    }
     public ArrayList<Float> getConsumptiomOnPeriod(Date start, Date end){
         ArrayList<Float> listeOfValue= new ArrayList <Float>();
-        listeOfValue= getValuePeriod(start,end);
+        //listeOfValue= db.getValuePeriod(start,end);
         return listeOfValue;
     }
-    public Float getLastConsumption(){
-        Float value = getLastValue();
-        return value;
+    public float getLastConsumption(){
+        //float value = db.getLastValue();
+        //return value;
+        return 1;
     }
 }*/
