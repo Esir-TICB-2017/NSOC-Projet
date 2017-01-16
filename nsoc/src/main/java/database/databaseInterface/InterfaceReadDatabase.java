@@ -60,7 +60,7 @@ public interface InterfaceReadDatabase {
      * Construit alors la requete SQL adaptée
      * @return : Un tableau avec toutes les valeurs trouvées
      **/
-    <foat> getLastNbIndicator(String indicatorType, int nbValue);
+    <float> getLastNbIndicator(String indicatorType, int nbValue);
 
     /**
      * Lis dans la base de données les indicateurs d'un certain type donnée dans une période donnée et les retourne
