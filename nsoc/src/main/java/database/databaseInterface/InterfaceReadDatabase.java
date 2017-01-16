@@ -1,5 +1,6 @@
 package database.databaseInterface;
 
+import javax.json.Json;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
@@ -13,7 +14,7 @@ public interface InterfaceReadDatabase {
      * @param settingName: The name of the wanted setting
      * @return : Setting object in JSON
      **/
-    JSON getSettings (String settingName);
+    Json getSettings (String settingName);
     /**
      * Permet de lire dans la base de donnée la dernière valeur stockée du type de capteur saisi par "_init()"
      * Construit alors la requete SQL adaptée

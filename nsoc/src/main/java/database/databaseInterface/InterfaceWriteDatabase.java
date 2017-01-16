@@ -1,5 +1,7 @@
 package database.databaseInterface;
 
+import javax.json.Json;
+
 /**
  * Created by mathieu on 16/01/2017.
  */
@@ -23,5 +25,5 @@ public interface InterfaceWriteDatabase {
      * Write the new application's settings in database
      * @param settings = JSON's file including all application's settings
      **/
-    void writeSettings(JSON settings);
+    void writeSettings(Json settings);
 }

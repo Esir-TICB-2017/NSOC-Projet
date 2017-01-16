@@ -13,7 +13,7 @@ public interface InterfaceSubscibeDatabase {
      * @param type = Type de valeur dont on veut être notifié. ex : CO2, Temp...
      * Permet de s'abonner et donc d'être notifié lors de tout ajout d'une valeur brut du type saisi dans la base de données
      **/
-    void subscribeTypeData(SensorType type);
+    void subscribeTypeData(String type);
 
     /**
      * Permet de s'abonner et donc d'être notifié lors de tout ajout d'un indicateur dans la base de données
