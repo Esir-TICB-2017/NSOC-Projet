@@ -2,8 +2,9 @@
 public interface Init
 {
 	/**
-	* @param type = Type du capteur qui instancie la class
-	* Permet de fournir le type de capteur qui instancie la class et donc de selectionner par la suite le type des valeurs à retourner
+	* @param type = Type du capteur de la nouvelle instance
+	* Fournit le type de capteur qui instancie un objet de la classe
+	* Permet de spécifier aux fonctions de la classe le type des valeurs à écrire et retourner dans la base de données
 	**/
 	void _init(String type);
 }
@@ -53,7 +54,7 @@ public interface Write
 	void writeHouseIndicator(String indicatorType, float value);
 
 	/**
-	* Write the new application's settings in databse
+	* Write the new application's settings in database
 	* @param settings = JSON's file including all application's settings
 	**/
 	void writeSettings(JSON settings);
@@ -77,9 +78,9 @@ public interface Read
 	String getLastValue();
 
 	/**
-	* @param nbValue = Nombre du nombres des dernières valeurs à retourner
 	* Permet de lire dans la base de donnée les "nbValue" dernières valeurs stockées du type de capteur saisi par "_init()"
 	* Construit alors la requete SQL adaptée
+	* @param nbValue = Nombre du nombres des dernières valeurs à retourner
 	* Ces valeurs sont retournées sous format JSON
 	**/
 	String getNbValue(int nbValue);
