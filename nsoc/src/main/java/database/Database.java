@@ -13,36 +13,44 @@ public class Database {
     static final String USER = "root";
     static final String PASS = "izi";
 
+    public static int getValue(Connection connection) {
+        Statement statement = null;
+        System.out.println("Creating statement...");
+        statement = connection.createStatement();
+        String sql;
+        sql = "SELECT * FROM temperature";
+        ResultSet rs = statement.executeQuery(sql);
+
+        while(rs.next()){
+            //Retrieve by column name
+            int id  = rs.getInt("id");
+            int value = rs.getInt("value");
+            String date = rs.getString("submission_date");
+
+            //Display value
+            System.out.print("ID: " + id);
+            System.out.print(", value: " + value);
+            System.out.println(", date: " + date);
+        }
+
+        rs.close();
+        statement.close();
+        return value;
+    }
+
     public static void main (String[] args) {
         Connection connection = null;
-        Statement statement = null;
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Connecting to database...");
             connection = DriverManager.getConnection(DB_URL,USER,PASS);
 
-            System.out.println("Creating statement...");
-            statement = connection.createStatement();
-            String sql;
-            sql = "SELECT * FROM temperature";
-            ResultSet rs = statement.executeQuery(sql);
+            getValue(connection);
 
-            while(rs.next()){
-                //Retrieve by column name
-                int id  = rs.getInt("id");
-                String value = rs.getString("value");
-                String date = rs.getString("submission_date");
-
-                //Display value
-                System.out.print("ID: " + id);
-                System.out.print(", value: " + value);
-                System.out.println(", date: " + date);
-            }
-            rs.close();
-            statement.close();
             connection.close();
 
-        } catch(SQLException se){
+        }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
         }catch(Exception e){
@@ -63,7 +71,7 @@ public class Database {
             }//end finally try
         }//end try
         System.out.println("Goodbye!");
-    }
+    }// end main
 
 }
 
