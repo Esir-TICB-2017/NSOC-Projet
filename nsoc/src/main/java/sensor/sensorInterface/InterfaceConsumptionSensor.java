@@ -1,4 +1,7 @@
-package interfaceSensor;
+package sensor.sensorInterface;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import java.util.ArrayList;
 import java.util.Date;
