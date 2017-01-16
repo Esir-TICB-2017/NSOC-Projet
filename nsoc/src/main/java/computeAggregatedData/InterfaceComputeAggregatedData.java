@@ -1,8 +1,10 @@
+package computeAggregatedData;
+
 /**
 * This class create indicator(s) about house's health
 */
 
-public interface Compute_Indicator {
+public interface InterfaceComputeAggregatedData {
 	/**
 	* Create current CO2 indicator
 	* Use application's settings using database's interface function (getSettings) to create it
@@ -13,7 +15,7 @@ public interface Compute_Indicator {
 	* Create current temparature indicator
 	* Use application's settings using database's interface function (getSettings) to create it
 	* Call database's interface function (writeHouseIndicator) to write the new value in database
-	* @param temparature = Current temparature sensor's value
+	* @param temperature = Current temperature sensor's value
 	*/
 	void createTemperatureIndicator(float temperature);
 	/**
@@ -27,16 +29,16 @@ public interface Compute_Indicator {
 	* Create current electricity consumption indicator
 	* Use application's settings using database's interface function (getSettings) to create it
 	* Call database's interface function (writeHouseIndicator) to write the new value in database
-	* @param electricityconsumption = Current house's electricity consumption value
+	* @param electricityConsumption = Current house's electricity consumption value
 	*/
-	void createElectricityConsumptionIndicator(float electricityconsumption);
+	void createElectricityConsumptionIndicator(float electricityConsumption);
 	/**
 	* Create current electricity production indicator
 	* Use application's settings using database's interface function (getSettings) to create it
 	* Call database's interface function (writeHouseIndicator) to write the new value in database
-	* @param electricityproduction = Current house's electricity production value
+	* @param electricityProduction = Current house's electricity production value
 	*/
-	void createElectricityProductionIndicator(float electricityproduction);
+	void createElectricityProductionIndicator(float electricityProduction);
 	/**
 	* Create current electricity ratio indicator
 	* Use application's settings using database's interface function (getSettings) to create it
