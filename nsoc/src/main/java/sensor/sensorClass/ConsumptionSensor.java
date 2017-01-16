@@ -1,5 +1,6 @@
 package sensor.sensorClass;
 import sensor.sensorInterface.InterfaceConsumptionSensor;
+import database.Database;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,12 +12,12 @@ import java.util.Date;
 
 public class ConsumptionSensor implements InterfaceConsumptionSensor{
     public ArrayList<Float> getConsumptiomOnPeriod(Date start, Date end){
-        ArrayList<Float> liste= new ArrayList <Float>(10);
-
-        return liste;
+        ArrayList<Float> listeOfValue= new ArrayList <Float>();
+        listeOfValue= getValuePeriod(start,end);
+        return listeOfValue;
     }
-    public float getLastConsumption(){
-
-        return 1;
+    public Float getLastConsumption(){
+        Float value = getLastValue();
+        return value;
     }
 }
