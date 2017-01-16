@@ -1,5 +1,7 @@
 package database.databaseInterface;
 
+import javax.json.Json;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -12,7 +14,7 @@ public interface InterfaceReadDatabase {
      * @param settingName: The name of the wanted setting
      * @return : Setting object in JSON
      **/
-    JSON getSettings (String settingName);
+    Json getSettings (String settingName);
     /**
      * Permet de lire dans la base de donnée la dernière valeur stockée du type de capteur saisi par "_init()"
      * Construit alors la requete SQL adaptée
@@ -60,7 +62,8 @@ public interface InterfaceReadDatabase {
      * Construit alors la requete SQL adaptée
      * @return : Un tableau avec toutes les valeurs trouvées
      **/
-    //<foat> getLastNbIndicator(String indicatorType, int nbValue);
+    ArrayList<Float> getLastNbIndicator(String indicatorType, int nbValue);
+
 
     /**
      * Lis dans la base de données les indicateurs d'un certain type donnée dans une période donnée et les retourne
@@ -70,5 +73,5 @@ public interface InterfaceReadDatabase {
      * @param end = Date de fin de la période
      * @return : Un tableau avec toutes les valeurs trouvées
      **/
-	//<float> getIndicatorPeriod(String indicatorType, Date start, Date end);
+    ArrayList<Float> getIndicatorPeriod(String indicatorType, Date start, Date end);
 }

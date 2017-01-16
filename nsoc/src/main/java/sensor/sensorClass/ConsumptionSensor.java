@@ -10,8 +10,7 @@ import java.util.Date;
 /**
  * Created by mathieu on 16/01/2017.
  */
-
-public class ConsumptionSensor implements InterfaceConsumptionSensor{
+/*public class ConsumptionSensor implements InterfaceConsumptionSensor{
     private Database db;
 
     public ConsumptionSensor(){
@@ -19,11 +18,12 @@ public class ConsumptionSensor implements InterfaceConsumptionSensor{
     }
     public ArrayList<Float> getConsumptiomOnPeriod(Date start, Date end){
         ArrayList<Float> listeOfValue= new ArrayList <Float>();
-        listeOfValue= db.getValuePeriod(start,end);
+        //listeOfValue= db.getValuePeriod(start,end);
         return listeOfValue;
     }
-    public Float getLastConsumption(){
-        Float value = db.getLastValue();
-        return value;
+    public float getLastConsumption(){
+        //float value = db.getLastValue();
+        //return value;
+        return 1;
     }
-}
+}*/
