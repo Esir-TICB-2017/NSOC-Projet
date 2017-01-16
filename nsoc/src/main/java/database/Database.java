@@ -15,27 +15,37 @@ public class Database {
 
     public static int getValue(Connection connection) {
         Statement statement = null;
-        System.out.println("Creating statement...");
-        statement = connection.createStatement();
-        String sql;
-        sql = "SELECT * FROM temperature";
-        ResultSet rs = statement.executeQuery(sql);
+        try{
+            System.out.println("Creating statement...");
+            statement = connection.createStatement();
+            String sql;
+            sql = "SELECT * FROM temperature";
+            ResultSet rs = statement.executeQuery(sql);
 
-        while(rs.next()){
-            //Retrieve by column name
-            int id  = rs.getInt("id");
-            int value = rs.getInt("value");
-            String date = rs.getString("submission_date");
+            while(rs.next()){
+                //Retrieve by column name
+                int id  = rs.getInt("id");
+                int value = rs.getInt("value");
+                String date = rs.getString("submission_date");
 
-            //Display value
-            System.out.print("ID: " + id);
-            System.out.print(", value: " + value);
-            System.out.println(", date: " + date);
+                //Display value
+                System.out.print("ID: " + id);
+                System.out.print(", value: " + value);
+                System.out.println(", date: " + date);
+
+                rs.close();
+                statement.close();
+                return value;
+            }
+            try{
+                if(statement!=null)
+                    statement.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+        }catch(Exception e) {
+            e.printStackTrace();
         }
-
-        rs.close();
-        statement.close();
-        return value;
+        return 1;
     }
 
     public static void main (String[] args) {
@@ -57,12 +67,7 @@ public class Database {
             //Handle errors for Class.forName
             e.printStackTrace();
         }finally{
-            //finally block used to close resources
-            try{
-                if(statement!=null)
-                    statement.close();
-            }catch(SQLException se2){
-            }// nothing we can do
+            //finally block used to close resource
             try{
                 if(connection!=null)
                     connection.close();
