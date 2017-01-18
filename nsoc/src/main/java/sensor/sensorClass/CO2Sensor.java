@@ -1,24 +1,18 @@
 package sensor.sensorClass;
-
-import bacnet.BacNetToJava;
-import javafx.scene.chart.PieChart;
 import sensor.sensorInterface.InterfaceSensors;
 import database.Database;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-
-
 /**
- * Created by mathieu on 16/01/2017.
+ * Created by mathieu on 18/01/2017.
  */
-
-public class ConsumptionSensor implements InterfaceSensors{
+public class CO2Sensor implements InterfaceSensors {
     private Database db;
     private double currentValue;
 
-    public ConsumptionSensor(){
+    public CO2Sensor(){
         db = new Database();
     }
 
@@ -39,7 +33,7 @@ public class ConsumptionSensor implements InterfaceSensors{
 
             //AJOUTER l'argument du type de sensor
             //appel de la base de données
-      //      db.writeValue(this.currentValue);
+            //      db.writeValue(this.currentValue);
 
             //AJOUTER un if(return==true) pour confirmer que la bdd a pris la newValue?
             this.currentValue = newValue;
@@ -48,5 +42,4 @@ public class ConsumptionSensor implements InterfaceSensors{
 
 
     }
-
 }
