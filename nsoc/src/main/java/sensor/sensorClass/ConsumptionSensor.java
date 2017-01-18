@@ -21,13 +21,13 @@ public class ConsumptionSensor implements InterfaceSensors{
         db = new Database();
     }
 
-    public ArrayList<Float> getConsumptiomOnPeriod(Date start, Date end){
+    public ArrayList<Float> getValuesOnPeriod(Date start, Date end){
         ArrayList<Float> listeOfValue= new ArrayList <Float>();
         //listeOfValue= db.getValuePeriod(start,end);
         return listeOfValue;
     }
 
-    public float getLastConsumption(){
+    public float getLastValue(){
         //float value = db.getLastValue();
         //return value;
         return 1;
