@@ -11,6 +11,7 @@ import com.serotonin.bacnet4j.type.enumerated.ObjectType;
 import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
+import com.sun.xml.internal.rngom.ast.builder.GrammarSection;
 import sensor.sensorClass.ConsumptionSensor;
 
 /**
@@ -68,6 +69,9 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
     }
 
 
+    public static ConsumptionSensor getConsumptionSensor(){
+        return cs;
+    }
 
     private static void disconnection(){
         localDevice.terminate();
