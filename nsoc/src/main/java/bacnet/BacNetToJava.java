@@ -9,6 +9,7 @@ import com.serotonin.bacnet4j.service.unconfirmed.WhoIsRequest;
 import com.serotonin.bacnet4j.transport.Transport;
 import com.serotonin.bacnet4j.type.enumerated.ObjectType;
 import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
+import com.serotonin.bacnet4j.type.primitive.Double;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
 import com.sun.xml.internal.rngom.ast.builder.GrammarSection;
@@ -26,23 +27,15 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
     private static String typeSensor;
     private static ConsumptionSensor cs;
 
-    public static void main(String arg){
-      //  network = new IpNetwork(IpNetwork.DEFAULT_BROADCAST_IP, IpNetwork.DEFAULT_PORT, IpNetwork.DEFAULT_BIND_IP, 1);
-      //  localDevice = new LocalDevice(1004, new Transport(network));
-        // numDevice = 9198;
-        cs = new ConsumptionSensor();
+    public BacNetToJava () {
+        cs =  new ConsumptionSensor();
         getSensorValue();
-
     }
-
-
 
     private static void  getSensorValue() {
 
         //connection();
        // String result;
-        Double value = null;
-        while(true){
             // define the BacNet objects to listen ObjectIdentifier(ObjectType,object_id)
          //   ObjectIdentifier object = new ObjectIdentifier(ObjectType.analogInput,0);
 
@@ -50,14 +43,22 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
            // try {
            //     result = RequestUtils.getProperty(localDevice, remote, object, PropertyIdentifier.presentValue).toString();
             //    value = Double.valueOf(result);
-                value = Math.random()*100;
-                cs.setNewValue(value);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+            Thread thread = new Thread() {
+                double value = 0;
+                public void run() {
+                    value = Math.random() * 100;
+                    cs.setNewValue(value);
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
                 }
+            };
+            thread.start();
+
 
 
             /*} catch (BACnetException e) {
@@ -65,7 +66,7 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
                 e.printStackTrace();
                 System.out.println("Problème de récupération de la valeur !");
             }*/
-        }
+
     }
 
 

@@ -1,10 +1,13 @@
 package sensor.sensorClass;
 
 import bacnet.BacNetToJava;
+import com.sun.tools.classfile.ConstantPool;
+import database.ConnectionManager;
 import javafx.scene.chart.PieChart;
 import sensor.sensorInterface.InterfaceSensors;
 import database.Database;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,7 +22,7 @@ public class ConsumptionSensor implements InterfaceSensors{
     private double currentValue;
 
     public ConsumptionSensor(){
-        db = new Database();
+
     }
 
     public ArrayList<Float> getValuesOnPeriod(Date start, Date end){
@@ -28,22 +31,18 @@ public class ConsumptionSensor implements InterfaceSensors{
         return listeOfValue;
     }
 
-    public float getLastValue(){
-        //float value = db.getLastValue();
-        //return value;
-        return 1;
+    public double getLastValue(){
+        Connection connection = ConnectionManager.getConnection();
+        Double value = Database.getValue(connection);
+        return value;
     }
 
     public void setNewValue(double newValue){
         if (newValue != this.currentValue){
 
-            //AJOUTER l'argument du type de sensor
-            //appel de la base de données
-      //      db.writeValue(this.currentValue);
-
-            //AJOUTER un if(return==true) pour confirmer que la bdd a pris la newValue?
+            Connection connection = ConnectionManager.getConnection();
+            Database.writeSensorValue(connection, newValue);
             this.currentValue = newValue;
-            //APPERLER la méthode createIndicators()
         }
 
 

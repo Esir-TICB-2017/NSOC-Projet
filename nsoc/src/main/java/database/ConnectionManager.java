@@ -39,7 +39,6 @@ public class ConnectionManager {
         try {
             Class.forName(driverName);
             try {
-                System.out.println(url);
                 connection = DriverManager.getConnection(url, username, password);
             } catch (SQLException ex) {
                 // log an exception. for example:

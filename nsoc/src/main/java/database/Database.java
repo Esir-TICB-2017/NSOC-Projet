@@ -1,6 +1,7 @@
 package database;
+import javafx.scene.chart.PieChart;
+
 import java.sql.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
@@ -12,7 +13,7 @@ public class Database {
     static final String USER = "root";
     static final String PASS = "izi";
 
-    public static int getValue(Connection connection) {
+    public static double getValue(Connection connection) {
         Statement statement = null;
         int value = 0;
         try{
@@ -21,7 +22,6 @@ public class Database {
             String sql;
             sql = "SELECT * FROM consumption";
             ResultSet rs = statement.executeQuery(sql);
-
             while(rs.next()) {
                 //Retrieve by column name
                 int id = rs.getInt("id");
@@ -44,17 +44,16 @@ public class Database {
         return value;
     }
 
-    public static void writeSensorValue(Connection connection, int value) {
-        String sql = "INSERT INTO consommation"
+    public static void writeSensorValue(Connection connection, double value) {
+        String sql = "INSERT INTO consumption"
                 + "(VALUE, SUBMISSION_DATE) VALUES"
                 + "(?, ?)";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, value);
+            preparedStatement.setDouble(1, value);
             preparedStatement.setTimestamp(2, getCurrentTimeStamp());
             preparedStatement.executeUpdate();
 
-            System.out.println("Record is inserted into table!");
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
@@ -65,14 +64,6 @@ public class Database {
 
         java.util.Date today = new java.util.Date();
         return new java.sql.Timestamp(today.getTime());
-
-    }
-
-    public static void main (String[] args) {
-        Connection connection = ConnectionManager.getConnection();
-        int value = getValue(connection);
-        System.out.println(value);
-
 
     }
 

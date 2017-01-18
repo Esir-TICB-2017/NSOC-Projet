@@ -18,7 +18,7 @@ public interface InterfaceSensors {
     /**
      * @return the last data
      **/
-    float getLastValue();
+    double getLastValue();
 
 
     /**
