@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Created by mathieu on 16/01/2017.
  */
-/*public class ConsumptionSensor implements InterfaceConsumptionSensor{
+/*/public class ConsumptionSensor implements InterfaceConsumptionSensor{
     private Database db;
 
     public ConsumptionSensor(){
