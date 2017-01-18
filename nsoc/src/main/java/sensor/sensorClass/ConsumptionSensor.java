@@ -1,4 +1,5 @@
 package sensor.sensorClass;
+import bacnet.BacNetToJava;
 import javafx.scene.chart.PieChart;
 import sensor.sensorInterface.InterfaceConsumptionSensor;
 import database.Database;
