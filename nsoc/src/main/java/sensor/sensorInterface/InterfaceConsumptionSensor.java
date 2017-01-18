@@ -20,4 +20,7 @@ public interface InterfaceConsumptionSensor {
      **/
     float getLastConsumption();
 
+
+
+
 }
