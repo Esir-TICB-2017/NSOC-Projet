@@ -33,14 +33,16 @@ public class ConsumptionSensor implements InterfaceConsumptionSensor{
         return 1;
     }
 
-//  //ajouter un return pour dire que la bdd a pris la newValue ?
     public void setNewValue(double newValue){
         if (newValue != this.currentValue){
 
-            //appel de la base de données dbSetValue(ConsumptionSensor, this.currentValue)
+            //AJOUTER l'argument du type de sensor
+            //appel de la base de données
+      //      db.writeValue(this.currentValue);
 
-            // if return(true) ?
+            //AJOUTER un if(return==true) pour confirmer que la bdd a pris la newValue?
             this.currentValue = newValue;
+            //APPERLER la méthode createIndicators()
         }
 
 

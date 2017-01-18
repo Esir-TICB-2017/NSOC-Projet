@@ -21,6 +21,13 @@ public interface InterfaceConsumptionSensor {
     float getLastConsumption();
 
 
+    /**
+     * Write new value in database
+     * Update current value
+     * Call method to create indicators
+     * @param newValue new value from sensor
+     **/
+    void setNewValue(double newValue);
 
 
 }
