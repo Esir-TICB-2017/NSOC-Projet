@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class ConsumptionSensor implements InterfaceConsumptionSensor{
     private Database db;
-    private float currentValue;
+    private double currentValue;
 
     public ConsumptionSensor(){
         db = new Database();
@@ -34,7 +34,7 @@ public class ConsumptionSensor implements InterfaceConsumptionSensor{
     }
 
 //  //ajouter un return pour dire que la bdd a pris la newValue ?
-    public void setNewValue(float newValue){
+    public void setNewValue(double newValue){
         if (newValue != this.currentValue){
 
             //appel de la base de données dbSetValue(ConsumptionSensor, this.currentValue)
