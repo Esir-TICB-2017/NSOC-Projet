@@ -19,7 +19,7 @@ public class Database {
             System.out.println("Creating statement...");
             statement = connection.createStatement();
             String sql;
-            sql = "SELECT * FROM consommation";
+            sql = "SELECT * FROM consumption";
             ResultSet rs = statement.executeQuery(sql);
 
             while(rs.next()) {
@@ -70,13 +70,8 @@ public class Database {
 
     public static void main (String[] args) {
         Connection connection = ConnectionManager.getConnection();
-        for(int i=1; i<100; i++){
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 300 + 1);
-            writeSensorValue(connection, randomNum);
-        }
-
-        //int value = getValue(connection);
-       // System.out.println(value);
+        int value = getValue(connection);
+        System.out.println(value);
 
 
     }

@@ -1,24 +1,45 @@
 package database;
 
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.json.*;
 
 /**
  * Created by loulou on 16/01/2017.
  */
 public class ConnectionManager {
-    private static String url = "jdbc:mysql://127.0.0.1:12345/nsoc_database";
-    private static String driverName = "com.mysql.jdbc.Driver";
-    private static String username = "root";
-    private static String password = "izi";
+    private static String ip = getDatabaseParameter("ip");
+    private static String port = getDatabaseParameter("port");
+    private static String databaseName = getDatabaseParameter("databaseName");
+    private static String username = getDatabaseParameter("username");
+    private static String password = getDatabaseParameter("password");
     private static Connection connection;
-    private static String urlstring;
+    private static String driverName = "com.mysql.jdbc.Driver";
+    private static String url = "jdbc:mysql://" + ip + ":" + port + "/" + databaseName;
+
+    public static String getDatabaseParameter(String parameter) {
+        String value = null;
+        try{
+
+            FileReader file = new FileReader("/Users/loulou/projets_2016/NSOC-Projet/nsoc/src/main/java/database/test.json");
+            JSONTokener tokener = new JSONTokener(file);
+            JSONObject obj = new JSONObject(tokener);
+            value = obj.getJSONObject("info").getString(parameter);
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        }
+        return value;
+    }
 
     public static Connection getConnection() {
         try {
             Class.forName(driverName);
             try {
+                System.out.println(url);
                 connection = DriverManager.getConnection(url, username, password);
             } catch (SQLException ex) {
                 // log an exception. for example:
@@ -30,6 +51,4 @@ public class ConnectionManager {
         }
         return connection;
     }
-
-
 }
