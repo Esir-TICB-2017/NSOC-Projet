@@ -26,9 +26,9 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
     private static ConsumptionSensor cs;
 
     public static void main(String arg){
-        network = new IpNetwork(IpNetwork.DEFAULT_BROADCAST_IP, IpNetwork.DEFAULT_PORT, IpNetwork.DEFAULT_BIND_IP, 1);
-        localDevice = new LocalDevice(1004, new Transport(network));
-        numDevice = 9198;
+      //  network = new IpNetwork(IpNetwork.DEFAULT_BROADCAST_IP, IpNetwork.DEFAULT_PORT, IpNetwork.DEFAULT_BIND_IP, 1);
+      //  localDevice = new LocalDevice(1004, new Transport(network));
+        // numDevice = 9198;
         cs = new ConsumptionSensor();
         getSensorValue();
 
@@ -38,17 +38,18 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
 
     private static void  getSensorValue() {
 
-        connection();
-        String result;
+        //connection();
+       // String result;
         Double value = null;
         while(true){
             // define the BacNet objects to listen ObjectIdentifier(ObjectType,object_id)
-            ObjectIdentifier object = new ObjectIdentifier(ObjectType.analogInput,0);
+         //   ObjectIdentifier object = new ObjectIdentifier(ObjectType.analogInput,0);
 
 
-            try {
-                result = RequestUtils.getProperty(localDevice, remote, object, PropertyIdentifier.presentValue).toString();
-                value = Double.valueOf(result);
+           // try {
+           //     result = RequestUtils.getProperty(localDevice, remote, object, PropertyIdentifier.presentValue).toString();
+            //    value = Double.valueOf(result);
+                value = Math.random()*100;
                 cs.setNewValue(value);
                 try {
                     Thread.sleep(1000);
@@ -58,11 +59,11 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
                 }
 
 
-            } catch (BACnetException e) {
+            /*} catch (BACnetException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("Problème de récupération de la valeur !");
-            }
+            }*/
         }
     }
 
