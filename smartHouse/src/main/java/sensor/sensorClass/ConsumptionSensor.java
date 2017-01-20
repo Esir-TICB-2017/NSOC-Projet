@@ -27,7 +27,6 @@ public class ConsumptionSensor implements InterfaceSensors{
     }
 
     public double getLastValue() {
-        Connection connection = ConnectionManager.getConnection();
         Double value = Database.getValue();
         return value;
     }

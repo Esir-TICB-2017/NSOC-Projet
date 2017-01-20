@@ -64,7 +64,7 @@ public class Database {
 
     }
 
-    public static String getClassName() {
+    private static String getClassName() {
         String fullPath = new Exception().getStackTrace()[2].getClassName();
         String[] fullPathArray = fullPath.split("\\.");
         String className = fullPathArray[fullPathArray.length - 1];
