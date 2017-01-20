@@ -1,9 +1,6 @@
 package sensor.sensorClass;
 
-import bacnet.BacNetToJava;
-import com.sun.tools.classfile.ConstantPool;
 import database.ConnectionManager;
-import javafx.scene.chart.PieChart;
 import sensor.sensorInterface.InterfaceSensors;
 import database.Database;
 
@@ -34,6 +31,7 @@ public class ConsumptionSensor implements InterfaceSensors{
     public double getLastValue() {
         Connection connection = ConnectionManager.getConnection();
         Double value = Database.getValue(connection);
+        return value;
     }
 
     public void setNewValue(double newValue){

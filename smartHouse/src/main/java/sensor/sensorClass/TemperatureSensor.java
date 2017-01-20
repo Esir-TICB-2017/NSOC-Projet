@@ -22,7 +22,7 @@ public class TemperatureSensor implements InterfaceSensors {
         return listeOfValue;
     }
 
-    public float getLastValue(){
+    public double getLastValue(){
         //float value = db.getLastValue();
         int value=1; // suppsr
         return value;

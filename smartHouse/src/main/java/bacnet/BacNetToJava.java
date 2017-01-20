@@ -12,7 +12,6 @@ import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
 import com.serotonin.bacnet4j.type.primitive.Double;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
-import com.sun.xml.internal.rngom.ast.builder.GrammarSection;
 import sensor.sensorClass.ConsumptionSensor;
 
 /**
