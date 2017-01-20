@@ -17,7 +17,7 @@ import sensor.sensorClass.ConsumptionSensor;
 /**
  * Created by clement on 16/01/2017.
  */
-public  class  BacNetToJava implements InterfaceReadBacnet {
+public class  BacNetToJava implements InterfaceReadBacnet {
 
     private static IpNetwork network;
     private static LocalDevice localDevice;
@@ -42,18 +42,20 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
            // try {
            //     result = RequestUtils.getProperty(localDevice, remote, object, PropertyIdentifier.presentValue).toString();
             //    value = Double.valueOf(result);
+
             Thread thread = new Thread() {
                 double value = 0;
                 public void run() {
-                    value = Math.random() * 100;
-                    cs.setNewValue(value);
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    while(true) {
+                        value = Math.random() * 100;
+                        cs.setNewValue(value);
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
-
                 }
             };
             thread.start();

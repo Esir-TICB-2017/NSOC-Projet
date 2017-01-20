@@ -20,7 +20,7 @@ public class Database {
             System.out.println("Creating statement...");
             statement = connection.createStatement();
             String sql;
-            sql = "SELECT * FROM consumption";
+            sql = "SELECT * FROM ConsumptionSensor";
             ResultSet rs = statement.executeQuery(sql);
             while(rs.next()) {
                 //Retrieve by column name
@@ -45,7 +45,7 @@ public class Database {
     }
 
     public static void writeSensorValue(Connection connection, double value) {
-        String sql = "INSERT INTO consumption"
+        String sql = "INSERT INTO ConsumptionSensor"
                 + "(VALUE, SUBMISSION_DATE) VALUES"
                 + "(?, ?)";
         try {

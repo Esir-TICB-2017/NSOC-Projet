@@ -4,6 +4,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import sensor.sensorClass.ConsumptionSensor;
+import webserver.GetLastValueServlet;
 
 
 /**
@@ -16,8 +17,6 @@ public class main {
 
         String homePath = System.getProperty("user.home");
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
-        System.out.println(pwdPath);
-
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setResourceBase(pwdPath);
@@ -35,13 +34,19 @@ public class main {
         holderHome.setInitParameter("pathInfoOnly","true");
         context.addServlet(holderHome,"/home/*");
 
+        BacNetToJava physicalSensor = new BacNetToJava();
+        ConsumptionSensor sensor = physicalSensor.getConsumptionSensor();
+
+        GetLastValueServlet getLastValueServlet = new GetLastValueServlet(sensor);
+        ServletHolder resourceHolder = new ServletHolder(getLastValueServlet);
+        context.addServlet(resourceHolder , "/getLastValue");
+
 
 
         server.start();
         server.join();
 
-        BacNetToJava physicalSensor = new BacNetToJava();
-        ConsumptionSensor sensor = physicalSensor.getConsumptionSensor();
+
 
         while(true) {
             try {
@@ -49,7 +54,7 @@ public class main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(sensor.getLastValue());
+            //System.out.println(sensor.getLastValue());
         }
 
 
