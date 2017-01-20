@@ -19,7 +19,7 @@ public class ConsumptionSensor implements InterfaceSensors{
     private double currentValue;
 
     public ConsumptionSensor(){
-
+        db = new Database();
     }
 
     public ArrayList<Float> getValuesOnPeriod(Date start, Date end){
