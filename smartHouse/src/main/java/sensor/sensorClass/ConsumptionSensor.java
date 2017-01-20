@@ -35,6 +35,7 @@ public class ConsumptionSensor implements InterfaceSensors{
         Connection connection = ConnectionManager.getConnection();
         Double value = Database.getValue(connection);
     }
+
     public void setNewValue(double newValue){
         if (newValue != this.currentValue){
 
