@@ -1,5 +1,6 @@
 .DS_Store
 *.idea/
 nsoc.iml
+smartHouse/smartHouse.iml
 test.json
 *target/
