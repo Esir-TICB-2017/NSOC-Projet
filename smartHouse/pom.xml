@@ -46,6 +46,11 @@
             <artifactId>jersey-servlet</artifactId>
             <version>1.17.1</version>
         </dependency>
+        <dependency>
+            <groupId>nsoc</groupId>
+            <artifactId>bacnet</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
