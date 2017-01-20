@@ -24,7 +24,7 @@ public class ConnectionManager {
     public static String getDatabaseParameter(String parameter) {
         String value = null;
         try{
-            FileReader file = new FileReader("/home/david/Bureau/NSOC-Projet/test.json");
+            FileReader file = new FileReader("/Users/loulou/projets_2016/NSOC-Projet/smartHouse/src/main/java/database/test.json");
             JSONTokener tokener = new JSONTokener(file);
             JSONObject obj = new JSONObject(tokener);
             value = obj.getJSONObject("info").getString(parameter);

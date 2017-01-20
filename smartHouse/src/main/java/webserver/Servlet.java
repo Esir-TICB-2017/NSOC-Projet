@@ -1,24 +1,18 @@
 package webserver;
 
-/**
- * Created by Dann on 16/01/2017.
- */
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
-
-@Path("/hello")
-public class Servlet
+public class Servlet extends HttpServlet
 {
-    @GET
-    @Path("/{param}")
-    public Response getMsg(@PathParam("param") String msg) {
-
-        String output = "Jersey say : " + msg;
-
-        return Response.status(200).entity(output).build();
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        response.setContentType("text/html");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().println("<h1>Hello Servlet</h1>");
+        //response.getWriter().println("session=" + request.getSession(true).getId());
     }
 }

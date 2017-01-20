@@ -6,39 +6,45 @@ package computeAggregatedData;
 
 public interface InterfaceComputeAggregatedData {
 	/**
+	 * Create current Global indicator
+	 * Use Use application's settings using database's interface function (getSettings) to create it
+	 */
+	void createGlobalIndicator();
+
+	/**
 	* Create current CO2 indicator
 	* Use application's settings using database's interface function (getSettings) to create it
-	* @param co2 = Current CO2 sensor's value
+	* @param currentCo2 = Current CO2 sensor's value
 	*/
-	void createCO2Indicator(float co2);
+	void createCO2Indicator(float currentCo2);
 	/**
 	* Create current temparature indicator
 	* Use application's settings using database's interface function (getSettings) to create it
 	* Call database's interface function (writeHouseIndicator) to write the new value in database
-	* @param temperature = Current temperature sensor's value
+	* @param currentTemperature = Current temperature sensor's value
 	*/
-	void createTemperatureIndicator(float temperature);
+	void createTemperatureIndicator(float currentTemperature);
 	/**
 	* Create current humidity indicator
 	* Use application's settings using database's interface function (getSettings) to create it
 	* Call database's interface function (writeHouseIndicator) to write the new value in database
-	* @param humidity = Current humidity sensor's value
+	* @param currentHumidity = Current humidity sensor's value
 	*/
-	void createHumidityIndicator(float humidity);
+	void createHumidityIndicator(float currentHumidity);
 	/**
 	* Create current electricity consumption indicator
 	* Use application's settings using database's interface function (getSettings) to create it
 	* Call database's interface function (writeHouseIndicator) to write the new value in database
-	* @param electricityConsumption = Current house's electricity consumption value
+	* @param currentElectricityConsumption = Current house's electricity consumption value
 	*/
-	void createElectricityConsumptionIndicator(float electricityConsumption);
+	void createElectricityConsumptionIndicator(float currentElectricityConsumption);
 	/**
 	* Create current electricity production indicator
 	* Use application's settings using database's interface function (getSettings) to create it
 	* Call database's interface function (writeHouseIndicator) to write the new value in database
-	* @param electricityProduction = Current house's electricity production value
+	* @param currentElectricityProduction = Current house's electricity production value
 	*/
-	void createElectricityProductionIndicator(float electricityProduction);
+	void createElectricityProductionIndicator(float currentElectricityProduction);
 	/**
 	* Create current electricity ratio indicator
 	* Use application's settings using database's interface function (getSettings) to create it
