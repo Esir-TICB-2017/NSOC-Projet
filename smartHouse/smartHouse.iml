@@ -30,9 +30,6 @@
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.17.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-servlet:1.17.1" level="project" />
     <orderEntry type="library" name="Maven: nsoc:bacnet:1.0" level="project" />
-<<<<<<< HEAD
-=======
     <orderEntry type="library" name="Maven: org.json:json:20160810" level="project" />
->>>>>>> 9c172c480d9067575ba1608ba7a32495628abd43
   </component>
 </module>
