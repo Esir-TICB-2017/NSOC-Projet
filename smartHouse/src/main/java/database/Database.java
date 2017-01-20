@@ -1,6 +1,4 @@
 package database;
-import javafx.scene.chart.PieChart;
-
 import java.sql.*;
 
 
@@ -9,18 +7,15 @@ import java.sql.*;
  */
 public class Database {
 
-    //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "izi";
-
-    public static double getValue(Connection connection) {
+    public static double getValue() {
+        Connection connection = ConnectionManager.getConnection();
         Statement statement = null;
         int value = 0;
         try{
             System.out.println("Creating statement...");
             statement = connection.createStatement();
-            String sql;
-            sql = "SELECT * FROM consumption";
+            String className = getClassName();
+            String sql = "SELECT * FROM " + className;
             ResultSet rs = statement.executeQuery(sql);
             while(rs.next()) {
                 //Retrieve by column name
@@ -30,13 +25,13 @@ public class Database {
             }
             rs.close();
             statement.close();
-            connection.close();
+            //connection.close();
             try{
                 if(statement!=null) {
                     statement.close();
                 }
             } catch(SQLException se2){
-            }// nothing we can do
+            }
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -44,8 +39,10 @@ public class Database {
         return value;
     }
 
-    public static void writeSensorValue(Connection connection, double value) {
-        String sql = "INSERT INTO consumption"
+    public static void writeSensorValue(double value) {
+        Connection connection = ConnectionManager.getConnection();
+        String className = getClassName();
+        String sql = "INSERT INTO " + className
                 + "(VALUE, SUBMISSION_DATE) VALUES"
                 + "(?, ?)";
         try {
@@ -65,6 +62,13 @@ public class Database {
         java.util.Date today = new java.util.Date();
         return new java.sql.Timestamp(today.getTime());
 
+    }
+
+    public static String getClassName() {
+        String fullPath = new Exception().getStackTrace()[2].getClassName();
+        String[] fullPathArray = fullPath.split("\\.");
+        String className = fullPathArray[fullPathArray.length - 1];
+        return className;
     }
 
 }

@@ -1,4 +1,5 @@
 import bacnet.BacNetToJava;
+import database.ConnectionManager;
 import database.Database;
 import sensor.sensorClass.ConsumptionSensor;
 
@@ -7,6 +8,7 @@ import sensor.sensorClass.ConsumptionSensor;
  */
 public class main {
     public static void main (String[] args) {
+        ConnectionManager.initializeConnection();
         BacNetToJava physicalSensor = new BacNetToJava();
         ConsumptionSensor sensor = physicalSensor.getConsumptionSensor();
 
@@ -16,6 +18,7 @@ public class main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             System.out.println(sensor.getLastValue());
         }
 

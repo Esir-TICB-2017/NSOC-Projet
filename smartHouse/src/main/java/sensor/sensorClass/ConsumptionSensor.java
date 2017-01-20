@@ -15,11 +15,9 @@ import java.util.Date;
  */
 
 public class ConsumptionSensor implements InterfaceSensors{
-    private Database db;
     private double currentValue;
 
     public ConsumptionSensor(){
-
     }
 
     public ArrayList<Float> getValuesOnPeriod(Date start, Date end){
@@ -30,15 +28,13 @@ public class ConsumptionSensor implements InterfaceSensors{
 
     public double getLastValue() {
         Connection connection = ConnectionManager.getConnection();
-        Double value = Database.getValue(connection);
+        Double value = Database.getValue();
         return value;
     }
 
     public void setNewValue(double newValue){
         if (newValue != this.currentValue){
-
-            Connection connection = ConnectionManager.getConnection();
-            Database.writeSensorValue(connection, newValue);
+            Database.writeSensorValue(newValue);
             this.currentValue = newValue;
         }
 
