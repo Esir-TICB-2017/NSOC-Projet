@@ -17,3 +17,24 @@ ws.onerror = function(err) {
     console.log("Error: " + err);
 };
 
+var url = "getValuesOnPeriod";
+var params = "startDate=1484757557&endDate=1484786852";
+var xhr = new XMLHttpRequest();
+xhr.open("POST", url, true);
+
+//Send the proper header information along with the request
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+xhr.send(params);
+
+xhr.onreadystatechange = function()
+        {
+            if (xhr.readyState == 4 && xhr.status == 200)
+            {
+                callback(xhr.responseText); // Another callback here
+            }
+        };
+
+function callback(data) {
+   console.log(JSON.parse(data));
+}
