@@ -1,9 +1,10 @@
 package database;
 import sensor.sensorClass.Sensor;
+import webserver.ConnectedClients;
 
+import javax.json.Json;
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
 
 
 /**
@@ -68,6 +69,8 @@ public class Database {
         } catch(SQLException e){
             System.out.println(e.getMessage());
         }
+        String str = Json.createObjectBuilder().add("value", value).build().toString();
+        ConnectedClients.getInstance().writeAllMembers(str);
     }
 
     private static java.sql.Timestamp getCurrentTimeStamp() {
