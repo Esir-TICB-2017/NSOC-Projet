@@ -1,4 +1,5 @@
 import bacnet.BacNetToJava;
+import database.ConnectionManager;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -14,6 +15,7 @@ public class main {
     public static void main (String[] args) throws Exception {
 
         Server server = new Server(8080);
+        ConnectionManager.initializeConnection();
 
         String homePath = System.getProperty("user.home");
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
@@ -54,7 +56,6 @@ public class main {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //System.out.println(sensor.getLastValue());
         }
 
 

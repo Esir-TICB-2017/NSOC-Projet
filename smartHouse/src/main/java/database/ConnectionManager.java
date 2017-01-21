@@ -24,7 +24,6 @@ public class ConnectionManager {
     public static String getDatabaseParameter(String parameter) {
         String value = null;
         try{
-
             FileReader file = new FileReader("/Users/loulou/projets_2016/NSOC-Projet/smartHouse/src/main/java/database/test.json");
             JSONTokener tokener = new JSONTokener(file);
             JSONObject obj = new JSONObject(tokener);
@@ -35,7 +34,7 @@ public class ConnectionManager {
         return value;
     }
 
-    public static Connection getConnection() {
+    public static void initializeConnection() {
         try {
             Class.forName(driverName);
             try {
@@ -48,6 +47,9 @@ public class ConnectionManager {
             // log an exception. for example:
             System.out.println("Driver not found.");
         }
+    }
+
+    public static Connection getConnection() {
         return connection;
     }
 }
