@@ -34,11 +34,10 @@ public class ConnectionManager {
         return value;
     }
 
-    public static void initializeConnection() {
+    public static Connection getConnection() {
         try {
             Class.forName(driverName);
-            try {
-                connection = DriverManager.getConnection(url, username, password);
+            try (Connection connection = DriverManager.getConnection(url, username, password) ){
             } catch (SQLException ex) {
                 // log an exception. for example:
                 System.out.println("Failed to create the database connection.");
@@ -47,9 +46,6 @@ public class ConnectionManager {
             // log an exception. for example:
             System.out.println("Driver not found.");
         }
-    }
-
-    public static Connection getConnection() {
         return connection;
     }
 }

@@ -15,7 +15,6 @@ public class main {
     public static void main (String[] args) throws Exception {
 
         Server server = new Server(8080);
-        ConnectionManager.initializeConnection();
 
         String homePath = System.getProperty("user.home");
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
