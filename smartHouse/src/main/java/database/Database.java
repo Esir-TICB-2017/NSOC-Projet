@@ -1,5 +1,9 @@
 package database;
+import sensor.sensorClass.Sensor;
+
 import java.sql.*;
+import java.util.*;
+import java.util.Date;
 
 
 /**
@@ -7,41 +11,50 @@ import java.sql.*;
  */
 public class Database {
 
-    public static double getValue() {
+
+    public static ArrayList<HashMap> getLastValue(Sensor sensor) {
         Connection connection = ConnectionManager.getConnection();
-        Statement statement = null;
-        int value = 0;
-        try{
-            System.out.println("Creating statement...");
-            statement = connection.createStatement();
-            String className = getClassName();
-            String sql = "SELECT * FROM " + className;
-            ResultSet rs = statement.executeQuery(sql);
-            while(rs.next()) {
-                //Retrieve by column name
-                int id = rs.getInt("id");
-                value = rs.getInt("value");
-                String date = rs.getString("submission_date");
+        String className = sensor.getClass().getSimpleName();
+        ArrayList<HashMap> list = new ArrayList(1);
+        try (Statement statement = connection.createStatement()){
+            String sql = "SELECT * FROM " + className + " ORDER BY submission_date DESC LIMIT 1";
+            System.out.println(sql);
+            try(ResultSet rs = statement.executeQuery(sql)) {
+                list = formatData(rs, 1);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-            rs.close();
-            statement.close();
-            //connection.close();
-            try{
-                if(statement!=null) {
-                    statement.close();
-                }
-            } catch(SQLException se2){
-            }
-        }catch(SQLException se){
-            //Handle errors for JDBC
-            se.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
-        return value;
+        return list;
     }
 
-    public static void writeSensorValue(double value) {
+    public static ArrayList<HashMap> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate) {
         Connection connection = ConnectionManager.getConnection();
-        String className = getClassName();
+        String className = sensor.getClass().getSimpleName();
+        ArrayList<HashMap> list = new ArrayList(1);
+        String sql = "SELECT * FROM " + className +
+                " WHERE submission_date BETWEEN ? AND ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setTimestamp(1, startDate);
+            preparedStatement.setTimestamp(2, endDate);
+            try(ResultSet rs = preparedStatement.executeQuery()) {
+                list = formatData(rs, 1);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return list;
+    }
+
+
+    public static void writeSensorValue(Sensor sensor, double value) {
+
+        Connection connection = ConnectionManager.getConnection();
+        String className = sensor.getClass().getSimpleName();
         String sql = "INSERT INTO " + className
                 + "(VALUE, SUBMISSION_DATE) VALUES"
                 + "(?, ?)";
@@ -64,11 +77,18 @@ public class Database {
 
     }
 
-    private static String getClassName() {
-        String fullPath = new Exception().getStackTrace()[2].getClassName();
-        String[] fullPathArray = fullPath.split("\\.");
-        String className = fullPathArray[fullPathArray.length - 1];
-        return className;
-    }
+    private static ArrayList<HashMap> formatData(ResultSet rs, int rows) throws SQLException {
+        ArrayList list = new ArrayList(rows);
+        ResultSetMetaData md = rs.getMetaData();
+        int columns = md.getColumnCount();
 
+        while(rs.next()) {
+            HashMap row = new HashMap(columns);
+            for(int i=1; i<=columns; ++i){
+                row.put(md.getColumnName(i),rs.getObject(i));
+            }
+            list.add(row);
+        }
+        return list;
+    }
 }

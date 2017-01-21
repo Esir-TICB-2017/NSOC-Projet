@@ -2,6 +2,9 @@ package computeAggregatedData;
 
 import sensor.sensorClass.*;
 import database.Database;
+
+import java.util.ArrayList;
+
 /**
  * Created by mathieu on 20/01/2017.
  */
@@ -22,7 +25,7 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
         temperature = new TemperatureSensor();
     }
     public void createGlobalIndicator() {
-        Double currentConsumptionValue = consumption.getLastValue();
+        ArrayList currentConsumptionValue = consumption.getLastValue();
         Double currentProductionValue = production.getLastValue();
         Double currentCO2Value = co2.getLastValue();
         Double currentHumidityValue = humidity.getLastValue();
@@ -65,9 +68,9 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
         //mettre en base
     }
     public void createElectricityRatioIndicator() {
-        Double currentConsumptionValue = consumption.getLastValue();
-        Double currentProductionValue = production.getLastValue();
-        Double indicator = currentProductionValue- currentConsumptionValue;
+        ArrayList currentConsumptionValue = consumption.getLastValue();
+        //Double currentProductionValue = production.getLastValue();
+        //Double indicator = currentProductionValue- currentConsumptionValue;
         //traiter l'indicateur
         //mettre l'indicateur en base
     }

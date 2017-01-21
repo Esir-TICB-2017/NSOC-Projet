@@ -1,4 +1,5 @@
 import bacnet.BacNetToJava;
+import com.sun.tools.internal.xjc.reader.gbind.ConnectedComponent;
 import database.ConnectionManager;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
@@ -7,12 +8,18 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import sensor.sensorClass.ConsumptionSensor;
 import webserver.GetLastValueServlet;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
 
 /**
  * Created by loulou on 18/01/2017.
  */
 public class main {
     public static void main (String[] args) throws Exception {
+
 
         Server server = new Server(8080);
 
@@ -37,7 +44,11 @@ public class main {
 
         BacNetToJava physicalSensor = new BacNetToJava();
         ConsumptionSensor sensor = physicalSensor.getConsumptionSensor();
-
+        Timestamp startDate = new Timestamp(1484757557L*1000);
+        Timestamp endDate = new Timestamp(1484786852L*1000);
+        System.out.println(startDate);
+        ArrayList<HashMap> results = sensor.getValuesOnPeriod(sensor, startDate, endDate);
+        System.out.println(results);
         GetLastValueServlet getLastValueServlet = new GetLastValueServlet(sensor);
         ServletHolder resourceHolder = new ServletHolder(getLastValueServlet);
         context.addServlet(resourceHolder , "/getLastValue");
