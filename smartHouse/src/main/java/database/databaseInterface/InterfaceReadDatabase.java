@@ -1,7 +1,11 @@
 package database.databaseInterface;
 
+import sensor.sensorClass.Sensor;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 /**
@@ -19,7 +23,7 @@ public interface InterfaceReadDatabase {
      * Construit alors la requete SQL adaptée
      * @return : retourne les settings Cette valeur est retournée sous format JSON
      **/
-    String getLastValue();
+    //static ArrayList<HashMap> getLastValue(Sensor sensor) {};
 
     /**
      * Permet de lire dans la base de donnée les "nbValue" dernières valeurs stockées du type de capteur saisi par "_init()"
@@ -27,7 +31,7 @@ public interface InterfaceReadDatabase {
      * @param nbValue = Nombre du nombres des dernières valeurs à retourner
      * @return Ces valeurs sont retournées sous format JSON
      **/
-    String getNbValue(int nbValue);
+   // String getNbValue(int nbValue);
 
     /**
      * @param date = Date à partir de laquelle retourner les valeurs
@@ -35,16 +39,17 @@ public interface InterfaceReadDatabase {
      * Construit alors la requete SQL adaptée
      * @return Ces valeurs sont retournées sous format JSON
      **/
-    String getValueFrom(Date date);
+    //String getValueFrom(Date date);
 
     /**
-     * @param start = Date à partir de laquelle retourner les valeurs
-     * @param end = Date jusqu'à laquelle retourner les valeurs
+     * @param sensor = help to select data in the right table
+     * @param startDate = Date à partir de laquelle retourner les valeurs
+     * @param endDate = Date jusqu'à laquelle retourner les valeurs
      * Permet de lire dans la base de donnée les valeurs stockées entre les deux dates saisies du type de capteur saisi par "_init()"
      * Construit alors la requete SQL adaptée
      * Ces valeurs sont retournées sous format JSON
      **/
-    String getValuePeriod(Date start, Date end);
+    //static ArrayList<HashMap> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate) {};
 
     /**
      * @param indicatorType = Type d'indicateur dont on veut obtenir la dernière valeur. ex : Air quality, CO2, temparature, ...
@@ -52,7 +57,7 @@ public interface InterfaceReadDatabase {
      * Construit alors la requete SQL adaptée
      * @return : Retourne la valeur de cet indicateur
      **/
-    float getLastIndicator(String indicatorType);
+    //float getLastIndicator(String indicatorType);
 
     /**
      * @param indicatorType = Type d'indicateur dont on veut obtenir des valeurs. ex : Air quality, CO2, temparature, ...
@@ -61,7 +66,7 @@ public interface InterfaceReadDatabase {
      * Construit alors la requete SQL adaptée
      * @return : Un tableau avec toutes les valeurs trouvées
      **/
-    ArrayList<Float> getLastNbIndicator(String indicatorType, int nbValue);
+   // ArrayList<Float> getLastNbIndicator(String indicatorType, int nbValue);
 
 
     /**
@@ -72,5 +77,5 @@ public interface InterfaceReadDatabase {
      * @param end = Date de fin de la période
      * @return : Un tableau avec toutes les valeurs trouvées
      **/
-    ArrayList<Float> getIndicatorPeriod(String indicatorType, Date start, Date end);
+    //ArrayList<Float> getIndicatorPeriod(String indicatorType, Date start, Date end);
 }

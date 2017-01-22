@@ -28,13 +28,11 @@ public class GetValuesOnPeriodServlet extends HttpServlet
         Timestamp startDate = new Timestamp(start * 1000);
         Timestamp endDate = new Timestamp(end * 1000);
         ArrayList<HashMap> result = sensor.getValuesOnPeriod(sensor, startDate, endDate);
-        System.out.println(result);
+
         JSONObject obj = new JSONObject(result);
         Gson gson = new Gson();
         String json = gson.toJson(result);
-        System.out.println(json);
 
-        System.out.println(request.getParameter("startDate"));
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().println(json);

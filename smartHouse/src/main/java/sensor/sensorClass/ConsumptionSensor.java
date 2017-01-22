@@ -1,5 +1,6 @@
 package sensor.sensorClass;
 
+import database.WriteInDatabase;
 import sensor.sensorInterface.InterfaceSensors;
 import database.Database;
 
@@ -20,7 +21,7 @@ public class ConsumptionSensor extends Sensor implements InterfaceSensors {
 
     public void setNewValue(double newValue){
         if (newValue != this.currentValue){
-            Database.writeSensorValue(this, newValue);
+            WriteInDatabase.writeSensorValue(this, newValue);
             this.currentValue = newValue;
         }
 
