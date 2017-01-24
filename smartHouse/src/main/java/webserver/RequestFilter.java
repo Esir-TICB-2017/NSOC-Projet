@@ -10,19 +10,31 @@ public class RequestFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpSession session = request.getSession(false);
-        if(session!=null){
-
-            String name=(String)session.getAttribute("name");
+        System.out.println(request.getRequestURI());
+        String path = request.getRequestURI().substring(request.getContextPath().length());
+//
+        if (path.startsWith("/static")) {
+            chain.doFilter(request, servletResponse); // Goes to default servlet.
+            return;
+        }
+        if(request.getRequestURI().equals("/login.html")){
             chain.doFilter(servletRequest, servletResponse);
-            System.out.println("Hello, "+name+" Welcome to Profile");
+        }
+        else {
+            HttpSession session = request.getSession(false);
+            if(session!=null){
+                String name=(String)session.getAttribute("name");
+                chain.doFilter(servletRequest, servletResponse);
+                System.out.println("Hello, "+name+" Welcome to Profile");
 
+            }
+            else{
+                System.out.println("Please login first");
+                HttpServletResponse response = (HttpServletResponse) servletResponse;
+                response.sendRedirect("/login.html");
+            }
         }
-        else{
-            System.out.println("Please login first");
-            HttpServletResponse response = (HttpServletResponse) servletResponse;
-            response.sendRedirect("/");
-        }
+
     }
     @Override
     public void init(FilterConfig arg0) throws ServletException {

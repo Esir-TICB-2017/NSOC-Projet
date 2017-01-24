@@ -118,7 +118,7 @@ public class main {
         context.addServlet(new ServletHolder(new SigninTokenServlet()), "/tokensignin");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 
-        context.addFilter(RequestFilter.class, "/api/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(RequestFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
 
         HandlerList handlers = new HandlerList();
