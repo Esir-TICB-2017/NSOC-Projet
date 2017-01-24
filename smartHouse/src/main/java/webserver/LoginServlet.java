@@ -22,7 +22,7 @@ import java.util.*;
 /**
  * Created by loulou on 22/01/2017.
  */
-public class SigninTokenServlet extends HttpServlet{
+public class LoginServlet extends HttpServlet{
     String clientId = "299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

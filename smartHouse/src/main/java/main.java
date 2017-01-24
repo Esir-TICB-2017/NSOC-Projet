@@ -1,44 +1,16 @@
 import bacnet.BacNetToJava;
-import com.google.gson.Gson;
-import database.ReadInDatabase;
-import org.eclipse.jetty.security.ConstraintMapping;
-import org.eclipse.jetty.security.ConstraintSecurityHandler;
-import org.eclipse.jetty.security.HashLoginService;
-import org.eclipse.jetty.security.SecurityHandler;
-import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.server.session.JDBCSessionIdManager;
-import org.eclipse.jetty.server.session.JDBCSessionManager;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.security.Constraint;
-import org.eclipse.jetty.util.security.Credential;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.websocket.server.WebSocketHandler;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
-import org.json.JSONObject;
 import sensor.sensorClass.ConsumptionSensor;
 import webserver.*;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
 import javax.servlet.*;
-import javax.servlet.http.*;
-import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Enumeration;
-import java.util.HashMap;
-
-import static java.lang.System.out;
 
 
 /**
@@ -47,59 +19,31 @@ import static java.lang.System.out;
 public class main {
     public static void main (String[] args) throws Exception {
 
-        //****WAITING FOR SSL CERTIFICATE****//
-//        String jettyDistKeystore = System.getProperty("user.home") + "/projets_2016/certificates/server.csr";
-//        String keystorePath = System.getProperty(
-//                "example.keystore", jettyDistKeystore);
-//        File keystoreFile = new File(keystorePath);
-//        if (!keystoreFile.exists())
-//        {
-//            throw new FileNotFoundException(keystoreFile.getAbsolutePath());
-//        }
-
         BacNetToJava physicalSensor = new BacNetToJava();
         ConsumptionSensor sensor = physicalSensor.getConsumptionSensor();
         sensor.getLastValue();
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
-        String keyPath = System.getProperty("user.home" + "/projets_2016/certificates/");
+        String keyPath = System.getProperty("user.home") + "/projets_2016/NSOC-Projet/keystore/";
+        System.out.println(keyPath);
 
-        Server server = new Server(8080);
+        Server server = new Server();
 
-//****WAITING FOR SSL CERTIFICATE****//
-//        HttpConfiguration http_config = new HttpConfiguration();
-//        http_config.setSecureScheme("https");
-//        http_config.setSecurePort(8443);
-//        http_config.setOutputBufferSize(32768);
+        ServerConnector connector = new ServerConnector(server);
+        connector.setPort(8080);
 
+        HttpConfiguration https = new HttpConfiguration();
+        https.addCustomizer(new SecureRequestCustomizer());
+        SslContextFactory sslContextFactory = new SslContextFactory();
+        sslContextFactory.setKeyStorePath(keyPath + "keystore.jks");
+        sslContextFactory.setKeyStorePassword("projetnsoc");
+        sslContextFactory.setKeyManagerPassword("projetnsoc");
+        ServerConnector sslConnector = new ServerConnector(server,
+                new SslConnectionFactory(sslContextFactory, "http/1.1"),
+                new HttpConnectionFactory(https));
+        sslConnector.setPort(9998);
+        server.setConnectors(new Connector[] { connector, sslConnector });
 
-//        SslContextFactory sslContextFactory = new SslContextFactory();
-//        sslContextFactory.setKeyStorePath(keystoreFile.getAbsolutePath());
-//        sslContextFactory.setKeyStorePassword("!!-Projetns0c-!!");
-//        sslContextFactory.setKeyManagerPassword("!!-Projetns0c-!!");
-//
-//        HttpConfiguration https_config = new HttpConfiguration(http_config);
-//        SecureRequestCustomizer src = new SecureRequestCustomizer();
-//        https_config.addCustomizer(src);
-//
-//        ServerConnector https = new ServerConnector(server,
-//                new SslConnectionFactory(sslContextFactory,HttpVersion.HTTP_1_1.asString()),
-//                new HttpConnectionFactory(https_config));
-//        https.setPort(8443);
-//        https.setIdleTimeout(500000);
-
-//        ServerConnector http = new ServerConnector(server,
-//                new HttpConnectionFactory(http_config));
-//        http.setPort(8080);
-//        http.setIdleTimeout(30000);
-
-        // Set the connectors
-//        server.setConnectors(new Connector[] { http });
-
-
-        // Static files handler
-//        ResourceHandler resourceHandler = new ResourceHandler();
-//        resourceHandler.setResourceBase("src/main/webapp/");
 
         // WebSocket Handler
         WebSocketHandler wsHandler = new WebSocketHandler() {
@@ -115,17 +59,15 @@ public class main {
         context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
         context.setWelcomeFiles(new String[]{ "index.html" });
         context.setParentLoaderPriority(true);
-        context.addServlet(new ServletHolder(new SigninTokenServlet()), "/tokensignin");
+        context.addServlet(new ServletHolder(new LoginServlet()), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 
-        context.addFilter(RequestFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{context, wsHandler });
         server.setHandler(handlers);
-
-
         server.start();
         server.join();
 

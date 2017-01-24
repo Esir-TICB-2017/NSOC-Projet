@@ -1,29 +1,18 @@
- function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
+var ws = new WebSocket("ws://127.0.0.1:8080/");
 
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
+ws.onopen = function () {
+    console.log("Opened!");
+    ws.send("Hello Server");
+};
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:8080/tokensignin');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-        };
-        xhr.send('idtoken=' + id_token);
-      };
+ws.onmessage = function (evt) {
+    console.log("Message: " + evt.data);
+};
 
-      function callback(data) {
-        console.log(JSON.parse(data));
-      }
+ws.onclose = function () {
+    console.log("Closed!");
+};
 
-     function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-               console.log('User signed out.');
-              var xmlHttp = new XMLHttpRequest();
-                     xmlHttp.open("GET", "/logout", true); // true for asynchronous
-                      xmlHttp.send(null);
-
-            });
-          }
+ws.onerror = function (err) {
+    console.log("Error: " + err);
+};
