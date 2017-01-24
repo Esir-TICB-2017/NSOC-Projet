@@ -60,9 +60,6 @@ public class SigninTokenServlet extends HttpServlet{
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
 
-
-
-
             java.util.Date today = new java.util.Date(System.currentTimeMillis()+5*60*1000);
             Timestamp expirationDate = new Timestamp(today.getTime());
             SessionIdentifierGenerator sig = new SessionIdentifierGenerator();
@@ -71,6 +68,7 @@ public class SigninTokenServlet extends HttpServlet{
             WriteInDatabase.storeNewSession(sessionToken, userId, expirationDate);
             System.out.println("ici la session s'ouvre");
             HttpSession session = request.getSession();
+            session.setAttribute("name", name);
             session.setAttribute("userToken", sessionToken);
             session.setAttribute("userId", userId);
             response.setContentType("text/html");

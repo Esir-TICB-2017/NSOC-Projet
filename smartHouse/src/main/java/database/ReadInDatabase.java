@@ -48,7 +48,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
         return list;
     }
 
-    public static ArrayList<HashMap> getUserSession(String userId) throws Exception{
+    public static ArrayList<HashMap> getUserSession(String userId) throws SQLException{
         Connection connection = ConnectionManager.getConnection();
         ArrayList<HashMap> list = new ArrayList(1);
         String sql = "SELECT * FROM sessions WHERE userid=?";
