@@ -38,6 +38,8 @@ import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.HashMap;
 
+import static java.lang.System.out;
+
 
 /**
  * Created by loulou on 18/01/2017.
@@ -64,13 +66,13 @@ public class main {
 
         Server server = new Server(8080);
 
-
+//****WAITING FOR SSL CERTIFICATE****//
 //        HttpConfiguration http_config = new HttpConfiguration();
 //        http_config.setSecureScheme("https");
 //        http_config.setSecurePort(8443);
 //        http_config.setOutputBufferSize(32768);
 
-        //****WAITING FOR SSL CERTIFICATE****//
+
 //        SslContextFactory sslContextFactory = new SslContextFactory();
 //        sslContextFactory.setKeyStorePath(keystoreFile.getAbsolutePath());
 //        sslContextFactory.setKeyStorePassword("!!-Projetns0c-!!");
@@ -114,24 +116,12 @@ public class main {
         context.setWelcomeFiles(new String[]{ "index.html" });
         context.setParentLoaderPriority(true);
         context.addServlet(new ServletHolder(new SigninTokenServlet()), "/tokensignin");
-        context.addServlet(new ServletHolder(new TestGet()), "/api/testGet");
+        context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 
-        context.addFilter(HelloPrintingFilter.class, "/api/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(RequestFilter.class, "/api/*", EnumSet.of(DispatcherType.REQUEST));
 
-
-
-        // Servlet handler
-//        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-//        servletContextHandler.setContextPath("/");
-//
-//        // map servlets to endpoints
-//        servletContextHandler.addServlet(new ServletHolder(new SigninServlet()),"/signin");
-//        servletContextHandler.addServlet(new ServletHolder(new SigninTokenServlet()),"/tokensignin");
-//        servletContextHandler.addServlet(new ServletHolder(new CallbackServlet()),"/callback");
-//        servletContextHandler.addServlet(new ServletHolder(new GetValuesOnPeriodServlet(sensor)), "/getValuesOnPeriod");
 
         HandlerList handlers = new HandlerList();
-//        handlers.setHandlers(new Handler[]{wsHandler, resourceHandler, servletContextHandler});
         handlers.setHandlers(new Handler[]{context, wsHandler });
         server.setHandler(handlers);
 
@@ -142,43 +132,5 @@ public class main {
 
     }
 
-    public static class HelloPrintingFilter implements Filter {
-        @Override
-        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
-                throws IOException, ServletException {
-            HttpServletRequest request = (HttpServletRequest) servletRequest;
-            Cookie[] cookies = request.getCookies();
 
-            if (cookies != null) {
-                for (Cookie ck : cookies) {
-                    if ("userId".equals(ck.getName())) {
-                        try {
-                            ArrayList<HashMap> userInfo = ReadInDatabase.getUser(ck.getValue());
-                            String idFound = (String) userInfo.get(0).get("userid");
-                            if (idFound.equals(idFound)) {
-                                chain.doFilter(servletRequest, servletResponse);
-                            } else {
-                                HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-                                httpResponse.sendRedirect("/");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            } else {
-                HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-                httpResponse.sendRedirect("/");
-            }
-            return;
-        }
-
-        @Override
-        public void init(FilterConfig arg0) throws ServletException {
-
-        }
-
-        @Override
-        public void destroy() {}
-    }
 }

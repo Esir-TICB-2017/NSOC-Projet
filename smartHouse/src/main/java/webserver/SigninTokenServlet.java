@@ -9,17 +9,15 @@ import com.google.api.client.http.LowLevelHttpResponse;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import database.ReadInDatabase;
+import database.WriteInDatabase;
+import utils.SessionIdentifierGenerator;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.*;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * Created by loulou on 22/01/2017.
@@ -28,12 +26,12 @@ public class SigninTokenServlet extends HttpServlet{
     String clientId = "299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         try {
             HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+            JsonFactory jsonFactory = new JacksonFactory();
 
         String idTokenString = request.getParameter("idtoken");
-        JsonFactory jsonFactory = new JacksonFactory();
+
 
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
                 .setAudience(Collections.singletonList(clientId))
@@ -52,7 +50,6 @@ public class SigninTokenServlet extends HttpServlet{
 
             // Print user identifier
             String userId = payload.getSubject();
-            System.out.println("User ID: " + userId);
 
             // Get profile information from payload
            // String email = payload.get
@@ -66,29 +63,26 @@ public class SigninTokenServlet extends HttpServlet{
 
 
 
-            ArrayList<HashMap> userInfo = ReadInDatabase.getUser(userId);
+            java.util.Date today = new java.util.Date(System.currentTimeMillis()+5*60*1000);
+            Timestamp expirationDate = new Timestamp(today.getTime());
+            SessionIdentifierGenerator sig = new SessionIdentifierGenerator();
+            String sessionToken = sig.nextSessionId();
 
+            WriteInDatabase.storeNewSession(sessionToken, userId, expirationDate);
+            System.out.println("ici la session s'ouvre");
+            HttpSession session = request.getSession();
+            session.setAttribute("userToken", sessionToken);
+            session.setAttribute("userId", userId);
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_OK);
-            Cookie cookie = new Cookie("userId", userId);
-            response.addCookie(cookie);
-            //response.sendRedirect(request.getRequestURL().toString());
 
 
         } else {
             System.out.println("Invalid ID token.");
+            request.getRequestDispatcher("/login").include(request, response);
         }
         } catch (Exception e ){
             e.printStackTrace();
         }
-
-
-//        JSONObject obj = new JSONObject(result);
-//        Gson gson = new Gson();
-//        String json = gson.toJson(result);
-//
-//        response.setContentType("text/html");
-//        response.setStatus(HttpServletResponse.SC_OK);
-//        response.getWriter().println(json);
     }
 }

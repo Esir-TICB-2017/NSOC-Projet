@@ -48,10 +48,10 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
         return list;
     }
 
-    public static ArrayList<HashMap> getUser(String userId) throws Exception{
+    public static ArrayList<HashMap> getUserSession(String userId) throws Exception{
         Connection connection = ConnectionManager.getConnection();
         ArrayList<HashMap> list = new ArrayList(1);
-        String sql = "SELECT * FROM users WHERE userid=?";
+        String sql = "SELECT * FROM sessions WHERE userid=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, userId);
             try(ResultSet rs = preparedStatement.executeQuery()) {
