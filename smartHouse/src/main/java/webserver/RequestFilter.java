@@ -19,11 +19,11 @@ public class RequestFilter implements Filter {
         Boolean isStatic = path.startsWith("/static");
         Boolean isLoginPage = request.getRequestURI().equals("/login.html");
         Boolean isAuthenticated = checkAuthentication(request, response);
-        if(isStatic || isLoginPage || !isAuthenticated) {
-            redirectOnLogin(request, response);
+        if(isStatic || isLoginPage || isAuthenticated) {
+            chain.doFilter(request, response);
         }
         else {
-          chain.doFilter(request, response);
+            redirectOnLogin(request, response);
         }
 
     }
@@ -39,9 +39,9 @@ public class RequestFilter implements Filter {
 
     public Boolean checkAuthentication(HttpServletRequest request , HttpServletResponse response) {
         HttpSession session = request.getSession(false);
+        if(session != null) {
         String userId = (String) session.getAttribute("userId");
         String userToken = (String) session.getAttribute("userToken");
-        if(session != null) {
             try {
                 HashMap userSession = ReadInDatabase.getUserSession(userId).get(0);
                 if (userSession.get("token").equals(userToken) && userSession.get("userid").equals(userId)) {
