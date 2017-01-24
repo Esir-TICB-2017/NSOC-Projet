@@ -116,7 +116,6 @@ public class main {
         context.setWelcomeFiles(new String[]{ "index.html" });
         context.setParentLoaderPriority(true);
         context.addServlet(new ServletHolder(new SigninTokenServlet()), "/tokensignin");
-        context.addServlet(new ServletHolder(new TestGet()), "/api/testGet");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 
         context.addFilter(HelloPrintingFilter.class, "/api/*", EnumSet.of(DispatcherType.REQUEST));
