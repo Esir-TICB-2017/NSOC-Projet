@@ -38,6 +38,8 @@ import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.HashMap;
 
+import static java.lang.System.out;
+
 
 /**
  * Created by loulou on 18/01/2017.
@@ -115,6 +117,7 @@ public class main {
         context.setParentLoaderPriority(true);
         context.addServlet(new ServletHolder(new SigninTokenServlet()), "/tokensignin");
         context.addServlet(new ServletHolder(new TestGet()), "/api/testGet");
+        context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 
         context.addFilter(HelloPrintingFilter.class, "/api/*", EnumSet.of(DispatcherType.REQUEST));
 
@@ -147,28 +150,20 @@ public class main {
         public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
                 throws IOException, ServletException {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
-            Cookie[] cookies = request.getCookies();
 
-            if (cookies != null) {
-                for (Cookie ck : cookies) {
-                    if ("userId".equals(ck.getName())) {
-                        try {
-                            ArrayList<HashMap> userInfo = ReadInDatabase.getUser(ck.getValue());
-                            String idFound = (String) userInfo.get(0).get("userid");
-                            if (idFound.equals(idFound)) {
-                                chain.doFilter(servletRequest, servletResponse);
-                            } else {
-                                HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-                                httpResponse.sendRedirect("/");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            } else {
-                HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-                httpResponse.sendRedirect("/");
+
+
+            HttpSession session = request.getSession(false);
+            if(session!=null){
+                String name=(String)session.getAttribute("name");
+                chain.doFilter(servletRequest, servletResponse);
+                out.println("Hello, "+name+" Welcome to Profile");
+
+            }
+            else{
+                out.println("Please login first");
+                HttpServletResponse response = (HttpServletResponse) servletResponse;
+                response.sendRedirect("/");
             }
             return;
         }

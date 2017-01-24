@@ -1,49 +1,53 @@
-var ws = new WebSocket("ws://127.0.0.1:8080/");
+ function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
 
-ws.onopen = function() {
-    console.log("Opened!");
-    ws.send("Hello Server");
-};
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
 
-ws.onmessage = function (evt) {
-    console.log("Message: " + evt.data);
-};
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8080/tokensignin');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+        };
+        xhr.send('idtoken=' + id_token);
+      };
 
-ws.onclose = function() {
-    console.log("Closed!");
-};
+      function doTest(userid) {
 
-ws.onerror = function(err) {
-    console.log("Error: " + err);
-};
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "api/testGet", true); // true for asynchronous
+        xmlHttp.setRequestHeader("Authorization", getCookie('userId'));
 
+          xmlHttp.send(null);
+      }
 
-// var xmlHttp = new XMLHttpRequest();
-//    xmlHttp.onreadystatechange = function() {
-//        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-//            callback(xmlHttp.responseText);
-//    }
-//    xmlHttp.open("GET", "signin", true); // true for asynchronous
-//    xmlHttp.send(null);
-
-//var url = "getValuesOnPeriod";
-//var params = "startDate=1484757557&endDate=1484786852";
-//var xhr = new XMLHttpRequest();
-//xhr.open("POST", url, true);
-//
-////Send the proper header information along with the request
-//xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//
-//xhr.send(params);
-//
-//xhr.onreadystatechange = function()
-//        {
-//            if (xhr.readyState == 4 && xhr.status == 200)
-//            {
-//                callback(xhr.responseText); // Another callback here
-//            }
-//        };
-//
-function callback(data) {
-   console.log(JSON.parse(data));
+      function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
+
+      function callback(data) {
+        console.log(JSON.parse(data));
+      }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+              var xmlHttp = new XMLHttpRequest();
+                     xmlHttp.open("GET", "api/logout", true); // true for asynchronous
+                      xmlHttp.send(null);
+
+            });
+          }
