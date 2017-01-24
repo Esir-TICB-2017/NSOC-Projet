@@ -66,13 +66,13 @@ public class main {
 
         Server server = new Server(8080);
 
-
+//****WAITING FOR SSL CERTIFICATE****//
 //        HttpConfiguration http_config = new HttpConfiguration();
 //        http_config.setSecureScheme("https");
 //        http_config.setSecurePort(8443);
 //        http_config.setOutputBufferSize(32768);
 
-        //****WAITING FOR SSL CERTIFICATE****//
+
 //        SslContextFactory sslContextFactory = new SslContextFactory();
 //        sslContextFactory.setKeyStorePath(keystoreFile.getAbsolutePath());
 //        sslContextFactory.setKeyStorePassword("!!-Projetns0c-!!");
@@ -121,19 +121,7 @@ public class main {
         context.addFilter(HelloPrintingFilter.class, "/api/*", EnumSet.of(DispatcherType.REQUEST));
 
 
-
-        // Servlet handler
-//        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-//        servletContextHandler.setContextPath("/");
-//
-//        // map servlets to endpoints
-//        servletContextHandler.addServlet(new ServletHolder(new SigninServlet()),"/signin");
-//        servletContextHandler.addServlet(new ServletHolder(new SigninTokenServlet()),"/tokensignin");
-//        servletContextHandler.addServlet(new ServletHolder(new CallbackServlet()),"/callback");
-//        servletContextHandler.addServlet(new ServletHolder(new GetValuesOnPeriodServlet(sensor)), "/getValuesOnPeriod");
-
         HandlerList handlers = new HandlerList();
-//        handlers.setHandlers(new Handler[]{wsHandler, resourceHandler, servletContextHandler});
         handlers.setHandlers(new Handler[]{context, wsHandler });
         server.setHandler(handlers);
 
