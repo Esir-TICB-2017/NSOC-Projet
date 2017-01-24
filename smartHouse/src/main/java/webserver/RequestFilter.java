@@ -23,14 +23,17 @@ public class RequestFilter implements Filter {
         Boolean isStatic = path.startsWith("/static");
         Boolean isLoginPage = request.getRequestURI().equals("/login.html");
         Boolean isLoginServlet = request.getRequestURI().equals("/login");
-        Boolean isAuthenticated = checkAuthentication(request, response);
-        if(isStatic || isLoginPage || isAuthenticated || isLoginServlet) {
+        if (isLoginPage || isStatic || isLoginServlet) {
             chain.doFilter(request, response);
+        } else {
+            Boolean isAuthenticated = checkAuthentication(request, response);
+            if(isAuthenticated) {
+                chain.doFilter(request, response);
+            }
+            else {
+                redirectOnLogin(request, response);
+            }
         }
-        else {
-            redirectOnLogin(request, response);
-        }
-
     }
     public void redirectOnLogin(HttpServletRequest request , HttpServletResponse response){
         System.out.println("Redirect to Login page");
