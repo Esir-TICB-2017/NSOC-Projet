@@ -163,6 +163,16 @@
             <artifactId>jetty</artifactId>
             <version>6.1.26</version>
         </dependency>
+        <dependency>
+            <groupId>nsoc</groupId>
+            <artifactId>seroUtils</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>nsoc</groupId>
+            <artifactId>commons</artifactId>
+            <version>1.0</version>
+        </dependency>
 
     </dependencies>
 </project>
