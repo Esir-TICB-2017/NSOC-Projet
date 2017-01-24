@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-
-    <meta content="profile email" name="google-signin-scope">
-    <meta content="299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com"
-          name="google-signin-client_id">
-    <script async="" defer="" src="https://apis.google.com/js/platform.js">
-    </script>
-    </meta>
-    </meta>
-    <script src="static/app.js">
-    </script>
-</head>
-<body>
-<a onclick="signOut()">
-    Sign out
-</a>
-</body>
+	<head>
+		<meta content="profile email" name="google-signin-scope">
+			<meta content="299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com"
+			name="google-signin-client_id">
+			<script async="" defer="" src="https://apis.google.com/js/platform.js"></script>
+			</meta>
+		</meta>
+		<script src="js/lib/angular.min.js"></script>
+		<script src="js/lib/angular-route.min.js"></script>
+		<script src="js/routeProvider.js"></script>
+		<script src="js/controllers/login.js"></script>
+		<script src="js/controllers/app.js"></script>
+	</head>
+	<body ng-app="nsoc" ng-controller="routeProviderController">
+		{{obj}}
+			<div ng-view></div>
+	</body>
 </html>
