@@ -115,7 +115,7 @@ public class main {
         context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
         context.setWelcomeFiles(new String[]{ "index.html" });
         context.setParentLoaderPriority(true);
-        context.addServlet(new ServletHolder(new SigninTokenServlet()), "/tokensignin");
+        context.addServlet(new ServletHolder(new SigninTokenServlet()), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 
         context.addFilter(RequestFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
