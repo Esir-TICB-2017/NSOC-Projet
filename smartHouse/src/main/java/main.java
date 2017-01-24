@@ -118,7 +118,7 @@ public class main {
         context.addServlet(new ServletHolder(new SigninTokenServlet()), "/tokensignin");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 
-        context.addFilter(HelloPrintingFilter.class, "/api/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(RequestFilter.class, "/api/*", EnumSet.of(DispatcherType.REQUEST));
 
 
         HandlerList handlers = new HandlerList();
@@ -132,35 +132,5 @@ public class main {
 
     }
 
-    public static class HelloPrintingFilter implements Filter {
-        @Override
-        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
-                throws IOException, ServletException {
-            HttpServletRequest request = (HttpServletRequest) servletRequest;
 
-
-
-            HttpSession session = request.getSession(false);
-            if(session!=null){
-                String name=(String)session.getAttribute("name");
-                chain.doFilter(servletRequest, servletResponse);
-                out.println("Hello, "+name+" Welcome to Profile");
-
-            }
-            else{
-                out.println("Please login first");
-                HttpServletResponse response = (HttpServletResponse) servletResponse;
-                response.sendRedirect("/");
-            }
-            return;
-        }
-
-        @Override
-        public void init(FilterConfig arg0) throws ServletException {
-
-        }
-
-        @Override
-        public void destroy() {}
-    }
 }
