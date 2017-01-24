@@ -17,7 +17,7 @@ import sensor.sensorClass.ConsumptionSensor;
 /**
  * Created by clement on 16/01/2017.
  */
-public  class  BacNetToJava implements InterfaceReadBacnet {
+public class  BacNetToJava implements InterfaceReadBacnet {
 
     private static IpNetwork network;
     private static LocalDevice localDevice;
@@ -42,18 +42,20 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
            // try {
            //     result = RequestUtils.getProperty(localDevice, remote, object, PropertyIdentifier.presentValue).toString();
             //    value = Double.valueOf(result);
+
             Thread thread = new Thread() {
                 double value = 0;
                 public void run() {
-                    value = Math.random() * 100;
-                    cs.setNewValue(value);
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    while(true) {
+                        value = Math.random() * 100;
+                        cs.setNewValue(value);
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
-
                 }
             };
             thread.start();
@@ -73,12 +75,12 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
         return cs;
     }
 
-    private static void disconnection(){
+   /* private static void disconnection(){
         localDevice.terminate();
-    }
+    }*/
 
 
-    private static void connection(){
+   /* private static void connection(){
         // cr�ation du listener
         localDevice.getEventHandler().addListener(new Listener());
         localDevice.terminate();
@@ -94,12 +96,17 @@ public  class  BacNetToJava implements InterfaceReadBacnet {
             // TODO Auto-generated catch block
             System.out.println("Probl�me de connexion avec la maquette !");
         }
-    }
+    }*/
 
-    static class Listener extends DeviceEventAdapter {
+   /* static class Listener extends DeviceEventAdapter {
         @Override
         public void iAmReceived(RemoteDevice d) {
             System.out.println("I am received" + d);
         }
+<<<<<<< HEAD
     }
 }
+=======
+    }*/
+}
+>>>>>>> 81bd90ddd87b6f19d9daa14d25fdc7a112b2140d

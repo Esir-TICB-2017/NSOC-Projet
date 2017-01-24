@@ -11,5 +11,4 @@ public class TypeSensor {
     public final static String CO2 = "co2";
     public final static String HUMIDITY = "humidity";
 
-
 }
