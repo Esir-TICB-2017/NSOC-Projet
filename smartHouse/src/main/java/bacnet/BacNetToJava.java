@@ -75,12 +75,12 @@ public class  BacNetToJava implements InterfaceReadBacnet {
         return cs;
     }
 
-    private static void disconnection(){
+   /* private static void disconnection(){
         localDevice.terminate();
-    }
+    }*/
 
 
-    private static void connection(){
+   /* private static void connection(){
         // cr�ation du listener
         localDevice.getEventHandler().addListener(new Listener());
         localDevice.terminate();
@@ -96,12 +96,12 @@ public class  BacNetToJava implements InterfaceReadBacnet {
             // TODO Auto-generated catch block
             System.out.println("Probl�me de connexion avec la maquette !");
         }
-    }
+    }*/
 
-    static class Listener extends DeviceEventAdapter {
+   /* static class Listener extends DeviceEventAdapter {
         @Override
         public void iAmReceived(RemoteDevice d) {
             System.out.println("I am received" + d);
         }
-    }
+    }*/
 }
