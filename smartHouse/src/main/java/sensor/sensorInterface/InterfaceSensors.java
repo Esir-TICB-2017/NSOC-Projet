@@ -12,13 +12,13 @@ public interface InterfaceSensors {
      * @param end the end of the period
      * @return a list of data
      **/
-    ArrayList<Float> getValuesOnPeriod(Date start, Date end);
+//    ArrayList<Float> getValuesOnPeriod(Date start, Date end);
 
 
-    /**
-     * @return the last data
-     **/
-    double getLastValue();
+//    /**
+//     * @return the last data
+//     **/
+//    double getLastValue();
 
 
     /**

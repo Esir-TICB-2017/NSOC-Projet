@@ -9,12 +9,8 @@ import java.util.Date;
  * Created by mathieu on 18/01/2017.
  */
 public class CO2Sensor implements InterfaceSensors {
-    private Database db;
-    private double currentValue;
 
-    public CO2Sensor(){
-        db = new Database();
-    }
+    private double currentValue;
 
     public ArrayList<Float> getValuesOnPeriod(Date start, Date end){
         ArrayList<Float> listeOfValue= new ArrayList <Float>();

@@ -1,6 +1,5 @@
 package database.databaseInterface;
-
-//import javax.json.Json;
+import sensor.sensorClass.Sensor;
 
 /**
  * Created by mathieu on 16/01/2017.
@@ -11,7 +10,7 @@ public interface InterfaceWriteDatabase {
      * Permet d'écrire dans la base de donnée une valeur capteur brute du type saisie par "_init()"
      * Construit alors la requete SQL adaptée
      **/
-    void writeSensorValue(float value);
+    static void writeSensorValue(Sensor sensor, double value) {};
 
     /**
      * @param indicatorType = Type d'indicateur dont on veut écrire une nouvelle valeur. ex : Air quality, CO2, temparature, ...
@@ -19,7 +18,7 @@ public interface InterfaceWriteDatabase {
      * Permet d'écrire dans la base de donnée un indicateur
      * Construit alors la requete SQL adaptée
      **/
-    void writeHouseIndicator(String indicatorType, float value);
+    //void writeHouseIndicator(String indicatorType, float value);
 
     /**
      * Write the new application's settings in database

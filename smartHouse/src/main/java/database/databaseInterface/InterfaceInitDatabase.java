@@ -3,7 +3,7 @@ package database.databaseInterface;
 /**
  * Created by mathieu on 16/01/2017.
  */
-public interface IntrefaceInitDatabase {
+public interface InterfaceInitDatabase {
     /**
      * @param type = Type du capteur de la nouvelle instance
      * Fournit le type de capteur qui instancie un objet de la classe
