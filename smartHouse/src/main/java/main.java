@@ -19,7 +19,7 @@ import java.util.EnumSet;
 public class main {
     public static void main (String[] args) throws Exception {
 
-        BacNetToJava physicalSensor = new BacNetToJava();
+        BacNetToJava physicalSensor = BacNetToJava.getInstance();
         ConsumptionSensor sensor = physicalSensor.getConsumptionSensor();
         sensor.getLastValue();
         // Get webapp directory
