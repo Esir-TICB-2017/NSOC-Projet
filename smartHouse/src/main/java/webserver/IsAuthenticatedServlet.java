@@ -22,9 +22,9 @@ public class IsAuthenticatedServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(checkAuthentication(request, response)){
-            response.setStatus(200);
+            response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            response.sendError(403);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
         return;
     }
