@@ -23,6 +23,9 @@ public class RequestFilter implements Filter {
         Boolean isStatic = path.startsWith("/static");
         Boolean isLoginPage = request.getRequestURI().equals("/login.html");
         Boolean isLoginServlet = request.getRequestURI().equals("/login");
+        System.out.println(request.getRequestURI());
+        chain.doFilter(request, response);
+        /*
         if (isLoginPage || isStatic || isLoginServlet) {
             chain.doFilter(request, response);
         } else {
@@ -34,6 +37,7 @@ public class RequestFilter implements Filter {
                 redirectOnLogin(request, response);
             }
         }
+        */
     }
     public void redirectOnLogin(HttpServletRequest request , HttpServletResponse response){
         System.out.println("Redirect to Login page");

@@ -5,11 +5,11 @@ angular.module('nsoc', ['ngRoute'])
 .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 	$routeProvider
 	.when('/login', {
-			templateUrl: 'templates/login.html',
+			templateUrl: 'static/templates/login.html',
 			controller: 'loginController',
 		})
 	.when('/home', {
-		templateUrl: 'templates/home.html',
+		templateUrl: 'static/templates/home.html',
 		controller: 'homeController',
 	})
 	.otherwise({

@@ -55,10 +55,11 @@ public class main {
 
         WebAppContext context = new WebAppContext();
         context.setDescriptor("webapp/WEB-INF/web.xml");
-        context.setResourceBase("../smartHouse/src/main/webapp");
+        context.setResourceBase(pwdPath);
         context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
         context.setWelcomeFiles(new String[]{ "index.html" });
         context.setParentLoaderPriority(true);
+        context.addServlet(new ServletHolder(new IsAuthenticatedServlet()), "/isAuthenticated");
         context.addServlet(new ServletHolder(new LoginServlet()), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 
