@@ -18,18 +18,18 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
 
     public ComputeAggregatedData(){
         db = new Database();
-        consumption = new ConsumptionSensor();
-        production =  new ProductionSensor();
-        co2 = new CO2Sensor();
-        humidity = new HumiditySensor();
-        temperature = new TemperatureSensor();
+        consumption = ConsumptionSensor.getInstance();
+        production =  ProductionSensor.getInstance();
+        co2 = CO2Sensor.getInstance();
+        humidity = HumiditySensor.getInstance();
+        temperature = TemperatureSensor.getInstance();
     }
     public void createGlobalIndicator() {
         ArrayList currentConsumptionValue = consumption.getLastValue();
-        Double currentProductionValue = production.getLastValue();
-        Double currentCO2Value = co2.getLastValue();
-        Double currentHumidityValue = humidity.getLastValue();
-        Double currentTemperatureValue = temperature.getLastValue();
+        ArrayList currentProductionValue = production.getLastValue();
+        ArrayList currentCO2Value = co2.getLastValue();
+        ArrayList currentHumidityValue = humidity.getLastValue();
+        ArrayList currentTemperatureValue = temperature.getLastValue();
         /*
         Double consumptionSetpoint = db.consumptionSetpoint();
         Double productionSetpoint = db.productionSetpoint();

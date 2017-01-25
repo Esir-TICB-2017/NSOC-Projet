@@ -27,31 +27,35 @@ import sensor.sensorClass.*;
 
 public class  BacNetToJava implements InterfaceReadBacnet {
 
-    private static IpNetwork network;
-    private static LocalDevice localDevice;
-    private static int numDevice;
-    private static RemoteDevice r;
-    private static String typeSensor;
-    private static ConsumptionSensor cs;
-    private static CO2Sensor co2s;
-    private static HumiditySensor hs;
-    private static ProductionSensor ps;
-    private static TemperatureSensor ts;
+    private  IpNetwork network;
+    private  LocalDevice localDevice;
+    private  int numDevice;
+    private  RemoteDevice r;
+    private  String typeSensor;
+    private  ConsumptionSensor cs;
+    private  CO2Sensor co2s;
+    private  HumiditySensor hs;
+    private  ProductionSensor ps;
+    private  TemperatureSensor ts;
+    private static BacNetToJava bacNetTojava = new BacNetToJava();
 
 
-    public BacNetToJava () {
-        cs =  new ConsumptionSensor();
-        co2s = new CO2Sensor();
-        hs = new HumiditySensor();
-        ps = new ProductionSensor();
-        ts = new TemperatureSensor();
+    private BacNetToJava () {
+        cs =  ConsumptionSensor.getInstance();
+        co2s = CO2Sensor.getInstance();
+        hs =  HumiditySensor.getInstance();
+        ps =  ProductionSensor.getInstance();
+        ts =  TemperatureSensor.getInstance();
 
         getSensorValue();
 
 
     }
+    public static BacNetToJava getInstance()
+    {	return bacNetTojava;
+    }
 
-    private static void  getSensorValue() {
+    private  void  getSensorValue() {
 
             Thread thread = new Thread() {
                 double value = 0;
@@ -93,16 +97,15 @@ public class  BacNetToJava implements InterfaceReadBacnet {
     }
 
 
-    public static ConsumptionSensor getConsumptionSensor(){
-        return cs;
-    }
 
-    private static void disconnection(){
+
+
+    private  void disconnection(){
         localDevice.terminate();
     }
 
 
-    private static void connection (){
+    private  void connection (){
         network = new IpNetwork(IpNetwork.DEFAULT_BROADCAST_IP, IpNetwork.DEFAULT_PORT, IpNetwork.DEFAULT_BIND_IP);
         localDevice = new LocalDevice(1256, new Transport(network));
         // creation du listener
@@ -125,7 +128,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
         }
     }
 
-    private static double getValue (){
+    private  double getValue (){
         ObjectIdentifier consoBureau = new ObjectIdentifier(ObjectType.analogValue,20);
 
         String result;

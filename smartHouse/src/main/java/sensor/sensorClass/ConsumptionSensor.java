@@ -14,18 +14,13 @@ import java.util.Date;
  */
 
 public class ConsumptionSensor extends Sensor implements InterfaceSensors {
-    private double currentValue;
-
-    public ConsumptionSensor(){
-    }
-
-    public void setNewValue(double newValue){
-        if (newValue != this.currentValue){
-            WriteInDatabase.writeSensorValue(this, newValue);
-            this.currentValue = newValue;
-        }
 
 
+    private static ConsumptionSensor consumptionSensor = new ConsumptionSensor();
+    private ConsumptionSensor() { }
+
+    public static ConsumptionSensor getInstance( ) {
+        return consumptionSensor;
     }
 
 }
