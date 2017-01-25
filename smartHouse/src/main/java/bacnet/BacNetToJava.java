@@ -81,7 +81,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
     }
 
 
-    private static void connection(){
+    private static void connection (){
         network = new IpNetwork(IpNetwork.DEFAULT_BROADCAST_IP, IpNetwork.DEFAULT_PORT, IpNetwork.DEFAULT_BIND_IP);
         localDevice = new LocalDevice(1256, new Transport(network));
         // creation du listener
@@ -104,7 +104,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
         }
     }
 
-    private static double getValue(){
+    private static double getValue (){
         ObjectIdentifier consoBureau = new ObjectIdentifier(ObjectType.analogValue,20);
 
         String result;
