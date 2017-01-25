@@ -12,7 +12,8 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 
         System.out.println("User Logout");
-        response.sendRedirect("/login.html");
+        response.setStatus(HttpServletResponse.SC_OK);
+        //response.sendRedirect("/login.html");
         return;
     }
 }

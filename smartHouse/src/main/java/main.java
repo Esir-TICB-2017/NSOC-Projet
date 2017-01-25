@@ -28,10 +28,9 @@ public class main {
         System.out.println(keyPath);
 
         Server server = new Server();
-
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(8080);
-
+        /*
         HttpConfiguration https = new HttpConfiguration();
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
@@ -43,8 +42,8 @@ public class main {
                 new HttpConnectionFactory(https));
         sslConnector.setPort(9998);
         server.setConnectors(new Connector[] { connector, sslConnector });
-
-
+    */
+        server.setConnectors(new Connector[] { connector });
         // WebSocket Handler
         WebSocketHandler wsHandler = new WebSocketHandler() {
             @Override
