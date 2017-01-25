@@ -20,7 +20,7 @@ public class main {
     public static void main (String[] args) throws Exception {
 
         BacNetToJava physicalSensor = BacNetToJava.getInstance();
-        ConsumptionSensor sensor = physicalSensor.getConsumptionSensor();
+        ConsumptionSensor sensor = ConsumptionSensor.getInstance();
         sensor.getLastValue();
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
