@@ -22,7 +22,7 @@ import java.util.*;
 /**
  * Created by loulou on 22/01/2017.
  */
-public class SigninTokenServlet extends HttpServlet{
+public class LoginServlet extends HttpServlet{
     String clientId = "299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -60,7 +60,7 @@ public class SigninTokenServlet extends HttpServlet{
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
 
-            java.util.Date today = new java.util.Date(System.currentTimeMillis()+5*60*1000);
+            java.util.Date today = new java.util.Date(System.currentTimeMillis()+ 5*60*1000);
             Timestamp expirationDate = new Timestamp(today.getTime());
             SessionIdentifierGenerator sig = new SessionIdentifierGenerator();
             String sessionToken = sig.nextSessionId();
