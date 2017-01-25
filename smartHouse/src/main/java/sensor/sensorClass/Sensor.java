@@ -28,7 +28,8 @@ public class Sensor {
         return ReadInDatabase.getLastValue(this);
     }
 
-    public ArrayList<DataLinkToDate> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate){
+    public ArrayList<DataLinkToDate> getValuesOnPeriod(Timestamp startDate, Timestamp endDate){
+        System.out.println(this.getClass().getSimpleName());
         return  ReadInDatabase.getValuesOnPeriod(this, startDate, endDate);
     }
 
