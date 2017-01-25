@@ -31,7 +31,6 @@ public class LoginServlet extends HttpServlet{
             JsonFactory jsonFactory = new JacksonFactory();
 
         String idTokenString = request.getParameter("idtoken");
-            System.out.println(request);
 
 
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
