@@ -19,6 +19,7 @@ import java.util.EnumSet;
 public class main {
     public static void main (String[] args) throws Exception {
 
+        
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
         String keyPath = System.getProperty("user.home") + "/projets_2016/NSOC-Projet/keystore/";
