@@ -13,7 +13,7 @@ import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
 import com.serotonin.bacnet4j.type.primitive.Double;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
-import sensor.sensorClass.ConsumptionSensor;
+import sensor.sensorClass.*;
 
 /**
  * Created by clement on 16/01/2017.
@@ -33,10 +33,22 @@ public class  BacNetToJava implements InterfaceReadBacnet {
     private static RemoteDevice r;
     private static String typeSensor;
     private static ConsumptionSensor cs;
+    private static CO2Sensor co2s;
+    private static HumiditySensor hs;
+    private static ProductionSensor ps;
+    private static TemperatureSensor ts;
+
 
     public BacNetToJava () {
         cs =  new ConsumptionSensor();
+        co2s = new CO2Sensor();
+        hs = new HumiditySensor();
+        ps = new ProductionSensor();
+        ts = new TemperatureSensor();
+
         getSensorValue();
+
+
     }
 
     private static void  getSensorValue() {
@@ -46,10 +58,19 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                 public void run() {
    //                 connection();
                     while(true) {
-   //                     value = getValue();
-                        value = Math.random()*100;
-                        System.out.print(value);
+   //                   value = getValue();
+                        value = Math.random()*1000;
+                        System.out.println(value);
                         cs.setNewValue(value);
+                        value = Math.random()*10000;
+                        co2s.setNewValue(value);
+                        value = Math.random()*100;
+                        hs.setNewValue(value);
+                        value = Math.random()*1000;
+                        ps.setNewValue(value);
+                        value = Math.random()*30;
+                        ts.setNewValue(value);
+
                         try {
                             Thread.sleep(10000);
                         } catch (InterruptedException e) {
@@ -81,7 +102,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
     }
 
 
-    private static void connection(){
+    private static void connection (){
         network = new IpNetwork(IpNetwork.DEFAULT_BROADCAST_IP, IpNetwork.DEFAULT_PORT, IpNetwork.DEFAULT_BIND_IP);
         localDevice = new LocalDevice(1256, new Transport(network));
         // creation du listener
@@ -104,7 +125,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
         }
     }
 
-    private static double getValue(){
+    private static double getValue (){
         ObjectIdentifier consoBureau = new ObjectIdentifier(ObjectType.analogValue,20);
 
         String result;
