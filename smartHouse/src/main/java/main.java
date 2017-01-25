@@ -62,6 +62,7 @@ public class main {
         context.addServlet(new ServletHolder(new IsAuthenticatedServlet()), "/isAuthenticated");
         context.addServlet(new ServletHolder(new LoginServlet()), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
+        context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet(sensor)), "/data");
 
         context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 

@@ -54,23 +54,13 @@ public class LoginServlet extends HttpServlet{
             // Get profile information from payload
            // String email = payload.get
             //boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-            String name = (String) payload.get("name");
-            String pictureUrl = (String) payload.get("picture");
-            String locale = (String) payload.get("locale");
-            String familyName = (String) payload.get("family_name");
-            String givenName = (String) payload.get("given_name");
+//            String name = (String) payload.get("name");
+//            String pictureUrl = (String) payload.get("picture");
+//            String locale = (String) payload.get("locale");
+//            String familyName = (String) payload.get("family_name");
+//            String givenName = (String) payload.get("given_name");
 
-            java.util.Date today = new java.util.Date(System.currentTimeMillis()+ 5*60*1000);
-            Timestamp expirationDate = new Timestamp(today.getTime());
-            SessionIdentifierGenerator sig = new SessionIdentifierGenerator();
-            String sessionToken = sig.nextSessionId();
-
-            WriteInDatabase.storeNewSession(sessionToken, userId, expirationDate);
-            System.out.println("ici la session s'ouvre");
-            HttpSession session = request.getSession();
-            session.setAttribute("name", name);
-            session.setAttribute("userToken", sessionToken);
-            session.setAttribute("userId", userId);
+            SessionManager.createSession(userId, request);
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_OK);
 
