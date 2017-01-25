@@ -15,7 +15,7 @@ angular.module('nsoc')
 		}).then(function success(res) {
 			console.log(res);
 			console.log('User sign in.');
-			$window.location.href='#/home';
+			$location.path('/home');
 		}, function error(err) {
 			console.log(err);
 			console.log('Please try to login again');

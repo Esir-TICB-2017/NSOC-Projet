@@ -1,5 +1,5 @@
 angular.module('nsoc')
-.controller('homeController', function($scope, $http, $window) {
+.controller('homeController', function($scope, $http, $location) {
 	$scope.signOut = function() {
 		var auth2 = gapi.auth2.getAuthInstance();
 		auth2.signOut().then(function () {
@@ -9,7 +9,7 @@ angular.module('nsoc')
 			}).then(function success(res) {
 				console.log(res);
 				console.log('User signed out.');
-				$window.location.href='#/login';
+				$location.path('/login');
 			}, function error(err) {
 				console.log(err);
 				console.log('Please try to logout again');
