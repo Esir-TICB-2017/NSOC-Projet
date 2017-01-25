@@ -3,6 +3,7 @@ package webserver;
 import database.ReadInDatabase;
 import database.WriteInDatabase;
 import org.apache.http.protocol.HTTP;
+import org.eclipse.jetty.server.session.JDBCSessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,36 +22,11 @@ public class IsAuthenticatedServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(checkAuthentication(request, response)){
+        if(SessionManager.checkAuthentication(request)){
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
         return;
-    }
-
-    public Boolean checkAuthentication(HttpServletRequest request , HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            String userId = (String) session.getAttribute("userId");
-            String userToken = (String) session.getAttribute("userToken");
-            java.util.Date today = new java.util.Date(System.currentTimeMillis());
-            Timestamp currentDate = new Timestamp(today.getTime());
-            try {
-                HashMap userSession = ReadInDatabase.getUserSession(userId).get(0);
-                Boolean isSameToken = userSession.get("token").equals(userToken);
-                Boolean isSameUser = userSession.get("userid").equals(userId);
-                Timestamp expirationDate = (Timestamp)userSession.get("expiration_date");
-                Boolean validExpirationDate = expirationDate.after(currentDate);
-                if (isSameToken && isSameUser && validExpirationDate) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
     }
 }
