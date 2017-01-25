@@ -1,4 +1,5 @@
 import bacnet.BacNetToJava;
+import database.ReadInDatabase;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -22,7 +23,7 @@ public class main {
         
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
-        String keyPath = System.getProperty("user.home") + "/projets_2016/NSOC-Projet/keystore/";
+        String keyPath = System.getProperty("user.home") + "/NSOC/NSOC-Projet/keystore/";
         System.out.println(keyPath);
 
         Server server = new Server();
@@ -68,9 +69,8 @@ public class main {
         handlers.setHandlers(new Handler[]{context, wsHandler });
         server.setHandler(handlers);
         server.start();
+        BacNetToJava physicalSensor = BacNetToJava.getInstance();
         server.join();
-
-
     }
 
 
