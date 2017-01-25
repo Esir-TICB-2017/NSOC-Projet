@@ -19,9 +19,6 @@ import java.util.EnumSet;
 public class main {
     public static void main (String[] args) throws Exception {
 
-        BacNetToJava physicalSensor = BacNetToJava.getInstance();
-        ConsumptionSensor sensor = physicalSensor.getConsumptionSensor();
-        sensor.getLastValue();
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
         String keyPath = System.getProperty("user.home") + "/projets_2016/NSOC-Projet/keystore/";
@@ -61,7 +58,7 @@ public class main {
         context.addServlet(new ServletHolder(new IsAuthenticatedServlet()), "/isAuthenticated");
         context.addServlet(new ServletHolder(new LoginServlet()), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
-        context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet(sensor)), "/data");
+        context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/data");
 
         context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 
