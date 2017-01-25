@@ -3,6 +3,7 @@ package sensor.sensorClass;
 import database.Database;
 import database.ReadInDatabase;
 import database.WriteInDatabase;
+import database.data.DataLinkToDate;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -23,11 +24,11 @@ public class Sensor {
         return currentValue;
     }
 
-    public ArrayList<HashMap> getLastValue() {
+    public DataLinkToDate getLastValue() {
         return ReadInDatabase.getLastValue(this);
     }
 
-    public ArrayList<HashMap> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate){
+    public ArrayList<DataLinkToDate> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate){
         return  ReadInDatabase.getValuesOnPeriod(this, startDate, endDate);
     }
 

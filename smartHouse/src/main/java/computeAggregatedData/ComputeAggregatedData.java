@@ -1,9 +1,11 @@
 package computeAggregatedData;
 
+import database.data.DataLinkToDate;
 import sensor.sensorClass.*;
 import database.Database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by mathieu on 20/01/2017.
@@ -25,11 +27,11 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
         temperature = TemperatureSensor.getInstance();
     }
     public void createGlobalIndicator() {
-        ArrayList currentConsumptionValue = consumption.getLastValue();
-        ArrayList currentProductionValue = production.getLastValue();
-        ArrayList currentCO2Value = co2.getLastValue();
-        ArrayList currentHumidityValue = humidity.getLastValue();
-        ArrayList currentTemperatureValue = temperature.getLastValue();
+        DataLinkToDate currentConsumptionValue = consumption.getLastValue();
+        DataLinkToDate currentProductionValue = production.getLastValue();
+        DataLinkToDate currentCO2Value = co2.getLastValue();
+        DataLinkToDate currentHumidityValue = humidity.getLastValue();
+        DataLinkToDate currentTemperatureValue = temperature.getLastValue();
         /*
         Double consumptionSetpoint = db.consumptionSetpoint();
         Double productionSetpoint = db.productionSetpoint();
@@ -68,7 +70,7 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
         //mettre en base
     }
     public void createElectricityRatioIndicator() {
-        ArrayList currentConsumptionValue = consumption.getLastValue();
+        DataLinkToDate currentConsumptionValue = consumption.getLastValue();
         //Double currentProductionValue = production.getLastValue();
         //Double indicator = currentProductionValue- currentConsumptionValue;
         //traiter l'indicateur

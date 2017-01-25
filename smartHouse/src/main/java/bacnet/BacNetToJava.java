@@ -49,7 +49,6 @@ public class  BacNetToJava implements InterfaceReadBacnet {
 
         getSensorValue();
 
-
     }
     public static BacNetToJava getInstance()
     {	return bacNetTojava;

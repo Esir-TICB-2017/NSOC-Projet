@@ -1,6 +1,7 @@
 package webserver;
 
 import com.google.gson.Gson;
+import database.data.DataLinkToDate;
 import org.json.JSONObject;
 import sensor.sensorClass.ConsumptionSensor;
 
@@ -27,7 +28,7 @@ public class GetValuesOnPeriodServlet extends HttpServlet
         Long end = Long.parseLong(request.getParameter("endDate"));
         Timestamp startDate = new Timestamp(start * 1000);
         Timestamp endDate = new Timestamp(end * 1000);
-        ArrayList<HashMap> result = sensor.getValuesOnPeriod(sensor, startDate, endDate);
+        ArrayList<DataLinkToDate> result = sensor.getValuesOnPeriod(sensor, startDate, endDate);
 
         JSONObject obj = new JSONObject(result);
         Gson gson = new Gson();
