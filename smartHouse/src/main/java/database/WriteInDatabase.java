@@ -49,6 +49,50 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
         }
     }
 
+    public static void createUser(String userId, String name, String surname, String email, String age) {
+        Connection connection = ConnectionManager.getConnection();
+        String sql = "INSERT INTO users (userid, name, surname, email, age) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userId);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, surname);
+            preparedStatement.setString(4, email);
+            preparedStatement.setString(4, age);
+            preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateUser(String userId, String name, String surname, String email, String age) {
+        Connection connection = ConnectionManager.getConnection();
+        String sql ="UPDATE users SET name = ?, surname = ?, email = ?, age = ? WHERE userid = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, surname);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, age);
+            preparedStatement.setString(5, userId);
+            preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteUser(String userId) {
+        Connection connection = ConnectionManager.getConnection();
+        String sql ="DELETE FROM users WHERE userid = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userId);
+            preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void storeNewSession(String token, String userId, Timestamp expirationDate){
         Connection connection = ConnectionManager.getConnection();
         String sql = "INSERT INTO sessions (userid, token, expiration_date) VALUES (?, ?, ?)";
