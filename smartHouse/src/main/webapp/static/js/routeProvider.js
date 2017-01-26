@@ -1,5 +1,5 @@
 angular.module('nsoc', ['ngRoute'])
-.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider
 	.when('/login', {
 		templateUrl: 'static/templates/login.html',
@@ -10,6 +10,6 @@ angular.module('nsoc', ['ngRoute'])
 		controller: 'homeController',
 	})
 	.otherwise({
-		redirectTo: '/login'
+		redirectTo: '/home',
 	});
 }]);

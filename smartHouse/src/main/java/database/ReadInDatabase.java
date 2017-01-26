@@ -1,5 +1,6 @@
 package database;
 
+import database.data.DataLinkToDate;
 import database.databaseInterface.InterfaceReadDatabase;
 import sensor.sensorClass.Sensor;
 
@@ -11,34 +12,47 @@ import java.util.HashMap;
  * Created by loulou on 21/01/2017.
  */
 public class ReadInDatabase extends Database implements InterfaceReadDatabase {
-    public static ArrayList<HashMap> getLastValue(Sensor sensor) {
+    public static DataLinkToDate getLastValue(Sensor sensor) {
+        double data;
+        Timestamp date;
+        DataLinkToDate  dltd = null;
         Connection connection = ConnectionManager.getConnection();
         String className = sensor.getClass().getSimpleName();
-        ArrayList<HashMap> list = new ArrayList(1);
+        ArrayList<DataLinkToDate> list = new ArrayList(1);
         try (Statement statement = connection.createStatement()){
-            String sql = "SELECT * FROM " + className + " ORDER BY submission_date DESC LIMIT 1";
+            String sql = "SELECT submission_date,value FROM " + className + " ORDER BY submission_date DESC LIMIT 1";
             try(ResultSet rs = statement.executeQuery(sql)) {
-                list = formatData(rs, 1);
+                while(rs.next()){
+                    date = rs.getTimestamp("submission_date");
+                    data = rs.getDouble("value");
+                    dltd = new DataLinkToDate(data,date);
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return list;
+        return dltd;
     }
 
-    public static ArrayList<HashMap> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate) {
+    public static ArrayList<DataLinkToDate> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate) {
+        double data;
+        Timestamp date;
         Connection connection = ConnectionManager.getConnection();
         String className = sensor.getClass().getSimpleName();
-        ArrayList<HashMap> list = new ArrayList(1);
-        String sql = "SELECT * FROM " + className +
+        ArrayList<DataLinkToDate> list = new ArrayList(1);
+        String sql = "SELECT submission_date,value FROM " + className +
                 " WHERE submission_date BETWEEN ? AND ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setTimestamp(1, startDate);
             preparedStatement.setTimestamp(2, endDate);
             try(ResultSet rs = preparedStatement.executeQuery()) {
-                list = formatData(rs, 1);
+                while(rs.next()){
+                    date = rs.getTimestamp("submission_date");
+                    data = rs.getDouble("value");
+                    list.add(new DataLinkToDate(data,date));
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

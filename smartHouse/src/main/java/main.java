@@ -1,4 +1,5 @@
 import bacnet.BacNetToJava;
+import database.ReadInDatabase;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -68,9 +69,8 @@ public class main {
         handlers.setHandlers(new Handler[]{context, wsHandler });
         server.setHandler(handlers);
         server.start();
+        BacNetToJava physicalSensor = BacNetToJava.getInstance();
         server.join();
-
-
     }
 
 

@@ -1,5 +1,7 @@
 package webserver;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,15 +17,11 @@ public class RequestFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        System.out.println(request.getRequestURI());
         String path = request.getRequestURI().substring(request.getContextPath().length());
-        Boolean isJs = path.startsWith("/static/js");
-        Boolean isLoginPage = request.getRequestURI().equals("/login.html");
-        Boolean isIndex = request.getRequestURI().equals("/index.html");
-
-        chain.doFilter(request, response);
-        /*
-        if (isLoginPage || isJs || isIndex) {
+        Boolean isStatic = path.startsWith("/static");
+        Boolean isLoginServlet = request.getRequestURI().equals("/login");
+        Boolean isIndex = request.getRequestURI().equals("/") || request.getRequestURI().equals("index.html");
+       if (isStatic || isLoginServlet || isIndex) {
             chain.doFilter(request, response);
         } else {
             Boolean isAuthenticated = SessionManager.checkAuthentication(request);
@@ -33,7 +31,7 @@ public class RequestFilter implements Filter {
             else {
                 response.sendError(403);
             }
-        }*/
+        }
 
     }
 

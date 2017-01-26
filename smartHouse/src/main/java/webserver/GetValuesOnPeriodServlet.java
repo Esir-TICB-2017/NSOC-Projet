@@ -1,6 +1,7 @@
 package webserver;
 
 import com.google.gson.Gson;
+import database.data.DataLinkToDate;
 import org.json.JSONObject;
 import sensor.sensorClass.*;
 
@@ -21,8 +22,9 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         Long end = Long.parseLong(request.getParameter("endDate"));
         Timestamp startDate = new Timestamp(start * 1000);
         Timestamp endDate = new Timestamp(end * 1000);
+
+        ArrayList<DataLinkToDate> result ;
         String sensorName = request.getParameter("sensorName");
-        ArrayList<HashMap> result;
         switch (sensorName) {
             case "temperature" : {
                 result = TemperatureSensor.getInstance().getValuesOnPeriod(startDate, endDate);
@@ -59,11 +61,6 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         } else {
             response.sendError(403);
         }
-
-
-
-
-
 
     }
 }
