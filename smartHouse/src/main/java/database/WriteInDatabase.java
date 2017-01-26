@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class WriteInDatabase extends Database implements InterfaceWriteDatabase {
 
     public static void writeSensorValue(Sensor sensor, double value) {
+        System.out.println(sensor.getClass().getSimpleName() + " " + value);
 
         Connection connection = ConnectionManager.getConnection();
         String className = sensor.getClass().getSimpleName();
@@ -30,7 +31,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
             preparedStatement.setTimestamp(2, getCurrentTimeStamp());
             preparedStatement.executeUpdate();
         } catch(SQLException e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         DatabaseEventsHandler.broadcastSensorValue(sensor, value);
 

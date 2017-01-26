@@ -39,7 +39,6 @@ public class  BacNetToJava implements InterfaceReadBacnet {
     private  TemperatureSensor ts;
     private static BacNetToJava bacNetTojava = new BacNetToJava();
 
-
     private BacNetToJava () {
         cs =  ConsumptionSensor.getInstance();
         co2s = CO2Sensor.getInstance();
@@ -48,11 +47,10 @@ public class  BacNetToJava implements InterfaceReadBacnet {
         ts =  TemperatureSensor.getInstance();
 
         getSensorValue();
-
-
     }
-    public static BacNetToJava getInstance()
-    {	return bacNetTojava;
+
+    public static BacNetToJava getInstance() {
+        return bacNetTojava;
     }
 
     private  void  getSensorValue() {
@@ -64,7 +62,6 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                     while(true) {
    //                   value = getValue();
                         value = Math.random()*1000;
-                        System.out.println(value);
                         cs.setNewValue(value);
                         value = Math.random()*10000;
                         co2s.setNewValue(value);
@@ -86,8 +83,6 @@ public class  BacNetToJava implements InterfaceReadBacnet {
             };
             thread.start();
 
-
-
             /*} catch (BACnetException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -95,10 +90,6 @@ public class  BacNetToJava implements InterfaceReadBacnet {
             }*/
 
     }
-
-
-
-
 
     private  void disconnection(){
         localDevice.terminate();

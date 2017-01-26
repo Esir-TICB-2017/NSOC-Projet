@@ -1,10 +1,6 @@
 package database;
-import jdk.nashorn.internal.runtime.regexp.RegExp;
-import jdk.nashorn.internal.runtime.regexp.RegExpMatcher;
 import sensor.sensorClass.Sensor;
-import webserver.ConnectedClients;
 
-import javax.json.Json;
 import java.sql.*;
 import java.util.*;
 
@@ -27,7 +23,14 @@ public class Database {
         while(rs.next()) {
             HashMap row = new HashMap(columns);
             for(int i=1; i<=columns; ++i){
-                row.put(md.getColumnName(i),rs.getObject(i));
+
+                if(rs.getObject(i) instanceof Timestamp) {
+                    row.put(md.getColumnName(i),((Timestamp) rs.getObject(i)).getTime());
+                }
+                else {
+                    row.put(md.getColumnName(i),rs.getObject(i));
+                }
+
             }
             list.add(row);
         }

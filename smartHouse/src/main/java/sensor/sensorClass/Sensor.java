@@ -28,7 +28,6 @@ public class Sensor {
     }
 
     public ArrayList<HashMap> getValuesOnPeriod(Timestamp startDate, Timestamp endDate){
-        System.out.println(this.getClass().getSimpleName());
         return  ReadInDatabase.getValuesOnPeriod(this, startDate, endDate);
     }
 
