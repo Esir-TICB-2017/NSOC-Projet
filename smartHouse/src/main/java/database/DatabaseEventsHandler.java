@@ -18,4 +18,12 @@ public class DatabaseEventsHandler {
         String str = result.toString();
         ConnectedClients.getInstance().writeAllMembers(str);
     }
+
+
+    public static void broadcastIndicatorValue (String indicator, int value) {
+        JSONObject result = new JSONObject();
+        result.put(indicator,value);
+        String str = result.toString();
+        ConnectedClients.getInstance().writeAllMembers(str);
+    }
 }
