@@ -37,6 +37,20 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
     }
 
+    public static void writeIndicatorValue(String indicator, int value){
+        Connection connection = ConnectionManager.getConnection();
+        String sql = "INSERT INTO " + indicator + "(VALUE, SUBMISSION_DATE) VALUES" + "(?, ?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, value);
+            preparedStatement.setTimestamp(2, getCurrentTimeStamp());
+            preparedStatement.executeUpdate();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        DatabaseEventsHandler.broadcastIndicatorValue(indicator, value);
+    }
+
     public static void deleteUserSession(String userId) {
 
         Connection connection = ConnectionManager.getConnection();

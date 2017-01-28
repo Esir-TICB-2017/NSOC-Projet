@@ -4,6 +4,7 @@ import database.data.DataLinkToDate;
 import database.databaseInterface.InterfaceReadDatabase;
 import sensor.sensorClass.Sensor;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,53 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
         String className = sensor.getClass().getSimpleName();
         ArrayList<DataLinkToDate> list = new ArrayList(1);
         String sql = "SELECT submission_date,value FROM " + className +
+                " WHERE submission_date BETWEEN ? AND ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setTimestamp(1, startDate);
+            preparedStatement.setTimestamp(2, endDate);
+            try(ResultSet rs = preparedStatement.executeQuery()) {
+                while(rs.next()){
+                    date = rs.getTimestamp("submission_date");
+                    data = rs.getDouble("value");
+                    list.add(new DataLinkToDate(data,date));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return list;
+    }
+
+    public static DataLinkToDate getLastIndicator(String indicator){
+        DataLinkToDate indicateur = null;
+        double data;
+        Timestamp date;
+        Connection connection = ConnectionManager.getConnection();
+        String sql = "SELECT submission_date,value FROM " + indicator + " ORDER BY submission_date DESC LIMIT 1";
+        try (Statement statement = connection.createStatement()){
+            try(ResultSet rs = statement.executeQuery(sql)) {
+                while(rs.next()){
+                    date = rs.getTimestamp("submission_date");
+                    data = rs.getDouble("value");
+                    indicateur = new DataLinkToDate(data,date);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return indicateur;
+    }
+
+    public static ArrayList<DataLinkToDate> getIndicatorsOnPeriod(String indicator, Timestamp startDate, Timestamp endDate) {
+        double data;
+        Timestamp date;
+        Connection connection = ConnectionManager.getConnection();
+        ArrayList<DataLinkToDate> list = new ArrayList(1);
+        String sql = "SELECT submission_date,value FROM " + indicator +
                 " WHERE submission_date BETWEEN ? AND ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setTimestamp(1, startDate);
