@@ -25,7 +25,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
                 while(rs.next()){
                     date = rs.getTimestamp("submission_date");
                     data = rs.getDouble("value");
-                    dltd = new DataLinkToDate(data,date);
+                    dltd = new DataLinkToDate(data, date);
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();

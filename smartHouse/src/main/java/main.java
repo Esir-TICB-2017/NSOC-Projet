@@ -20,7 +20,7 @@ import java.util.EnumSet;
 public class main {
     public static void main (String[] args) throws Exception {
 
-        BacNetToJava.getInstance();
+       // BacNetToJava.getInstance();
 
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";

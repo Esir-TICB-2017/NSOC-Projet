@@ -23,7 +23,7 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         Timestamp startDate = new Timestamp(start * 1000);
         Timestamp endDate = new Timestamp(end * 1000);
 
-        ArrayList<DataLinkToDate> result ;
+        ArrayList<DataLinkToDate> result;
         String sensorName = request.getParameter("sensorName");
         switch (sensorName) {
             case "temperature" : {
