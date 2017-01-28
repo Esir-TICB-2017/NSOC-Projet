@@ -1,31 +1,29 @@
 // main: style.scss
 
 &>.home {
-	display: flex;
-	flex-direction: column;
-	&>.header {
-		height           : 80px;
-		background-color : #4c4c4c;
-		display          : flex;
-		position         : relative;
-		align-items      : center;
-		&>img {
-			width  : 50px;
-			height : 50px;
-			margin : auto;
+	position: relative;
+
+	&>button.signOut {
+		cursor           : pointer;
+		position         : absolute;
+		right            : 0;
+		margin           : 10px 10px 0 0;
+		height           : 40px;
+		width            : 120px;
+		background-color : white;
+		border           : none;
+		color            : #757575;
+		font-size        : 16px;
+		font-family      : $font-family;
+		box-shadow       : 0 2px 4px 0 rgba(0,0,0,.25);
+		outline          : none;
+		transition       : background-color .218s,border-color .218s,box-shadow .218s;
+		&:hover {
+			box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
 		}
-		&>button.signOut {
-			position         : absolute;
-			right            : 0;
-			margin-right     : 10px;
-			height           : 40px;
-			width            : 120px;
-			background-color : $background-color;
-			font-size        : 16px;
-			font-family      : $font-family;
+		&:active {
+			background-color: #eee;
+			color: #6d6d6d;
 		}
-	}
-	&>.body {
-		flex: 1;
 	}
 }
