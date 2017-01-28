@@ -36,6 +36,7 @@ public class MyWebSocketHandler {
 
     @OnWebSocketMessage
     public void onText(String message) {
-        ConnectedClients.getInstance().writeAllMembers("Hello all");
+
+        //ConnectedClients.getInstance().writeAllMembers("Hello all");
     }
 }

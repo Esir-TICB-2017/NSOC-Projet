@@ -66,7 +66,7 @@ public class main {
 
 
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{context, wsHandler });
+        handlers.setHandlers(new Handler[]{wsHandler, context });
         server.setHandler(handlers);
         server.start();
         BacNetToJava physicalSensor = BacNetToJava.getInstance();

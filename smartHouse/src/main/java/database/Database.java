@@ -23,14 +23,7 @@ public class Database {
         while(rs.next()) {
             HashMap row = new HashMap(columns);
             for(int i=1; i<=columns; ++i){
-
-                if(rs.getObject(i) instanceof Timestamp) {
-                    row.put(md.getColumnName(i),((Timestamp) rs.getObject(i)).getTime());
-                }
-                else {
                     row.put(md.getColumnName(i),rs.getObject(i));
-                }
-
             }
             list.add(row);
         }

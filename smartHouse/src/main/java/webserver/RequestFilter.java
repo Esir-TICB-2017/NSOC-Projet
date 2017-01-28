@@ -21,20 +21,21 @@ public class RequestFilter implements Filter {
         Boolean isStatic = path.startsWith("/static");
         Boolean isLoginServlet = request.getRequestURI().equals("/login");
         Boolean isIndex = request.getRequestURI().equals("/") || request.getRequestURI().equals("index.html");
-        chain.doFilter(request, response);
-        /*
        if (isStatic || isLoginServlet || isIndex) {
             chain.doFilter(request, response);
+            return;
         } else {
             Boolean isAuthenticated = SessionManager.checkAuthentication(request);
             if(isAuthenticated) {
                 chain.doFilter(request, response);
+                return;
             }
             else {
                 response.sendError(403);
+                return;
             }
         }
-        */
+
 
     }
 

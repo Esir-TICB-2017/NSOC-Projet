@@ -14,7 +14,8 @@ public class DatabaseEventsHandler {
     public static void broadcastSensorValue (Sensor sensor, Double value) {
        String type = Database.getTypeFromSensorClass(sensor);
         JSONObject result = new JSONObject();
-        result.put(type,value);
+        result.put("key", type);
+        result.put("value", value);
         String str = result.toString();
         ConnectedClients.getInstance().writeAllMembers(str);
     }
