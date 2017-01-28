@@ -1,0 +1,31 @@
+// main: style.scss
+
+&>.home {
+	display: flex;
+	flex-direction: column;
+	&>.header {
+		height           : 80px;
+		background-color : #4c4c4c;
+		display          : flex;
+		position         : relative;
+		align-items      : center;
+		&>img {
+			width  : 50px;
+			height : 50px;
+			margin : auto;
+		}
+		&>button.signOut {
+			position         : absolute;
+			right            : 0;
+			margin-right     : 10px;
+			height           : 40px;
+			width            : 120px;
+			background-color : $background-color;
+			font-size        : 16px;
+			font-family      : $font-family;
+		}
+	}
+	&>.body {
+		flex: 1;
+	}
+}

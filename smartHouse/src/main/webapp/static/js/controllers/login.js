@@ -32,13 +32,6 @@ angular.module('nsoc')
 		},
 		template: '<div></div>',
 		link: function(scope, element, attrs) {
-			gapi.load('auth2', function() {
-				gapi.auth2.init(
-					{
-						client_id: "299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com",
-					}
-				);
-			});
 			var div = element.find('div')[0];
 			div.id = attrs.buttonId;
 			gapi.signin2.render(div.id, scope.options());

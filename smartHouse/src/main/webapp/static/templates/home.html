@@ -1,10 +1,15 @@
 <div class="home">
-	<button ng-click="signOut()">
-		Sign out
-	</button>
-	<div>Consumption : {{consumption}}</div>
-	<div>Production : {{production}}</div>
-	<div>Temperature : {{temperature}}</div>
-	<div>CO2 : {{co2}}</div>
-	<div>Humidity : {{humidity}}</div>
+	<div class="header">
+		<img src="static/icons/home.png"></img>
+		<button class="signOut" ng-click="signOut()">
+			Sign out
+		</button>
+	</div>
+	<div class="body">
+		<div>Consumption : {{consumption}}</div>
+		<div>Production : {{production}}</div>
+		<div>Temperature : {{temperature}}</div>
+		<div>CO2 : {{co2}}</div>
+		<div>Humidity : {{humidity}}</div>
+	</div>
 </div>
