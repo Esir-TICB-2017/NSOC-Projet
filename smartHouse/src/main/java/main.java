@@ -24,7 +24,7 @@ public class main {
 
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
-        String keyPath = System.getProperty("user.home") + "/projets_2016/NSOC-Projet/keystore/";
+        String keyPath = System.getProperty("user.home") + "/NSOC/NSOC-Projet/keystore/";
 
         Server server = new Server();
         ServerConnector connector = new ServerConnector(server);

@@ -7,6 +7,7 @@ import database.Database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by mathieu on 20/01/2017.
@@ -18,11 +19,11 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
     private CO2Sensor co2;
     private HumiditySensor humidity;
     private TemperatureSensor temperature;
-    private int co2Indicator;
-    private int humidityIndicator;
-    private int temperatureIndicator;
-    private int productionIndicator;
-    private int consumptionIndicator;
+    private int co2Indicator = 100;
+    private int humidityIndicator = 100;
+    private int temperatureIndicator = 100;
+    private int productionIndicator = 100;
+    private int consumptionIndicator = 100;
 
     public ComputeAggregatedData(){
         db = new Database();
@@ -36,7 +37,7 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
 
 // Il manque les indicateurs de consommation, de production et de temparture
     public void createGlobalIndicator() {
-        int globalIndicator = (int)(co2Indicator+humidityIndicator+temperatureIndicator+productionIndicator+consumptionIndicator)/5;
+        int globalIndicator = (co2Indicator+humidityIndicator+temperatureIndicator+productionIndicator+consumptionIndicator)/5;
         WriteInDatabase.writeIndicatorValue(Indicators.GLOBAL, globalIndicator);
 
     }
@@ -64,6 +65,9 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
 // il faut lire en base le settings
         double temperatureSetpoint = 20 ;
         double currentTemperatureValue = temperature.getLastValue().getData();
+        if (currentTemperatureValue < 10){
+            currentTemperatureValue +=10;
+        }
         temperatureIndicator = 100;
         if(currentTemperatureValue > temperatureSetpoint){
             temperatureIndicator = temperatureIndicator - (int)((currentTemperatureValue - temperatureSetpoint)*20);
@@ -93,24 +97,36 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
 
     public void createElectricityConsumptionIndicator() {
 // il faut lire en base le settings
-        double consumptionSetpoint = 20 ;
-        double currentConsumptionValue = consumption.getLastValue().getData();
-        consumptionIndicator = 100;
-        if(currentConsumptionValue > consumptionSetpoint){
-            consumptionIndicator = consumptionIndicator - (int)((currentConsumptionValue - consumptionSetpoint));
+       // double consumptionSetpoint = 20 ;
+        //double currentConsumptionValue = consumption.getLastValue().getData();
+
+        //if(currentConsumptionValue > consumptionSetpoint){
+        //}
+        int temp = (int) Math.random() * 100;
+        while(consumptionIndicator-10 < temp || consumptionIndicator+10 >temp){
+            temp = (int) Math.random() * 100;
         }
+        consumptionIndicator = temp;
         WriteInDatabase.writeIndicatorValue(Indicators.CONSUMPTION, consumptionIndicator);
     }
 
 
     public void createElectricityProductionIndicator() {
 // il faut lire en base le settings
-        double productionSetpoint = 20;
-        double currentProductionValue = production.getLastValue().getData();
-        productionIndicator = 100;
-        if(currentProductionValue < productionSetpoint){
-            productionIndicator = productionIndicator - (int)((currentProductionValue - productionSetpoint));
+       // double productionSetpoint = 20;
+        // double currentProductionValue = production.getLastValue().getData();
+        int temp = (int) Math.random() * 100;
+        while(productionIndicator-10 < temp || productionIndicator+10 >temp){
+            temp = (int) Math.random() * 100;
         }
+        productionIndicator = temp;
+
+        /*if(currentProductionValue < productionSetpoint){
+            productionIndicator = productionIndicator - (int)((currentProductionValue - productionSetpoint));
+        }*/
+
+
+
         WriteInDatabase.writeIndicatorValue(Indicators.PRODUCTION, productionIndicator);
     }
 

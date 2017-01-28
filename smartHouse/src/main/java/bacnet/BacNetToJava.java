@@ -63,7 +63,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
    //                   value = getValue();
                         value = Math.random()*1000;
                         cs.setNewValue(value);
-                        value = Math.random()*10000;
+                        value = Math.random()*1000;
                         co2s.setNewValue(value);
                         value = Math.random()*100;
                         hs.setNewValue(value);
