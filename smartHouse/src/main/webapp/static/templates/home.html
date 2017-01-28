@@ -3,10 +3,20 @@
 		Sign out
 	</button>
 	<div class="body">
-		<div>Consumption : {{consumption}}</div>
-		<div>Production : {{production}}</div>
-		<div>Temperature : {{temperature}}</div>
-		<div>CO2 : {{co2}}</div>
-		<div>Humidity : {{humidity}}</div>
+		<ng-include src="'static/templates/'+tab+'.html'"></ng-include>
+	</div>
+	<div class="bottom-navbar">
+		<div ng-class="{active: tab == 'general'}" ng-click="changeTab('general')" class="container">
+			<i class="material-icons">home</i>
+			<div class="text">General</div>
+		</div>
+		<div ng-class="{active: tab == 'graph'}" ng-click="changeTab('graph')" class="container">
+			<i class="material-icons">timeline</i>
+			<div class="text">Graph</div>
+		</div>
+		<div ng-class="{active: tab == 'settings'}" ng-click="changeTab('settings')" class="container">
+			<i class="material-icons">settings</i>
+			<div class="text">Settings</div>
+		</div>
 	</div>
 </div>

@@ -1,5 +1,11 @@
 angular.module('nsoc')
 .controller('homeController', function($scope, $http, $location, websocketService) {
+	$scope.tab = "general";
+
+	$scope.changeTab = function(newTab) {
+		$scope.tab = newTab;
+	};
+
 	$scope.signOut = function() {
 		$scope.GoogleAuth.signOut().then(function () {
 			$http({

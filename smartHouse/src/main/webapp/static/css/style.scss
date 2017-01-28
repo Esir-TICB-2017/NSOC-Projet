@@ -1,9 +1,12 @@
 @import 'variables';
-
+html {
+	height: 100%;
+}
 body {
 	font-family      : $font-family;
 	background-color : $background-color;
 	margin           : 0;
+	height           : 100%;
 
 	&>.view {
 		height : 100%;

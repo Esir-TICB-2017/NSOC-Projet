@@ -16,6 +16,9 @@
 			width: 200px !important;
 			display: flex;
 			margin: auto;
+			&:hover {
+				box-shadow: 0 0 3px 3px $green-shadow;
+			}
 			.abcRioButtonContentWrapper {
 				display: flex;
 				align-items: center;
