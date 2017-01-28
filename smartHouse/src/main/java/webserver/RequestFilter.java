@@ -18,6 +18,7 @@ public class RequestFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String path = request.getRequestURI().substring(request.getContextPath().length());
+        System.out.println(request.getRequestURI());
         Boolean isStatic = path.startsWith("/static");
         Boolean isLoginServlet = request.getRequestURI().equals("/login");
         Boolean isIndex = request.getRequestURI().equals("/") || request.getRequestURI().equals("index.html");

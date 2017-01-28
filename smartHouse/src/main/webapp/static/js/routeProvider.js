@@ -1,5 +1,5 @@
 angular.module('nsoc', ['ngRoute'])
-.config(['$routeProvider', function ($routeProvider) {
+.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 	$routeProvider
 	.when('/login', {
 		templateUrl: 'static/templates/login.html',

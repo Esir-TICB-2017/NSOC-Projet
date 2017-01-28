@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta content="profile email" name="google-signin-scope">
+		<!-- <meta content="profile email" name="google-signin-scope">
 			<meta content="299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com"
 			name="google-signin-client_id">
 			</meta>
-		</meta>
+		</meta> -->
+		<title>NSOC PROJECT</title>
 		<script src="https://apis.google.com/js/platform.js"></script>
 		<script src="static/js/lib/angular.min.js"></script>
 		<script src="static/js/lib/angular-route.min.js"></script>
@@ -14,10 +15,10 @@
 		<script src="static/js/controllers/mainController.js"></script>
 		<script src="static/js/controllers/login.js"></script>
 		<script src="static/js/controllers/home.js"></script>
-		<link rel="stylesheet" href="static/css/style.css">
+		<link rel="stylesheet" href="static/css/style.min.css">
 	</head>
 	<body ng-app="nsoc" ng-controller="mainController">
-		<div class="header">Home</div>
-		<div ng-view></div>
+		<div class="header"></div>
+		<div class="view" ng-view></div>
 	</body>
 </html>

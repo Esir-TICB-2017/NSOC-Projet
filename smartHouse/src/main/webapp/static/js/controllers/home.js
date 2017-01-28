@@ -1,8 +1,7 @@
 angular.module('nsoc')
 .controller('homeController', function($scope, $http, $location, websocketService) {
 	$scope.signOut = function() {
-		var auth2 = gapi.auth2.getAuthInstance();
-		auth2.signOut().then(function () {
+		$scope.GoogleAuth.signOut().then(function () {
 			$http({
 				method: 'GET',
 				url: '/logout'
@@ -18,34 +17,32 @@ angular.module('nsoc')
 		});
 	}
 
-    websocketService.start("ws://127.0.0.1:8080/", function (evt) {
-        var obj = JSON.parse(evt.data);
-        $scope.$apply(function () {
-            $scope[obj.key] = parseInt(obj.value);
-        });
-    });
-
-
+	websocketService.start("ws://127.0.0.1:8080/", function (evt) {
+		var obj = JSON.parse(evt.data);
+		$scope.$apply(function () {
+			$scope[obj.key] = parseInt(obj.value);
+		});
+	});
 });
 
 angular.module('nsoc').factory('websocketService', function () {
-        return {
-            start: function (url, callback) {
-                var websocket = new WebSocket(url);
-                websocket.onopen = function () {
-                    console.log("Opened!");
-                    websocket.send("Hello Server");
-                };
-                websocket.onclose = function () {
-                    console.log("Closed!");
-                };
-                websocket.onmessage = function (evt) {
-                    callback(evt);
-                };
-                websocket.onerror = function (err) {
-                    console.log("Error: " + err);
-                };
-            }
-        }
-    }
+	return {
+		start: function (url, callback) {
+			var websocket = new WebSocket(url);
+			websocket.onopen = function () {
+				console.log("Opened!");
+				websocket.send("Hello Server");
+			};
+			websocket.onclose = function () {
+				console.log("Closed!");
+			};
+			websocket.onmessage = function (evt) {
+				callback(evt);
+			};
+			websocket.onerror = function (err) {
+				console.log("Error: " + err);
+			};
+		}
+	}
+}
 );
