@@ -5,6 +5,8 @@
 	position       : relative;
 	display        : flex;
 	flex-direction : column;
+	//background-image: linear-gradient(-180deg, #00CD98 0%, #42C8CB 100%);
+	background-image: linear-gradient(-180deg, #cd5252 0%, #cbb4a9 100%);
 
 	&>button.signOut {
 		cursor           : pointer;
@@ -28,6 +30,11 @@
 			background-color: #eee;
 			color: #6d6d6d;
 		}
+	}
+
+	&>svg#homeChart {
+		width: auto;
+		height: auto;
 	}
 	&>.body {
 		flex: 1;

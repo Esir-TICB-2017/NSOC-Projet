@@ -4,3 +4,5 @@ nsoc.iml
 smartHouse/smartHouse.iml
 test.json
 *target/
+node_modules/
+style.min.css.map

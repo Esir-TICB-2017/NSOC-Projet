@@ -1,1 +1,103 @@
-html{height:100%}body{font-family:CenturyGothic;background-color:#f9f9f9;margin:0;height:100%}body>.view{height:100%;width:100%}body>.view>.login{padding:20%}body>.view>.login>.welcome{font-size:30px;text-align:center}body>.view>.login>google-sign-in-button{display:block;margin-top:30px}body>.view>.login>google-sign-in-button .abcRioButton{height:50px !important;width:200px !important;display:flex;margin:auto}body>.view>.login>google-sign-in-button .abcRioButton:hover{box-shadow:0 0 3px 3px rgba(0,121,107,0.3)}body>.view>.login>google-sign-in-button .abcRioButton .abcRioButtonContentWrapper{display:flex;align-items:center}body>.view>.login>google-sign-in-button .abcRioButton .abcRioButtonContentWrapper .abcRioButtonIcon{margin-left:5px}body>.view>.login>google-sign-in-button .abcRioButton .abcRioButtonContentWrapper .abcRioButtonIcon svg{width:22px;height:22px}body>.view>.login>google-sign-in-button .abcRioButton .abcRioButtonContentWrapper .abcRioButtonContents{font-size:18px !important;margin:auto}body>.view>.home{height:100%;position:relative;display:flex;flex-direction:column}body>.view>.home>button.signOut{cursor:pointer;position:absolute;right:0;margin:10px 10px 0 0;height:40px;width:120px;background-color:white;border:none;color:#757575;font-size:16px;font-family:CenturyGothic;box-shadow:0 2px 4px 0 rgba(0,0,0,0.25);outline:none;transition:background-color .218s,border-color .218s,box-shadow .218s}body>.view>.home>button.signOut:hover{box-shadow:0 0 3px 3px rgba(0,121,107,0.3)}body>.view>.home>button.signOut:active{background-color:#eee;color:#6d6d6d}body>.view>.home>.body{flex:1}body>.view>.home>.bottom-navbar{height:56px;width:100%;display:flex;box-shadow:0 -1px 4px 0 rgba(0,0,0,0.25)}body>.view>.home>.bottom-navbar>.container{flex:1;padding:6px 0 10px 0;display:flex;cursor:pointer;flex-direction:column;background-color:white;transition:background-color .218s, color .218s;color:#757575}body>.view>.home>.bottom-navbar>.container:hover{background-color:#f9f9f9;color:#00796b}body>.view>.home>.bottom-navbar>.container:active{background-color:#eee}body>.view>.home>.bottom-navbar>.container.active{color:#00796b}body>.view>.home>.bottom-navbar>.container>*{margin:auto}@font-face{font-family:CenturyGothic;src:url(../font/century-gothic/CenturyGothic.ttf)}
+html {
+  height: 100%; }
+
+body {
+  font-family: CenturyGothic;
+  background-color: #f9f9f9;
+  margin: 0;
+  height: 100%; }
+  body > .view {
+    height: 100%;
+    width: 100%; }
+    body > .view > .login {
+      padding: 20%; }
+      body > .view > .login > .welcome {
+        font-size: 30px;
+        text-align: center; }
+      body > .view > .login > google-sign-in-button {
+        display: block;
+        margin-top: 30px; }
+        body > .view > .login > google-sign-in-button .abcRioButton {
+          height: 50px !important;
+          width: 200px !important;
+          display: flex;
+          margin: auto; }
+          body > .view > .login > google-sign-in-button .abcRioButton:hover {
+            box-shadow: 0 0 3px 3px rgba(0, 121, 107, 0.3); }
+          body > .view > .login > google-sign-in-button .abcRioButton .abcRioButtonContentWrapper {
+            display: flex;
+            align-items: center; }
+            body > .view > .login > google-sign-in-button .abcRioButton .abcRioButtonContentWrapper .abcRioButtonIcon {
+              margin-left: 5px; }
+              body > .view > .login > google-sign-in-button .abcRioButton .abcRioButtonContentWrapper .abcRioButtonIcon svg {
+                width: 22px;
+                height: 22px; }
+            body > .view > .login > google-sign-in-button .abcRioButton .abcRioButtonContentWrapper .abcRioButtonContents {
+              font-size: 18px !important;
+              margin: auto; }
+    body > .view > .home {
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background-image: linear-gradient(-180deg, #cd5252 0%, #cbb4a9 100%); }
+      body > .view > .home > button.signOut {
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        margin: 10px 10px 0 0;
+        height: 40px;
+        width: 120px;
+        background-color: white;
+        border: none;
+        color: #757575;
+        font-size: 16px;
+        font-family: CenturyGothic;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+        outline: none;
+        transition: background-color .218s,border-color .218s,box-shadow .218s; }
+        body > .view > .home > button.signOut:hover {
+          box-shadow: 0 0 3px 3px rgba(0, 121, 107, 0.3); }
+        body > .view > .home > button.signOut:active {
+          background-color: #eee;
+          color: #6d6d6d; }
+      body > .view > .home > svg#homeChart {
+        width: auto;
+        height: auto; }
+      body > .view > .home > .body {
+        flex: 1; }
+      body > .view > .home > .bottom-navbar {
+        height: 56px;
+        width: 100%;
+        display: flex;
+        box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.25); }
+        body > .view > .home > .bottom-navbar > .container {
+          flex: 1;
+          padding: 6px 0 10px 0;
+          display: flex;
+          cursor: pointer;
+          flex-direction: column;
+          background-color: white;
+          transition: background-color .218s, color .218s;
+          color: #757575; }
+          body > .view > .home > .bottom-navbar > .container:hover {
+            background-color: #f9f9f9;
+            color: #00796b; }
+          body > .view > .home > .bottom-navbar > .container:active {
+            background-color: #eee; }
+          body > .view > .home > .bottom-navbar > .container.active {
+            color: #00796b; }
+          body > .view > .home > .bottom-navbar > .container > * {
+            margin: auto; }
+    body > .view > svg > .area {
+      fill: url(#area-gradient); }
+    body > .view > svg > .line {
+      stroke: white;
+      stroke-width: 3;
+      fill: none; }
+
+@font-face {
+  font-family: CenturyGothic;
+  src: url(../font/century-gothic/CenturyGothic.ttf); }
+
+/*# sourceMappingURL=style.min.css.map */
