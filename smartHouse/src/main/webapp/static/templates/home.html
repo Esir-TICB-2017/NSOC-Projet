@@ -2,22 +2,8 @@
 	<button class="signOut" ng-click="signOut()">
 		Sign out
 	</button>
-	<svg id="homeChart"></svg>
 	<div class="body">
-		<ng-include src="'static/templates/'+tab+'.html'"></ng-include>
-	</div>
-	<div class="bottom-navbar">
-		<div ng-class="{active: tab == 'general'}" ng-click="changeTab('general')" class="container">
-			<i class="material-icons">home</i>
-			<div class="text">General</div>
-		</div>
-		<div ng-class="{active: tab == 'graph'}" ng-click="changeTab('graph')" class="container">
-			<i class="material-icons">timeline</i>
-			<div class="text">Graph</div>
-		</div>
-		<div ng-class="{active: tab == 'settings'}" ng-click="changeTab('settings')" class="container">
-			<i class="material-icons">settings</i>
-			<div class="text">Settings</div>
-		</div>
+        <div class="mainInfo"></div>
+        <svg id="homeChart"></svg>
 	</div>
 </div>

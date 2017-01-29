@@ -1,6 +1,5 @@
 // main: style.scss
 
-& > svg {
   & > .area {
     fill: url(#area-gradient);
   }
@@ -9,4 +8,3 @@
     stroke-width: 3;
     fill: none;
   }
-}

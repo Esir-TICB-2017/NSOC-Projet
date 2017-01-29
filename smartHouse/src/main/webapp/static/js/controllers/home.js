@@ -39,7 +39,7 @@ angular.module('nsoc')
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             params: {
-                "startDate": "1485710831",
+                "startDate": "1485552342",
                 "endDate": now.toString(),
                 "sensorName": "temperature"
             }
@@ -79,12 +79,14 @@ angular.module('nsoc').factory('d3ChartService', () => {
            const svg = d3.select(`svg#${svgId}`);
            const width = parseInt(svg.style('width'), 0);
            const height = parseInt(svg.style('height'), 0);
+           const widthMargin = 15;
+           console.log(width, height)
            const parseTime = d3.timeParse('%b %d, %Y %X');
            const curve = d3.curveBasisOpen;
            const xScale = d3.scaleTime()
                .domain([new Date(data[0].date), new Date(data[data.length - 1].date)])
-               .rangeRound([0, width]);
-           const xAxis = d3.axisBottom(xScale);
+               .rangeRound([-widthMargin, width + widthMargin]);
+           const xAxis = d3.axisBottom(xScale)
            const yScale = d3.scaleLinear()
                .domain([0, d3.max(data, (d) => d.data)])
                .rangeRound([height, 0]);
@@ -117,6 +119,11 @@ angular.module('nsoc').factory('d3ChartService', () => {
                         opacity: "0.7"
                     },
                     {
+                        offset: "70%",
+                        color: "#FFFFFF",
+                        opacity: "0"
+                    },
+                    {
                         offset: "100%",
                         color: "#FFFFFF",
                         opacity: "0"
@@ -143,10 +150,11 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .attr("d", area);
 
             svg.append("g")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("transform", "translate(0,0)")
                 .call(xAxis);
             svg.append("g")
                 .call(yAxis);
+
         }
     }
 });
