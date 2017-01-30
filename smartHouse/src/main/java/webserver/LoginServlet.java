@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet{
 //            String familyName = (String) payload.get("family_name");
 //            String givenName = (String) payload.get("given_name");
 
-            SessionManager.createSession(userId, name, request);
+            SessionManager.createSession(userId, request);
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_OK);
 

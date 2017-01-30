@@ -108,10 +108,10 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		}
 	}
 
-	public static void storeNewSession(String token, String userId, String userName, Timestamp expirationDate) {
+	public static void storeNewSession(String token, String userId, Timestamp expirationDate) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "INSERT INTO sessions (userid, token, userName, expiration_date) VALUES (?, ?, ?, ?)";
-		String updateSql = "UPDATE sessions SET userid = ? , token = ?, userName = ?, expiration_date = ? WHERE userid = ?";
+		String sql = "INSERT INTO sessions (userid, token, expiration_date) VALUES (?, ?, ?)";
+		String updateSql = "UPDATE sessions SET userid = ? , token = ?, expiration_date = ? WHERE userid = ?";
 		try {
 			ArrayList<HashMap> userInfo = ReadInDatabase.getUserSession(userId);
 			if (!userInfo.isEmpty()) {
@@ -119,9 +119,8 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 					PreparedStatement preparedStatement = connection.prepareStatement(updateSql);
 					preparedStatement.setString(1, userId);
 					preparedStatement.setString(2, token);
-					preparedStatement.setString(3, userName);
-					preparedStatement.setTimestamp(4, expirationDate);
-					preparedStatement.setString(5, userId);
+					preparedStatement.setTimestamp(3, expirationDate);
+					preparedStatement.setString(4, userId);
 					preparedStatement.executeUpdate();
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -131,8 +130,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 					PreparedStatement preparedStatement = connection.prepareStatement(sql);
 					preparedStatement.setString(1, userId);
 					preparedStatement.setString(2, token);
-					preparedStatement.setString(3, userName);
-					preparedStatement.setTimestamp(4, expirationDate);
+					preparedStatement.setTimestamp(3, expirationDate);
 					preparedStatement.executeUpdate();
 				} catch (SQLException e) {
 					e.printStackTrace();
