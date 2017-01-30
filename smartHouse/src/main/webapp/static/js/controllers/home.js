@@ -1,12 +1,12 @@
 angular.module('nsoc')
-    .controller('homeController', ($scope, $http, $location, websocketService) => {
-				$scope.tabs = ['general', 'data', 'settings'];
-				$scope.actualTab = $scope.tabs[0];
+    .controller('homeController', ($scope, $http, $location, websocketService, _) => {
+        $scope.tabs = ['general', 'data', 'settings'];
+        $scope.actualTab = $scope.tabs[0];
+        $scope.sensors = [];
 
         $scope.changeTab = (newTab) => {
             $scope.actualTab = newTab;
         };
-
         $scope.signOut = function () {
             $scope.GoogleAuth.signOut().then(() => {
                 $http({
@@ -23,12 +23,16 @@ angular.module('nsoc')
                 });
             });
         }
+
         websocketService.start('ws://127.0.0.1:8080/', (evt) => {
             var obj = JSON.parse(evt.data);
             $scope.$apply(() => {
-                $scope[obj.key] = parseInt(obj.value);
+                const index = _.findIndex($scope.sensors, (sensor) => sensor.key === obj.key);
+                if (index !== -1) {
+                    $scope.sensors[index].value = parseInt(obj.value);
+                } else {
+                    $scope.sensors.push({key: obj.key, value: parseInt(obj.value)});
+                }
             });
         });
-
-        const now = parseInt(new Date().getTime() / 1000);
     });
