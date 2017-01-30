@@ -1,7 +1,7 @@
 <div class='general' ng-controller='generalController'>
 	<div class="mainInfo">
 		<div class='aggregationSelectorButtonList'>
-			<button ng-repeat='selector in selectors' ng-class="{active: actualSelector == selector}" class="aggregationSelector" ng-click="getData(selector)">{{selector}}ly</button>
+			<button ng-repeat='selector in selectors' ng-class="{active: actualSelector == selector.name}" class="aggregationSelector" ng-click="getData(selector.value)">{{selector.name}}</button>
 		</div>
 		<div>Consumption : {{consumption}}</div>
 		<div>Production : {{production}}</div>
