@@ -51,20 +51,23 @@
 				border-top-right-radius: 25px;
 				border-bottom-right-radius: 25px;
 			}
-			&>button.mainMenuButton {
+			&>button {
 				outline: none;
-				margin-top: 20px;
-				width : $button-width;
-				height: $button-height;
 				color: $button-color;
-				background-color: rgba(255, 255, 255, 0.3);
-				border: $button-border-width solid rgba(255, 255, 255, 0);
-				padding: 10px 20px;
-
 				-webkit-transition: background-color .2s ease-out;
 				-moz-transition: background-color .2s ease-out;
 				-o-transition: background-color .2s ease-out;
 				transition: background-color .2s ease-out;
+			}
+			&>button.mainMenuButton {
+
+				margin-top: 20px;
+				width : $button-width;
+				height: $button-height;
+				background-color: rgba(255, 255, 255, 0.3);
+				border: $button-border-width solid rgba(255, 255, 255, 0);
+
+
 			}
 
 			& > .mainMenuButton.active {
@@ -82,36 +85,6 @@
 		flex: 1;
 		&>.ng-scope {
 			@import 'general';
-		}
-
-	}
-	&>.bottom-navbar {
-		height      : 56px;
-		width       : 100%;
-		display     : flex;
-		box-shadow  : 0 -1px 4px 0 rgba(0,0,0,0.25);
-		&>.container {
-			flex             : 1;
-			padding          : 6px 0 10px 0;
-			display          : flex;
-			cursor           : pointer;
-			flex-direction   : column;
-			background-color : white;
-			transition       : background-color .218s, color .218s;
-			color            : #757575;
-			&:hover {
-				background-color: $background-color;
-				color: $green;
-			}
-			&:active {
-				background-color: #eee;
-			}
-			&.active {
-				color: $green;
-			}
-			&>* {
-				margin: auto;
-			}
 		}
 	}
 }
