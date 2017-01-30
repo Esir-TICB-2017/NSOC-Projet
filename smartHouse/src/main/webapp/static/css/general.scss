@@ -23,13 +23,17 @@
 				border-top-left-radius    : 25px;
 				border-bottom-left-radius : 25px;
 				transition                : background-color .2s ease-out;
-			}
 
-			& > .aggregationSelector:focus {
-				outline: none;
-			}
-			& > .aggregationSelector:hover {
-				background-color: rgba(255, 255, 255, 0.3);
+				&:focus {
+					outline: none;
+				}
+				&:hover {
+					background-color: rgba(255, 255, 255, 0.3);
+				}
+				&.active {
+					background-color: rgba(255, 255, 255, 0.3);
+
+				}
 			}
 		}
 	}
