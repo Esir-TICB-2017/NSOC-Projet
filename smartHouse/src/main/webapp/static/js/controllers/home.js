@@ -23,26 +23,26 @@ angular.module('nsoc')
                 });
             });
         }
+        $http({
+            method: 'GET',
+            url: '/getLastIndicators',
+            params: {indicator: 'global'},
+        }).then(function success(res) {
+            console.log(res);
+        }, function error(err) {
+            console.log(err);
+        });
 
-				$http({
-					method: 'GET',
-					url: '/getLastIndicators',
-					params: {indicator: 'global'},
-				}).then(function success(res) {
-					console.log(res);
-				}, function error(err) {
-					console.log(err);
-				});
-
-				websocketService.start('ws://127.0.0.1:8080/', (evt) => {
-						var obj = JSON.parse(evt.data);
-						$scope.$apply(() => {
-								const index = _.findIndex($scope.sensors, (sensor) => sensor.key === obj.key);
-								if (index !== -1) {
-									$scope.sensors[index].value = parseInt(obj.value);
-								} else {
-									$scope.sensors.push({key: obj.key, value: parseInt(obj.value)});
-								}
-						});
-				});
+        websocketService.start('ws://127.0.0.1:8080/', (evt) => {
+            var obj = JSON.parse(evt.data);
+            console.log(obj);
+            $scope.$apply(() => {
+                const index = _.findIndex($scope.sensors, (sensor) => sensor.key === obj.key);
+                if (index !== -1) {
+                    $scope.sensors[index].value = parseInt(obj.value);
+                } else {
+                    $scope.sensors.push({key: obj.key, value: parseInt(obj.value)});
+                }
+            });
+        });
     });

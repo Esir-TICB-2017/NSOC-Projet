@@ -5,27 +5,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectedClients {
-    private static final ConnectedClients INSTANCE = new ConnectedClients();
+	private static final ConnectedClients INSTANCE = new ConnectedClients();
 
-    public static ConnectedClients getInstance() {
-        return INSTANCE;
-    }
+	public static ConnectedClients getInstance() {
+		return INSTANCE;
+	}
 
-    private List<MyWebSocketHandler> members = new ArrayList<>();
+	private List<MyWebSocketHandler> members = new ArrayList<>();
 
-    public void join(MyWebSocketHandler socket) {
-        members.add(socket);
-    }
+	public void join(MyWebSocketHandler socket) {
+		members.add(socket);
+	}
 
-    public void part(MyWebSocketHandler socket) {
-        members.remove(socket);
-    }
+	public void part(MyWebSocketHandler socket) {
+		members.remove(socket);
+	}
 
-    public void writeAllMembers(String message) {
-        for(MyWebSocketHandler member: members) {
-            member.session.getRemote().sendStringByFuture(message);
-        }
-    }
+	public void writeAllMembers(String message) {
+		for (MyWebSocketHandler member : members) {
+			member.session.getRemote().sendStringByFuture(message);
+		}
+	}
 
 //    public void writeSpecificMember(String memberName, String message) {
 //        MyWebSocketHandler member = findMemberByName(memberName);

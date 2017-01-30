@@ -68,9 +68,10 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
         double data;
         Timestamp date;
         Connection connection = ConnectionManager.getConnection();
-        String sql = "SELECT submission_date,value FROM " + indicator + " ORDER BY submission_date DESC LIMIT 1";
-        try (Statement statement = connection.createStatement()){
-            try(ResultSet rs = statement.executeQuery(sql)) {
+        String sql = "SELECT submission_date, value FROM ? ORDER BY submission_date DESC LIMIT 1";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setString(1, indicator);
+            try(ResultSet rs = preparedStatement.executeQuery(sql)) {
                 while(rs.next()){
                     date = rs.getTimestamp("submission_date");
                     data = rs.getDouble("value");
