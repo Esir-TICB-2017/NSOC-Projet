@@ -8,15 +8,14 @@ angular.module('nsoc')
             {name: 'Weekly', value: 'week'},
             {name: 'Daily', value: 'day'}
         ];
-        $scope.actualSelector = $scope.selectors[0];
+        $scope.actualSelector;
         $scope.getData = function (selector) {
-            $scope.actualSelector = selector;
-            const startDate = moment().startOf(selector.toLowerCase()).format('X');
-            console.log(selector.toLowerCase(), startDate);
+            $scope.actualSelector = selector.name;
+            const startDate = moment().startOf(selector.value.toLowerCase()).format('X');
             const endDate = moment().format('X');
             getDataService.get(startDate, endDate, (data) => {
                 d3ChartService.draw(data, 'homeChart');
-            })
-
-        }
+            });
+        };
+				$scope.getData($scope.selectors[0]);
     });
