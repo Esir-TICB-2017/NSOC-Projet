@@ -50,7 +50,6 @@ public class GetLastIndicatorsServlet extends HttpServlet {
         }
 
         if (result != null) {
-            JSONObject obj = new JSONObject(result);
             Gson gson = new Gson();
             String json = gson.toJson(result);
             response.setContentType("text/html");

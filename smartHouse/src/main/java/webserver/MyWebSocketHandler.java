@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gson.Gson;
 import computeAggregatedData.Indicators;
 import database.ReadInDatabase;
 import database.data.DataLinkToDate;
@@ -35,12 +36,11 @@ public class MyWebSocketHandler {
         // this unique ID
 
         try {
-           // ArrayList<DataLinkToDate> result;
-            //result = ReadInDatabase.getLastIndicator(Indicators.HUMIDITY);
-            JSONObject result = new JSONObject();
-
-            result.put("message","hello Browser");
-            String str = result.toString();
+            ArrayList<DataLinkToDate> result;
+            result = ReadInDatabase.getAllLastIndicators();
+            Gson gson = new Gson();
+            String str = gson.toJson(result);
+            System.out.println(str);
             session.getRemote().sendString(str);
         } catch (IOException e) {
             e.printStackTrace();

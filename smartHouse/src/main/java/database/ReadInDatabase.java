@@ -1,7 +1,10 @@
 package database;
 
+import computeAggregatedData.Indicators;
 import database.data.DataLinkToDate;
 import database.databaseInterface.InterfaceReadDatabase;
+import jdk.nashorn.api.scripting.JSObject;
+import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 
 import javax.xml.crypto.Data;
@@ -26,7 +29,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
                 while(rs.next()){
                     date = rs.getTimestamp("submission_date");
                     data = rs.getDouble("value");
-                    dltd = new DataLinkToDate(data, date);
+                    dltd = new DataLinkToDate(data, date, "sensor", className);
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -52,7 +55,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
                 while(rs.next()){
                     date = rs.getTimestamp("submission_date");
                     data = rs.getDouble("value");
-                    list.add(new DataLinkToDate(data,date));
+                    list.add(new DataLinkToDate(data,date, "sensor", className));
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -63,19 +66,27 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
         return list;
     }
 
+    public static ArrayList<DataLinkToDate> getAllLastIndicators(){
+        ArrayList<DataLinkToDate> list = new ArrayList(Indicators.ALL_INDICATORS.length);
+
+        for(String indicator : Indicators.ALL_INDICATORS) {
+            list.add(getLastIndicator(indicator));
+        }
+        return list;
+    }
+
     public static DataLinkToDate getLastIndicator(String indicator){
         DataLinkToDate indicateur = null;
         double data;
         Timestamp date;
         Connection connection = ConnectionManager.getConnection();
-        String sql = "SELECT submission_date, value FROM ? ORDER BY submission_date DESC LIMIT 1";
+        String sql = "SELECT submission_date,value FROM " + indicator + " ORDER BY submission_date DESC LIMIT 1";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setString(1, indicator);
             try(ResultSet rs = preparedStatement.executeQuery(sql)) {
                 while(rs.next()){
                     date = rs.getTimestamp("submission_date");
                     data = rs.getDouble("value");
-                    indicateur = new DataLinkToDate(data,date);
+                    indicateur = new DataLinkToDate(data,date, "indicator", indicator);
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -100,7 +111,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
                 while(rs.next()){
                     date = rs.getTimestamp("submission_date");
                     data = rs.getDouble("value");
-                    list.add(new DataLinkToDate(data,date));
+                    list.add(new DataLinkToDate(data,date, "indicator", indicator));
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
