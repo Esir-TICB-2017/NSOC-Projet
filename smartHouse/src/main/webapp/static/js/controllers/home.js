@@ -4,6 +4,7 @@ angular.module('nsoc')
         $scope.actualTab = $scope.tabs[0];
 				$scope.sensors = [];
 
+
         $scope.changeTab = (newTab) => {
             $scope.actualTab = newTab;
         };
@@ -24,29 +25,10 @@ angular.module('nsoc')
             });
         }
 
-				// $http({
-				// 	method: 'GET',
-				// 	url: '/getLastIndicators',
-				// 	params: {indicator: 'global'},
-				// }).then(function success(res) {
-				// 	$scope.globalIndcator = res.data;
-				// }, function error(err) {
-				// 	console.log(err);
-				// });
-
 				websocketService.start('ws://127.0.0.1:8080/', (evt) => {
 						var obj = JSON.parse(evt.data);
-						$scope.$apply(() => {
-								const index = _.findIndex($scope.sensors, (sensor) => sensor.key === obj.key);
-								if (index !== -1) {
-									$scope.sensors[index].value = parseInt(obj.value);
-								} else {
-									if ($scope.sensors[$scope.sensors.length -1] && $scope.sensors[$scope.sensors.length -1].side === 'left') {
-										$scope.sensors.push({key: obj.key, value: parseInt(obj.value), side: 'right'});
-									} else {
-										$scope.sensors.push({key: obj.key, value: parseInt(obj.value), side: 'left'});
-									}
-								}
-						});
+						if (obj.key && obj.value) {
+							$scope.$broadcast('sensorValue', obj);
+						}
 				});
     });
