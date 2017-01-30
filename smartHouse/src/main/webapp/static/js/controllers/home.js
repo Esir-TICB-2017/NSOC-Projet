@@ -24,15 +24,7 @@ angular.module('nsoc')
                 });
             });
         }
-        $http({
-            method: 'GET',
-            url: '/getLastIndicators',
-            params: {indicator: 'global'},
-        }).then(function success(res) {
-            console.log(res);
-        }, function error(err) {
-            console.log(err);
-        });
+
         websocketService.start('ws://127.0.0.1:8080/', (evt) => {
             var obj = JSON.parse(evt.data);
             if (obj.key && obj.value) {

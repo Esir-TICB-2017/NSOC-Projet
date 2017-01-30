@@ -2,7 +2,7 @@
  * Created by loulou on 30/01/2017.
  */
 angular.module('nsoc')
-    .controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService) => {
+    .controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http) => {
 			$scope.selectors = [
 					{name: 'Monthly', value: 'month'},
 					{name: 'Weekly', value: 'week'},
@@ -14,9 +14,17 @@ angular.module('nsoc')
 			};
 			$scope.actualSelector;
 			$scope.sensors = [];
-			$scope.houseIndicator = 93;
-			$rootScope.houseHealth = getHouseHealth();
 
+			$http({
+					method: 'GET',
+					url: '/getLastIndicators',
+					params: {indicator: 'global'},
+			}).then(function success(res) {
+					$scope.houseIndicator = res.data.data;
+					getHouseHealth();
+			}, function error(err) {
+					console.log(err);
+			});
 
 			$scope.$on('sensorValue', (event, obj) => {
 				$scope.$apply(() => {
@@ -47,12 +55,12 @@ angular.module('nsoc')
         $scope.getData($scope.selectors[0]);
 
 				function getHouseHealth() {
-					if ($rootScope.houseIndicator <= 33) {
-						return 'bad';
-					} else if ($rootScope.houseIndicator > 33 && $rootScope.houseIndicator <66) {
-						return 'ok';
+					if ($scope.houseIndicator <= 33) {
+						$rootScope.houseHealth = 'bad';
+					} else if ($scope.houseIndicator > 33 && $scope.houseIndicator <66) {
+						$rootScope.houseHealth = 'ok';
 					} else {
-						return 'great';
+						$rootScope.houseHealth = 'great';
 					}
 				}
     });
