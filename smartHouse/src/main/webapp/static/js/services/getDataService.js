@@ -16,7 +16,6 @@ angular.module('nsoc').factory('getDataService', ($http) => {
                     "sensorName": "temperature"
                 }
             }).then(function success(res) {
-                console.log(res)
                 callback(res.data);
             }, function error(err) {
                 console.log(err);

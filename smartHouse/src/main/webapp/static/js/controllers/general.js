@@ -7,6 +7,8 @@ angular.module('nsoc')
 				givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
 				pictureUrl: $cookies.get('pictureUrl'),
 			};
+
+			const now = parseInt(new Date().getTime() / 1000);
         $scope.selectors = [
             {name: 'Monthly', value: 'month'},
             {name: 'Weekly', value: 'week'},

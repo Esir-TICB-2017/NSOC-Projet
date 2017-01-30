@@ -7,11 +7,14 @@
 		<div class='aggregationSelectorButtonList'>
 			<button ng-repeat='selector in selectors' ng-class="{active: actualSelector == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
 		</div>
-		<div>Consumption : {{consumption}}</div>
-		<div>Production : {{production}}</div>
-		<div>Temperature : {{temperature}}</div>
-		<div>CO2 : {{co2}}</div>
-		<div>Humidity : {{humidity}}</div>
+		<div class='sensors'>
+			<div class='sensor' ng-repeat='sensor in sensors'>
+				<div class='round'>
+					<div class='value'>{{sensor.value}}</div>
+				</div>
+				<div class='name'>{{sensor.key}}</div>
+			</div>
+		</div>
 	</div>
 	<svg id="homeChart"></svg>
 </div>
