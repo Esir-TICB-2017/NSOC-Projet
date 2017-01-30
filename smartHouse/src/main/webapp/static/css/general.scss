@@ -2,6 +2,7 @@
 
 &>.general {
 	display : flex;
+	flex-direction: column;
 
 	& >.mainInfo {
 		width: 100%;
