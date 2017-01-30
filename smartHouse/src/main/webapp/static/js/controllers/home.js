@@ -49,6 +49,7 @@ angular.module('nsoc')
         }, function error(err) {
             console.log(err);
         });
+
     });
 
 angular.module('nsoc').factory('websocketService', () => {
@@ -116,17 +117,11 @@ angular.module('nsoc').factory('d3ChartService', () => {
                     {
                         offset: "0%",
                         color: "#FFFFFF",
-                        opacity: "0.7"
-                    },
-                    {
-                        offset: "70%",
-                        color: "#FFFFFF",
-                        opacity: "0"
                     },
                     {
                         offset: "100%",
                         color: "#FFFFFF",
-                        opacity: "0"
+                        opacity: "0.09"
                     },
                 ])
                 .enter().append("stop")

@@ -1,0 +1,43 @@
+// main: style.scss
+
+& > .general {
+	& > div.mainInfo {
+		& > ul.aggregationSelectorButtonList {
+			list-style: none;
+			padding: 0;
+			float: right;
+			text-align: right;
+			margin: 0;
+			& > li {
+				margin: 0 0 5px 0;
+				& > .aggregationSelector {
+					color: white;
+					background-color: rgba(255, 255, 255, 0);
+					border: 1px solid rgba(255, 255, 255, 1);
+					padding: 10px 20px;
+					border-right-style: none;
+					border-top-left-radius: 25px;
+					border-bottom-left-radius: 25px;
+
+					-webkit-transition: background-color .2s ease-out;
+					-moz-transition: background-color .2s ease-out;
+					-o-transition: background-color .2s ease-out;
+					transition: background-color .2s ease-out;
+				}
+
+				& > .aggregationSelector:focus {
+					outline: none;
+				}
+				& > .aggregationSelector:hover {
+					background-color: rgba(255, 255, 255, 0.3);
+				}
+			}
+		}
+	}
+	& > svg#homeChart {
+		width: 100%;
+		height: 100%;
+		@import 'chart';
+
+	}
+}

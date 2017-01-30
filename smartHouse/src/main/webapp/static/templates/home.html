@@ -2,8 +2,24 @@
 	<button class="signOut" ng-click="signOut()">
 		Sign out
 	</button>
+	<ul class="mainMenu">
+		<li>
+			<button ng-class="{active: tab == 'general'}" ng-click="changeTab('general')"
+					class="mainMenuButton mainMenuButtonLeft">HOME
+			</button>
+		</li>
+		<li>
+			<button ng-class="{active: tab == 'data'}" ng-click="changeTab('data')"
+					class="mainMenuButton mainMenuButtonMiddle">DATA
+			</button>
+		</li>
+		<li>
+			<button ng-class="{active: tab == 'settings'}" ng-click="changeTab('settings')"
+					class="mainMenuButton mainMenuButtonRight">SETTINGS
+			</button>
+		</li>
+	</ul>
 	<div class="body">
-        <div class="mainInfo"></div>
-        <svg id="homeChart"></svg>
+		<ng-include src="'static/templates/'+tab+'.html'"></ng-include>
 	</div>
 </div>

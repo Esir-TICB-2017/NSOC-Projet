@@ -1,5 +1,21 @@
-<div>Consumption : {{consumption}}</div>
-<div>Production : {{production}}</div>
-<div>Temperature : {{temperature}}</div>
-<div>CO2 : {{co2}}</div>
-<div>Humidity : {{humidity}}</div>
+<div class="general">
+	<div class="mainInfo">
+		<ul class="aggregationSelectorButtonList">
+			<li>
+				<button class="aggregationSelector">Monthly</button>
+			</li>
+			<li>
+				<button class="aggregationSelector">Weekly</button>
+			</li>
+			<li>
+				<button class="aggregationSelector">Daily</button>
+			</li>
+		</ul>
+		<div>Consumption : {{consumption}}</div>
+		<div>Production : {{production}}</div>
+		<div>Temperature : {{temperature}}</div>
+		<div>CO2 : {{co2}}</div>
+		<div>Humidity : {{humidity}}</div>
+	</div>
+	<svg id="homeChart"></svg>
+</div>

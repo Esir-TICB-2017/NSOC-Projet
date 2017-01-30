@@ -61,23 +61,70 @@ body {
         body > .view > .home > button.signOut:active {
           background-color: #eee;
           color: #6d6d6d; }
+      body > .view > .home > ul.mainMenu {
+        list-style: none;
+        margin: auto; }
+        body > .view > .home > ul.mainMenu > li {
+          float: left; }
+          body > .view > .home > ul.mainMenu > li > button.mainMenuButtonLeft {
+            margin-right: 1px;
+            border-right-style: none;
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px; }
+          body > .view > .home > ul.mainMenu > li > button.mainMenuButtonRight {
+            margin-left: 1px;
+            border-left-style: none;
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px; }
+          body > .view > .home > ul.mainMenu > li > button.mainMenuButton {
+            outline: none;
+            margin-top: 20px;
+            width: 120px;
+            height: 35px;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0);
+            padding: 10px 20px;
+            -webkit-transition: background-color .2s ease-out;
+            -moz-transition: background-color .2s ease-out;
+            -o-transition: background-color .2s ease-out;
+            transition: background-color .2s ease-out; }
+          body > .view > .home > ul.mainMenu > li > .mainMenuButton.active {
+            background-color: rgba(255, 255, 255, 0.6); }
+          body > .view > .home > ul.mainMenu > li > .mainMenuButton:hover {
+            background-color: rgba(255, 255, 255, 0.6); }
       body > .view > .home > .body {
         flex: 1; }
-        body > .view > .home > .body > div.mainInfo {
+        body > .view > .home > .body > .ng-scope > .general > div.mainInfo > ul.aggregationSelectorButtonList {
+          list-style: none;
+          padding: 0;
+          float: right;
+          text-align: right;
+          margin: 0; }
+          body > .view > .home > .body > .ng-scope > .general > div.mainInfo > ul.aggregationSelectorButtonList > li {
+            margin: 0 0 5px 0; }
+            body > .view > .home > .body > .ng-scope > .general > div.mainInfo > ul.aggregationSelectorButtonList > li > .aggregationSelector {
+              color: white;
+              background-color: rgba(255, 255, 255, 0);
+              border: 1px solid white;
+              padding: 10px 20px;
+              border-right-style: none;
+              border-top-left-radius: 25px;
+              border-bottom-left-radius: 25px;
+              -webkit-transition: background-color .2s ease-out;
+              -moz-transition: background-color .2s ease-out;
+              -o-transition: background-color .2s ease-out;
+              transition: background-color .2s ease-out; }
+            body > .view > .home > .body > .ng-scope > .general > div.mainInfo > ul.aggregationSelectorButtonList > li > .aggregationSelector:focus {
+              outline: none; }
+            body > .view > .home > .body > .ng-scope > .general > div.mainInfo > ul.aggregationSelectorButtonList > li > .aggregationSelector:hover {
+              background-color: rgba(255, 255, 255, 0.3); }
+        body > .view > .home > .body > .ng-scope > .general > svg#homeChart {
           width: 100%;
-          height: 65%; }
-          body > .view > .home > .body > div.mainInfo > .area {
+          height: 100%; }
+          body > .view > .home > .body > .ng-scope > .general > svg#homeChart > .area {
             fill: url(#area-gradient); }
-          body > .view > .home > .body > div.mainInfo > .line {
-            stroke: white;
-            stroke-width: 3;
-            fill: none; }
-        body > .view > .home > .body > svg#homeChart {
-          width: 100%;
-          height: 35%; }
-          body > .view > .home > .body > svg#homeChart > .area {
-            fill: url(#area-gradient); }
-          body > .view > .home > .body > svg#homeChart > .line {
+          body > .view > .home > .body > .ng-scope > .general > svg#homeChart > .line {
             stroke: white;
             stroke-width: 3;
             fill: none; }
