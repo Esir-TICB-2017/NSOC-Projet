@@ -1,6 +1,7 @@
 package webserver;
 
 import com.google.gson.Gson;
+import computeAggregatedData.Indicators;
 import database.ReadInDatabase;
 import database.data.DataLinkToDate;
 import org.json.JSONObject;
@@ -22,27 +23,27 @@ public class GetLastIndicatorsServlet extends HttpServlet {
         String indicator = request.getParameter("indicator");
         switch (indicator) {
             case "global": {
-                result = ReadInDatabase.getLastIndicator("globalInd");
+                result = ReadInDatabase.getLastIndicator(Indicators.GLOBAL);
                 break;
             }
             case "temperature": {
-                result = ReadInDatabase.getLastIndicator("temperatureInd");
+                result = ReadInDatabase.getLastIndicator(Indicators.TEMPERATURE);
                 break;
             }
             case "co2": {
-                result = ReadInDatabase.getLastIndicator("co2Ind");
+                result = ReadInDatabase.getLastIndicator(Indicators.CO2);
                 break;
             }
             case "consumption": {
-                result = ReadInDatabase.getLastIndicator("consumptionInd");
+                result = ReadInDatabase.getLastIndicator(Indicators.CONSUMPTION);
                 break;
             }
             case "humidity": {
-                result = ReadInDatabase.getLastIndicator("humidityInd");
+                result = ReadInDatabase.getLastIndicator(Indicators.HUMIDITY);
                 break;
             }
             case "production": {
-                result = ReadInDatabase.getLastIndicator("productionInd");
+                result = ReadInDatabase.getLastIndicator(Indicators.PRODUCTION);
                 break;
             }
             default:
