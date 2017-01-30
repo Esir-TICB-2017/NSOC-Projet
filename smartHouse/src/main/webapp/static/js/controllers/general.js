@@ -4,7 +4,7 @@
 angular.module('nsoc')
     .controller('generalController', ($scope, $cookies, getDataService, d3ChartService) => {
 			$scope.userInfo = {
-				givenName: $cookies.get('givenName'),
+				givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
 				pictureUrl: $cookies.get('pictureUrl'),
 			};
         $scope.selectors = [
