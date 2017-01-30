@@ -4,9 +4,10 @@
 angular.module('nsoc').factory('getDataService', ($http) => {
     return {
         get: function (startDateTimestamp, endDateTimestamp, callback) {
+            console.log(startDateTimestamp, endDateTimestamp);
             $http({
                 method: 'POST',
-                url: '/data',
+                url: '/getValuesOverPeriod',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },

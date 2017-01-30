@@ -10,7 +10,6 @@ angular.module('nsoc').factory('d3ChartService', () => {
             const width = parseInt(svg.style('width'), 0);
             const height = parseInt(svg.style('height'), 0);
             const widthMargin = 15;
-            console.log(width, height)
             const parseTime = d3.timeParse('%b %d, %Y %X');
             const curve = d3.curveBasisOpen;
             const xScale = d3.scaleTime()
