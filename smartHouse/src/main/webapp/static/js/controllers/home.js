@@ -1,9 +1,10 @@
 angular.module('nsoc')
     .controller('homeController', ($scope, $http, $location, websocketService) => {
-        $scope.tab = "general";
+				$scope.tabs = ['general', 'data', 'settings'];
+				$scope.actualTab = $scope.tabs[0];
 
         $scope.changeTab = (newTab) => {
-            $scope.tab = newTab;
+            $scope.actualTab = newTab;
         };
 
         $scope.signOut = function () {
@@ -32,4 +33,3 @@ angular.module('nsoc')
 
         const now = parseInt(new Date().getTime() / 1000);
     });
-
