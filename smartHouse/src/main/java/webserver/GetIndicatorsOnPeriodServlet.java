@@ -10,40 +10,45 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * Created by Quentin on 30/1/17.
  */
-
-public class GetIndicatorServlet extends HttpServlet{
+public class GetIndicatorsOnPeriodServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long start = Long.parseLong(request.getParameter("startDate"));
+        Long end = Long.parseLong(request.getParameter("endDate"));
+        Timestamp startDate = new Timestamp(start * 1000);
+        Timestamp endDate = new Timestamp(end * 1000);
 
-        DataLinkToDate result;
+        ArrayList<DataLinkToDate> result;
         String indicator = request.getParameter("indicator");
         switch (indicator) {
             case "global": {
-                result = ReadInDatabase.getLastIndicator("globalInd");
+                result = ReadInDatabase.getIndicatorsOnPeriod("globalInd", startDate, endDate);
                 break;
             }
             case "temperature": {
-                result = ReadInDatabase.getLastIndicator("temperatureInd");
+                result = ReadInDatabase.getIndicatorsOnPeriod("temperatureInd", startDate, endDate);
                 break;
             }
             case "co2": {
-                result = ReadInDatabase.getLastIndicator("co2Ind");
+                result = ReadInDatabase.getIndicatorsOnPeriod("co2Ind", startDate, endDate);
                 break;
             }
             case "consumption": {
-                result = ReadInDatabase.getLastIndicator("consumptionInd");
+                result = ReadInDatabase.getIndicatorsOnPeriod("consumptionInd", startDate, endDate);
                 break;
             }
             case "humidity": {
-                result = ReadInDatabase.getLastIndicator("humidityInd");
+                result = ReadInDatabase.getIndicatorsOnPeriod("humidityInd", startDate, endDate);
                 break;
             }
             case "production": {
-                result = ReadInDatabase.getLastIndicator("productionInd");
+                result = ReadInDatabase.getIndicatorsOnPeriod("productionInd", startDate, endDate);
                 break;
             }
             default:
@@ -63,5 +68,4 @@ public class GetIndicatorServlet extends HttpServlet{
         }
 
     }
-
 }

@@ -60,7 +60,10 @@ public class main {
         context.addServlet(new ServletHolder(new IsAuthenticatedServlet()), "/isAuthenticated");
         context.addServlet(new ServletHolder(new LoginServlet()), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
-        context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/data");
+        context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/getValuesOverPeriod");
+        context.addServlet(new ServletHolder(new GetLastIndicatorsServlet()), "/getLastIndicators");
+        context.addServlet(new ServletHolder(new GetIndicatorsOnPeriodServlet()), "/getIndicatorsOverPeriod");
+
 
         context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 
