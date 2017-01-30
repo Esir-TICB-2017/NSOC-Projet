@@ -1,25 +1,16 @@
 <div class="home">
-	<button class="signOut" ng-click="signOut()">
-		Sign out
-	</button>
-	<ul class="mainMenu">
-		<li>
-			<button ng-class="{active: tab == 'general'}" ng-click="changeTab('general')"
-					class="mainMenuButton mainMenuButtonLeft">HOME
+
+	<div class="mainMenu">
+		<div class='tabs'>
+			<button ng-repeat='tab in tabs' ng-class="{active: actualTab == tab}" ng-click="changeTab(tab)"	class="mainMenuButton">
+				{{tab}}
 			</button>
-		</li>
-		<li>
-			<button ng-class="{active: tab == 'data'}" ng-click="changeTab('data')"
-					class="mainMenuButton mainMenuButtonMiddle">DATA
-			</button>
-		</li>
-		<li>
-			<button ng-class="{active: tab == 'settings'}" ng-click="changeTab('settings')"
-					class="mainMenuButton mainMenuButtonRight">SETTINGS
-			</button>
-		</li>
-	</ul>
+		</div>
+		<button class="signOut" ng-click="signOut()">
+			Sign out
+		</button>
+	</div>
 	<div class="body">
-		<ng-include src="'static/templates/'+tab+'.html'"></ng-include>
+		<ng-include src="'static/templates/'+actualTab+'.html'"></ng-include>
 	</div>
 </div>
