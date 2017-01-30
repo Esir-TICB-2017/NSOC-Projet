@@ -1,16 +1,8 @@
-<div class="general" ng-controller="generalController">
+<div class='general' ng-controller='generalController'>
 	<div class="mainInfo">
-		<ul class="aggregationSelectorButtonList">
-			<li>
-				<button class="aggregationSelector" ng-click="getData('month')">Monthly</button>
-			</li>
-			<li>
-				<button class="aggregationSelector" ng-click="getData('week')">Weekly</button>
-			</li>
-			<li>
-				<button class="aggregationSelector" ng-click="getData('day')">Daily</button>
-			</li>
-		</ul>
+		<div class='aggregationSelectorButtonList'>
+			<button ng-repeat='selector in selectors' class="aggregationSelector" ng-click="getData()">{{selector}}</button>
+		</div>
 		<div>Consumption : {{consumption}}</div>
 		<div>Production : {{production}}</div>
 		<div>Temperature : {{temperature}}</div>
