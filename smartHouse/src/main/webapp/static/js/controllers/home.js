@@ -2,7 +2,7 @@ angular.module('nsoc')
     .controller('homeController', ($scope, $http, $location, websocketService, _) => {
         $scope.tabs = ['general', 'data', 'settings'];
         $scope.actualTab = $scope.tabs[0];
-				$scope.sensors = [];
+        $scope.sensors = [];
 
 
         $scope.changeTab = (newTab) => {
@@ -24,11 +24,19 @@ angular.module('nsoc')
                 });
             });
         }
-
-				websocketService.start('ws://127.0.0.1:8080/', (evt) => {
-						var obj = JSON.parse(evt.data);
-						if (obj.key && obj.value) {
-							$scope.$broadcast('sensorValue', obj);
-						}
-				});
+        $http({
+            method: 'GET',
+            url: '/getLastIndicators',
+            params: {indicator: 'global'},
+        }).then(function success(res) {
+            console.log(res);
+        }, function error(err) {
+            console.log(err);
+        });
+        websocketService.start('ws://127.0.0.1:8080/', (evt) => {
+            var obj = JSON.parse(evt.data);
+            if (obj.key && obj.value) {
+                $scope.$broadcast('sensorValue', obj);
+            }
+        });
     });

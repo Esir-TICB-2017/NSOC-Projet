@@ -85,14 +85,14 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                         hs.setNewValue(value);
                         value = Math.random()*1000;
                         ps.setNewValue(value);
-                        /*try {
+                        try {
                             value = getTemperature();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        ts.setNewValue(value);*/
+                        ts.setNewValue(value);
                         try {
-                            Thread.sleep(1000*10);
+                            Thread.sleep(1000*10*60);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
