@@ -23,7 +23,6 @@ angular.module('nsoc')
                 });
             });
         }
-
         websocketService.start('ws://127.0.0.1:8080/', (evt) => {
             var obj = JSON.parse(evt.data);
             $scope.$apply(() => {

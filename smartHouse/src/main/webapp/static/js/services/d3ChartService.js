@@ -11,6 +11,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
             const height = parseInt(svg.style('height'), 0);
             const widthMargin = 15;
             const parseTime = d3.timeParse('%b %d, %Y %X');
+            const bisectDate = d3.bisector(function(d) { return d.date; }).left;
             const curve = d3.curveBasisOpen;
             const xScale = d3.scaleTime()
                 .domain([new Date(data[0].date), new Date(data[data.length - 1].date)])
@@ -45,6 +46,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
                     {
                         offset: "0%",
                         color: "#FFFFFF",
+                        opacity: "0.7"
                     },
                     {
                         offset: "100%",
@@ -91,6 +93,50 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .ease(d3.easeLinear)
                 .duration(500)
                 .attr("d", areaGen);
+
+            const focus = svg.append("g")
+                .attr("class", "focus")
+                .style("display", "none");
+
+            // append the circle at the intersection
+            focus.append("circle")
+                .style("fill", "#93E6FF")
+                .style("stroke", "white")
+                .style("stroke-width", 3)
+                .attr("r", 6);
+
+            const rect = focus.append("rect")
+                .attr('width', 40)
+                .attr('height', 30)
+                .attr('y', -40)
+                .attr('x', -20)
+                .attr('rx', 5)
+                .attr('ry', 5)
+                .style("fill", "white");
+
+            focus.append("text")
+                .attr("x", 9)
+                .attr("dy", ".35em");
+
+            svg.append("rect")
+                .attr('class', 'overlay')
+                .attr("width", width)
+                .attr("height", height)
+                .attr('fill', 'none')
+                .attr('pointer-events', 'all')
+                .on("mouseover", function() { focus.style("display", null); })
+                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mousemove", mousemove);
+
+            function mousemove() {
+                var x0 = xScale.invert(d3.mouse(this)[0]),
+                    i = bisectDate(data, x0, 1),
+                    d0 = data[i - 1],
+                    d1 = data[i],
+                    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+                focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d.data) + ")");
+                focus.select("text").text(parseInt(d.data));
+            }
 
 
 

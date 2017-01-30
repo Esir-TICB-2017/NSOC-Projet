@@ -76,7 +76,6 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                         e.printStackTrace();
                     }
                     while(true) {
-                        System.out.println("ici");
    //                   value = getValue();
                         value = Math.random()*1000;
                         cs.setNewValue(value);
