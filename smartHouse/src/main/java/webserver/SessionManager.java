@@ -38,14 +38,15 @@ public class SessionManager {
         return false;
     }
 
-    public static HttpServletRequest createSession(String userId, HttpServletRequest request) {
+    public static HttpServletRequest createSession(String userId, String name, HttpServletRequest request) {
         java.util.Date today = new java.util.Date(System.currentTimeMillis() + 5 * 60 * 1000);
         Timestamp expirationDate = new Timestamp(today.getTime());
         SessionIdentifierGenerator sig = new SessionIdentifierGenerator();
         String sessionToken = sig.nextSessionId();
-        WriteInDatabase.storeNewSession(sessionToken, userId, expirationDate);
+        WriteInDatabase.storeNewSession(sessionToken, userId, name, expirationDate);
         HttpSession session = request.getSession();
         session.setAttribute("userToken", sessionToken);
+        session.setAttribute("name", sessionToken);
         session.setAttribute("userId", userId);
         return request;
 
