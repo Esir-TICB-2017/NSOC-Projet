@@ -13,14 +13,13 @@ angular.module('nsoc')
 				pictureUrl: $cookies.get('pictureUrl'),
 			};
 			$scope.actualSelector;
-			$scope.sensors = [];
 
 			$http({
 					method: 'GET',
 					url: '/getLastIndicators',
 					params: {indicator: 'global'},
 			}).then(function success(res) {
-					$scope.houseIndicator = res.data.data;
+					$rootScope.houseIndicator = res.data.data;
 					getHouseHealth();
 			}, function error(err) {
 					console.log(err);
@@ -55,9 +54,9 @@ angular.module('nsoc')
         $scope.getData($scope.selectors[0]);
 
 				function getHouseHealth() {
-					if ($scope.houseIndicator <= 33) {
+					if ($rootScope.houseIndicator <= 33) {
 						$rootScope.houseHealth = 'bad';
-					} else if ($scope.houseIndicator > 33 && $scope.houseIndicator <66) {
+					} else if ($rootScope.houseIndicator > 33 && $rootScope.houseIndicator <66) {
 						$rootScope.houseHealth = 'ok';
 					} else {
 						$rootScope.houseHealth = 'great';

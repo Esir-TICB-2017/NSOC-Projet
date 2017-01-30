@@ -4,7 +4,6 @@ angular.module('nsoc')
         $scope.actualTab = $scope.tabs[0];
         $scope.sensors = [];
 
-
         $scope.changeTab = (newTab) => {
             $scope.actualTab = newTab;
         };
