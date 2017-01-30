@@ -77,6 +77,10 @@
 	&>.body {
 		flex: 1;
 		&>.ng-scope {
+			&>* {
+				height: 100%;
+				width: 100%;
+			}
 			@import 'general';
 		}
 	}
