@@ -11,7 +11,7 @@ angular.module('nsoc')
         $scope.actualSelector;
         $scope.getData = function (selector) {
             $scope.actualSelector = selector.name;
-            const startDate = moment().startOf(selector.value.toLowerCase()).format('X');
+            const startDate = moment().startOf(selector.value).format('X');
             const endDate = moment().format('X');
             getDataService.get(startDate, endDate, (data) => {
                 d3ChartService.draw(data, 'homeChart');
