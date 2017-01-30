@@ -39,9 +39,8 @@ public class MyWebSocketHandler {
             ArrayList<DataLinkToDate> result;
             result = ReadInDatabase.getAllLastIndicators();
             Gson gson = new Gson();
-            String str = gson.toJson(result);
             JSONObject last = new JSONObject();
-            last.put("data",str);
+            last.put("data",result);
             String strLast = last.toString();
             System.out.println(strLast);
             session.getRemote().sendString(strLast);
