@@ -11,6 +11,7 @@ body {
 	&>.view {
 		height : 100%;
 		width  : 100%;
+		display: flex;
 		@import 'login';
 		@import 'home';
 	}

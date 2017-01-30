@@ -4,6 +4,7 @@
 		<div class='name'>Hi {{userInfo.givenName}}!</div>
 	</div>
 	<div class="mainInfo">
+		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
 		<div class='sensors'>
 			<div class='sensor' ng-repeat="sensor in sensors | filter: { side: 'left' }">
 				<div class='round'>
