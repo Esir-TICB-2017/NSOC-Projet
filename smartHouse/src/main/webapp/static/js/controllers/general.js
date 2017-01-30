@@ -17,5 +17,5 @@ angular.module('nsoc')
                 d3ChartService.draw(data, 'homeChart');
             });
         };
-				$scope.getData($scope.selectors[0]);
+        $scope.getData($scope.selectors[0]);
     });
