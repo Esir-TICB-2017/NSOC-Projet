@@ -40,8 +40,11 @@ public class MyWebSocketHandler {
             result = ReadInDatabase.getAllLastIndicators();
             Gson gson = new Gson();
             String str = gson.toJson(result);
-            System.out.println(str);
-            session.getRemote().sendString(str);
+            JSONObject last = new JSONObject();
+            last.put("data",str);
+            String strLast = last.toString();
+            System.out.println(strLast);
+            session.getRemote().sendString(strLast);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -25,6 +25,7 @@ angular.module('nsoc')
         }
 
         websocketService.start('ws://127.0.0.1:8080/', (evt) => {
+            console.log(evt.data)
             var obj = JSON.parse(evt.data);
             if (obj.key && obj.value) {
                 console.log(obj)
