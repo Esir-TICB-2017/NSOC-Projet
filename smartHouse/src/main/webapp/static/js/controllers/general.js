@@ -7,7 +7,13 @@ angular.module('nsoc')
 			$scope.actualSelector = $scope.selectors[0];
         $scope.getData = function (selector) {
 					$scope.actualSelector = selector;
+            console.log(selector);
+/*
+            const startDate = moment().startOf(test).format('X');
+            const endDate = moment().format('X');
+            getDataService.get(startDate, endDate, (data) => {
+                d3ChartService.draw(data, 'homeChart');
+            })
+            */
         }
-
-        const now = parseInt(new Date().getTime() / 1000);
     });
