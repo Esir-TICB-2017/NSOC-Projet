@@ -3,8 +3,8 @@
  */
 angular.module('nsoc')
     .controller('generalController', ($scope, getDataService, d3ChartService) => {
-        $scope.selectors = ['Monthly', 'Weekly', 'Daily'];
-        $scope.actualSelector = $scope.selectors[0];
+			$scope.selectors = ['Month', 'Week', 'Day'];
+			$scope.actualSelector = $scope.selectors[0];
         $scope.getData = function (selector) {
             $scope.actualSelector = selector;
             const startDate = moment().startOf(selector.toLowerCase()).format('X');
