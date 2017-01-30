@@ -2,7 +2,7 @@ angular.module('nsoc')
     .controller('homeController', ($scope, $http, $location, websocketService, _) => {
         $scope.tabs = ['general', 'data', 'settings'];
         $scope.actualTab = $scope.tabs[0];
-        $scope.sensors = [];
+				$scope.sensors = [];
 
         $scope.changeTab = (newTab) => {
             $scope.actualTab = newTab;
@@ -24,15 +24,15 @@ angular.module('nsoc')
             });
         }
 
-				$http({
-					method: 'GET',
-					url: '/getLastIndicators',
-					params: {indicator: 'global'},
-				}).then(function success(res) {
-					console.log(res);
-				}, function error(err) {
-					console.log(err);
-				});
+				// $http({
+				// 	method: 'GET',
+				// 	url: '/getLastIndicators',
+				// 	params: {indicator: 'global'},
+				// }).then(function success(res) {
+				// 	$scope.globalIndcator = res.data;
+				// }, function error(err) {
+				// 	console.log(err);
+				// });
 
 				websocketService.start('ws://127.0.0.1:8080/', (evt) => {
 						var obj = JSON.parse(evt.data);
@@ -41,7 +41,11 @@ angular.module('nsoc')
 								if (index !== -1) {
 									$scope.sensors[index].value = parseInt(obj.value);
 								} else {
-									$scope.sensors.push({key: obj.key, value: parseInt(obj.value)});
+									if ($scope.sensors[$scope.sensors.length -1] && $scope.sensors[$scope.sensors.length -1].side === 'left') {
+										$scope.sensors.push({key: obj.key, value: parseInt(obj.value), side: 'right'});
+									} else {
+										$scope.sensors.push({key: obj.key, value: parseInt(obj.value), side: 'left'});
+									}
 								}
 						});
 				});

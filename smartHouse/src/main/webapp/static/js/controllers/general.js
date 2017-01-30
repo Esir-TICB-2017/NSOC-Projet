@@ -7,6 +7,7 @@ angular.module('nsoc')
 				givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
 				pictureUrl: $cookies.get('pictureUrl'),
 			};
+			$scope.houseIndicator = 93;
 
 			const now = parseInt(new Date().getTime() / 1000);
         $scope.selectors = [
