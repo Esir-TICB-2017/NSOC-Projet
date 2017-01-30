@@ -1,5 +1,8 @@
 package bacnet;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.serotonin.bacnet4j.LocalDevice;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.event.DeviceEventAdapter;
@@ -14,6 +17,14 @@ import com.serotonin.bacnet4j.type.primitive.Double;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
 import sensor.sensorClass.*;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 /**
  * Created by clement on 16/01/2017.
@@ -59,7 +70,13 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                 double value = 0;
                 public void run() {
    //                 connection();
+                    try {
+                        getTemperature();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     while(true) {
+                        System.out.println("ici");
    //                   value = getValue();
                         value = Math.random()*1000;
                         cs.setNewValue(value);
@@ -69,11 +86,14 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                         hs.setNewValue(value);
                         value = Math.random()*1000;
                         ps.setNewValue(value);
-                        value = Math.random()*30;
-                        ts.setNewValue(value);
-
                         try {
-                            Thread.sleep(10000);
+                            value = getTemperature();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        ts.setNewValue(value);
+                        try {
+                            Thread.sleep(1000*60*10);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -88,6 +108,25 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                 e.printStackTrace();
                 System.out.println("Problème de récupération de la valeur !");
             }*/
+
+    }
+    private double getTemperature() throws Exception {
+
+
+
+       String sURL = "https://api.darksky.net/forecast/d1465e3ebc6da2c83fb849178a605d54/48.1113,-1.68,1485796324?lang=fr&units=si";
+
+        URL url = new URL(sURL);
+        HttpURLConnection request = (HttpURLConnection) url.openConnection();
+        request.connect();
+
+        // Convert to a JSON object to print data
+        JsonParser jp = new JsonParser(); //from gson
+        JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
+        JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
+        JsonObject currently = rootobj.getAsJsonObject("currently");
+        double temperature = currently.get("temperature").getAsDouble();
+        return temperature;
 
     }
 
