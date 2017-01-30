@@ -11,7 +11,7 @@ angular.module('nsoc')
         $scope.actualSelector = $scope.selectors[0];
         $scope.getData = function (selector) {
             $scope.actualSelector = selector;
-            const startDate = moment().startOf(selector.toLowerCase()).format('X');
+            const startDate = moment().startOf(selector).format('X');
             console.log(selector.toLowerCase(), startDate);
             const endDate = moment().format('X');
             getDataService.get(startDate, endDate, (data) => {
