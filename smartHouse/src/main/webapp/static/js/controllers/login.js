@@ -1,9 +1,12 @@
 angular.module('nsoc')
-.controller('loginController', function($scope, $http, $location) {
+.controller('loginController', function($scope, $http, $location, $cookies) {
 	$scope.options = {
 		'onsuccess': function(googleUser) {
 			// Useful data for our client-side scripts:
 			var profile = googleUser.getBasicProfile();
+			$cookies.put('givenName', profile.ofa);
+			$cookies.put('pictureUrl', profile.Paa);
+			// $cookies.put('givenName', )
 			// The ID token we need to pass to your backend:
 			var id_token = googleUser.getAuthResponse().id_token;
 			$http({

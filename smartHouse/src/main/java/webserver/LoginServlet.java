@@ -54,11 +54,10 @@ public class LoginServlet extends HttpServlet{
             // Get profile information from payload
            // String email = payload.get
             //boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-            String name = (String) payload.get("name");
+//            String givenName = (String) payload.get("given_name");
 //            String pictureUrl = (String) payload.get("picture");
 //            String locale = (String) payload.get("locale");
 //            String familyName = (String) payload.get("family_name");
-//            String givenName = (String) payload.get("given_name");
 
             SessionManager.createSession(userId, request);
             response.setContentType("text/html");

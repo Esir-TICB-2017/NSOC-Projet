@@ -2,7 +2,11 @@
  * Created by loulou on 30/01/2017.
  */
 angular.module('nsoc')
-    .controller('generalController', ($scope, getDataService, d3ChartService) => {
+    .controller('generalController', ($scope, $cookies, getDataService, d3ChartService) => {
+			$scope.userInfo = {
+				givenName: $cookies.get('givenName'),
+				pictureUrl: $cookies.get('pictureUrl'),
+			};
         $scope.selectors = [
             {name: 'Monthly', value: 'month'},
             {name: 'Weekly', value: 'week'},

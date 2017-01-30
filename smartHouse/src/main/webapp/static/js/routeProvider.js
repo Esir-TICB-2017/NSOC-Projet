@@ -1,4 +1,4 @@
-angular.module('nsoc', ['ngRoute'])
+angular.module('nsoc', ['ngRoute', 'ngCookies'])
 .config(['$routeProvider', '$locationProvider', function ($routeProvider) {
 	$routeProvider
 	.when('/login', {

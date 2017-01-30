@@ -1,4 +1,8 @@
 <div class='general' ng-controller='generalController'>
+	<div class='userInfo'>
+		<!-- <img class='picture' ng-src="{{userInfo.pictureUrl}}"></img> -->
+		<div class='name'>Hi {{userInfo.givenName}}!</div>
+	</div>
 	<div class="mainInfo">
 		<div class='aggregationSelectorButtonList'>
 			<button ng-repeat='selector in selectors' ng-class="{active: actualSelector == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
