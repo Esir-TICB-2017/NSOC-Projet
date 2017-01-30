@@ -2,20 +2,21 @@
  * Created by loulou on 30/01/2017.
  */
 angular.module('nsoc')
-    .controller('generalController', ($scope, $cookies, getDataService, d3ChartService) => {
+    .controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService) => {
 			$scope.selectors = [
 					{name: 'Monthly', value: 'month'},
 					{name: 'Weekly', value: 'week'},
 					{name: 'Daily', value: 'day'}
 			];
-			$scope.actualSelector;
-			$scope.houseIndicator = 93;
-			$scope.sensors = [];
-
 			$scope.userInfo = {
 				givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
 				pictureUrl: $cookies.get('pictureUrl'),
 			};
+			$scope.actualSelector;
+			$scope.sensors = [];
+			$scope.houseIndicator = 93;
+			$rootScope.houseHealth = getHouseHealth();
+
 
 			$scope.$on('sensorValue', (event, obj) => {
 				$scope.$apply(() => {
@@ -44,4 +45,14 @@ angular.module('nsoc')
         };
 
         $scope.getData($scope.selectors[0]);
+
+				function getHouseHealth() {
+					if ($rootScope.houseIndicator <= 33) {
+						return 'bad';
+					} else if ($rootScope.houseIndicator > 33 && $rootScope.houseIndicator <66) {
+						return 'ok';
+					} else {
+						return 'great';
+					}
+				}
     });
