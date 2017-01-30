@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 public class GetValuesOnPeriodServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long start = Long.parseLong(request.getParameter("startDate"));
         Long end = Long.parseLong(request.getParameter("endDate"));
         Timestamp startDate = new Timestamp(start * 1000);

@@ -17,8 +17,7 @@ import java.io.IOException;
  */
 public class GetLastIndicatorsServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataLinkToDate result;
         String indicator = request.getParameter("indicator");
         switch (indicator) {
@@ -54,7 +53,6 @@ public class GetLastIndicatorsServlet extends HttpServlet {
             JSONObject obj = new JSONObject(result);
             Gson gson = new Gson();
             String json = gson.toJson(result);
-
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(json);

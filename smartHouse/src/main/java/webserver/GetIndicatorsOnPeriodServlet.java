@@ -1,6 +1,7 @@
 package webserver;
 
 import com.google.gson.Gson;
+import computeAggregatedData.Indicators;
 import database.ReadInDatabase;
 import database.data.DataLinkToDate;
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  */
 public class GetIndicatorsOnPeriodServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long start = Long.parseLong(request.getParameter("startDate"));
         Long end = Long.parseLong(request.getParameter("endDate"));
         Timestamp startDate = new Timestamp(start * 1000);
@@ -28,27 +29,27 @@ public class GetIndicatorsOnPeriodServlet extends HttpServlet {
         String indicator = request.getParameter("indicator");
         switch (indicator) {
             case "global": {
-                result = ReadInDatabase.getIndicatorsOnPeriod("globalInd", startDate, endDate);
+                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.GLOBAL, startDate, endDate);
                 break;
             }
             case "temperature": {
-                result = ReadInDatabase.getIndicatorsOnPeriod("temperatureInd", startDate, endDate);
+                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.TEMPERATURE, startDate, endDate);
                 break;
             }
             case "co2": {
-                result = ReadInDatabase.getIndicatorsOnPeriod("co2Ind", startDate, endDate);
+                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.CO2, startDate, endDate);
                 break;
             }
             case "consumption": {
-                result = ReadInDatabase.getIndicatorsOnPeriod("consumptionInd", startDate, endDate);
+                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.CONSUMPTION, startDate, endDate);
                 break;
             }
             case "humidity": {
-                result = ReadInDatabase.getIndicatorsOnPeriod("humidityInd", startDate, endDate);
+                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.HUMIDITY, startDate, endDate);
                 break;
             }
             case "production": {
-                result = ReadInDatabase.getIndicatorsOnPeriod("productionInd", startDate, endDate);
+                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.PRODUCTION, startDate, endDate);
                 break;
             }
             default:
