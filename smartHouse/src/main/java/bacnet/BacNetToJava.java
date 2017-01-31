@@ -52,10 +52,15 @@ public class  BacNetToJava implements InterfaceReadBacnet {
 
     private BacNetToJava () {
         cs =  ConsumptionSensor.getInstance();
+        Sensors.getInstance().addSensor(cs);
         co2s = CO2Sensor.getInstance();
+        Sensors.getInstance().addSensor(co2s);
         hs =  HumiditySensor.getInstance();
+        Sensors.getInstance().addSensor(hs);
         ps =  ProductionSensor.getInstance();
+        Sensors.getInstance().addSensor(ps);
         ts =  TemperatureSensor.getInstance();
+        Sensors.getInstance().addSensor(ts);
 
         getSensorValue();
     }

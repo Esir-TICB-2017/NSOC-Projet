@@ -37,7 +37,7 @@ public class MyWebSocketHandler {
 
         try {
             ArrayList<DataLinkToDate> result;
-            result = ReadInDatabase.getAllLastIndicators();
+            result = ReadInDatabase.getAllLastValues();
             Gson gson = new Gson();
             JSONObject last = new JSONObject();
             last.put("data",result);

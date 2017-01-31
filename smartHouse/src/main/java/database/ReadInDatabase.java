@@ -6,11 +6,13 @@ import database.databaseInterface.InterfaceReadDatabase;
 import jdk.nashorn.api.scripting.JSObject;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
+import sensor.sensorClass.Sensors;
 
 import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by loulou on 21/01/2017.
@@ -71,6 +73,16 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 
         for(String indicator : Indicators.ALL_INDICATORS) {
             list.add(getLastIndicator(indicator));
+        }
+        return list;
+    }
+
+    public static ArrayList<DataLinkToDate> getAllLastValues(){
+        List<Sensor> sensors = Sensors.getInstance().getSensors();
+        ArrayList<DataLinkToDate> list = new ArrayList(sensors.size());
+
+        for(Sensor sensor : sensors) {
+            list.add(getLastValue(sensor));
         }
         return list;
     }
