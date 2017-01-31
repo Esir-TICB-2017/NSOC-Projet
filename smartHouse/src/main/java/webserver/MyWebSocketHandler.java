@@ -50,7 +50,7 @@ public class MyWebSocketHandler {
                 String str = result.toString();
                 session.getRemote().sendString(str);
             }
-            DataLinkToDate globalIndicator = ReadInDatabase.getLastIndicator(Indicators.GLOBAL);
+            Double globalIndicator = ReadInDatabase.getLastIndicator(Indicators.GLOBAL).getData();
             JSONObject result = new JSONObject();
             result.put("key", Indicators.GLOBAL);
             result.put("value", globalIndicator);
