@@ -1,15 +1,12 @@
 package webserver;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.google.gson.Gson;
 import computeAggregatedData.Indicators;
 import database.Database;
 import database.ReadInDatabase;
-import database.data.DataLinkToDate;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -20,11 +17,9 @@ import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 
-import javax.json.Json;
-
 @WebSocket
-public class MyWebSocketHandler {
-    private final static HashMap<String, MyWebSocketHandler> sockets = new HashMap<>();
+public class WebSocketHandler {
+    private final static HashMap<String, WebSocketHandler> sockets = new HashMap<>();
     public Session session;
     private String myUniqueId;
 

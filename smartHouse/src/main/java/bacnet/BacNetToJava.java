@@ -16,6 +16,8 @@ import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
 import com.serotonin.bacnet4j.type.primitive.Double;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
+import computeAggregatedData.Indicators;
+import database.WriteInDatabase;
 import sensor.sensorClass.*;
 
 import java.io.BufferedReader;
@@ -88,14 +90,18 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                         co2s.setNewValue(value);
                         value = Math.random()*100;
                         hs.setNewValue(value);
+                        value = Math.random()*100;
+                        WriteInDatabase.writeIndicatorValue(Indicators.GLOBAL, Math.toIntExact((long) value));
                         value = Math.random()*1000;
                         ps.setNewValue(value);
+
                         try {
                             value = getTemperature();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         ts.setNewValue(value);
+
                         try {
                             Thread.sleep(1000*10*60);
                         } catch (InterruptedException e) {

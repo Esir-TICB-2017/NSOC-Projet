@@ -6,16 +6,17 @@ angular.module('nsoc').factory('getDataService', ($http) => {
         get: function (startDateTimestamp, endDateTimestamp, callback) {
             $http({
                 method: 'GET',
-                url: '/getValuesOverPeriod',
+                url: '/getIndicatorsOverPeriod',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 params: {
                     "startDate": startDateTimestamp,
                     "endDate": endDateTimestamp,
-                    "sensorName": "temperature"
+                    "indicator": "global"
                 }
             }).then(function success(res) {
+                console.log(res);
                 callback(res.data);
             }, function error(err) {
                 console.log(err);

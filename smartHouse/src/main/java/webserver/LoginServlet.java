@@ -51,14 +51,6 @@ public class LoginServlet extends HttpServlet{
             // Print user identifier
             String userId = payload.getSubject();
 
-            // Get profile information from payload
-           // String email = payload.get
-            //boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-//            String givenName = (String) payload.get("given_name");
-//            String pictureUrl = (String) payload.get("picture");
-//            String locale = (String) payload.get("locale");
-//            String familyName = (String) payload.get("family_name");
-
             SessionManager.createSession(userId, request);
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_OK);

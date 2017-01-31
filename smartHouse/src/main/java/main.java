@@ -1,13 +1,9 @@
 import bacnet.BacNetToJava;
-import database.ReadInDatabase;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.eclipse.jetty.websocket.server.WebSocketHandler;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
-import sensor.sensorClass.ConsumptionSensor;
 import webserver.*;
 
 import javax.servlet.*;
@@ -44,10 +40,10 @@ public class main {
     */
         server.setConnectors(new Connector[] { connector });
         // WebSocket Handler
-        WebSocketHandler wsHandler = new WebSocketHandler() {
+        org.eclipse.jetty.websocket.server.WebSocketHandler wsHandler = new org.eclipse.jetty.websocket.server.WebSocketHandler() {
             @Override
             public void configure(WebSocketServletFactory webSocketServletFactory) {
-                webSocketServletFactory.register(MyWebSocketHandler.class);
+                webSocketServletFactory.register(WebSocketHandler.class);
             }
         };
 

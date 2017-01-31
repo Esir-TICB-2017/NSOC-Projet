@@ -1,6 +1,5 @@
 package webserver;
 
-import javax.json.Json;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,28 +10,28 @@ public class ConnectedClients {
 		return INSTANCE;
 	}
 
-	private List<MyWebSocketHandler> members = new ArrayList<>();
+	private List<WebSocketHandler> members = new ArrayList<>();
 
-	public void join(MyWebSocketHandler socket) {
+	public void join(WebSocketHandler socket) {
 		members.add(socket);
 	}
 
-	public void part(MyWebSocketHandler socket) {
+	public void part(WebSocketHandler socket) {
 		members.remove(socket);
 	}
 
 	public void writeAllMembers(String message) {
-		for (MyWebSocketHandler member : members) {
+		for (WebSocketHandler member : members) {
 			member.session.getRemote().sendStringByFuture(message);
 		}
 	}
 
 //    public void writeSpecificMember(String memberName, String message) {
-//        MyWebSocketHandler member = findMemberByName(memberName);
+//        WebSocketHandler member = findMemberByName(memberName);
 //        member.session.getRemote().sendStringByFuture(message);
 //    }
 
-//    public MyWebSocketHandler findMemberByName(String memberName) {
+//    public WebSocketHandler findMemberByName(String memberName) {
 //
 //    }
 }

@@ -12,7 +12,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
             const widthMargin = 15;
             const parseTime = d3.timeParse('%b %d, %Y %X');
             const bisectDate = d3.bisector(function(d) { return d.date; }).left;
-            const curve = d3.curveBasisOpen;
+            const curve = d3.curveBasis;
             const xScale = d3.scaleTime()
                 .domain([new Date(data[0].date), new Date(data[data.length - 1].date)])
                 .rangeRound([-widthMargin, width + widthMargin]);
@@ -68,13 +68,29 @@ angular.module('nsoc').factory('d3ChartService', () => {
             const line = svg.selectAll('path.line').data([data]);
             const area = svg.selectAll('path.area').data([data]);
 
-            line.enter().append('path')
+            const test = line.enter().append('path')
                 .attr("class", "line")
                 .attr("d", lineGen);
-
             area.enter().append("path")
                 .attr("class", "area")
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .ease(d3.easeLinear)
+                .style('opacity', 1)
                 .attr("d", areaGen);
+            console.log(test);
+            /*
+            var totalLength = test.node().getTotalLength();
+
+            test
+                .attr("stroke-dasharray", totalLength + " " + totalLength)
+                .attr("stroke-dashoffset", totalLength)
+                .transition()
+                .duration(2000)
+                .ease(d3.easeLinear)
+                .attr("stroke-dashoffset", 0);
+                */
 
 
             /*
