@@ -52,7 +52,7 @@
 
 		&>.sensors {
 			display: flex;
-			margin: 0 150px auto 150px;
+			margin: 0 auto auto auto;
 
 			&>.sensor {
 				position       : relative;
@@ -61,11 +61,15 @@
 				flex-direction : column;
 				align-items    : center;
 				color          : white;
-				font-size      : 20px;
-				margin         : auto;
+				font-size      : 18px;
+				margin-right   : 40px;
+				&:last-child {
+					margin-right: 0;
+				}
 
 				&>.name {
-					margin-top: 5px;
+					position: absolute;
+					bottom: -22px;
 					&:first-letter {
 						text-transform: uppercase;
 					}
