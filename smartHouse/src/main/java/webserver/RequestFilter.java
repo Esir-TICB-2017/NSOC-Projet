@@ -21,8 +21,9 @@ public class RequestFilter implements Filter {
         System.out.println(request.getRequestURI());
         Boolean isStatic = path.startsWith("/static");
         Boolean isLoginServlet = request.getRequestURI().equals("/login");
+        Boolean isLogoutServlet = request.getRequestURI().equals("/logout");
         Boolean isIndex = request.getRequestURI().equals("/") || request.getRequestURI().equals("index.html");
-        if (isStatic || isLoginServlet || isIndex) {
+        if (isStatic || isLoginServlet || isIndex || isLogoutServlet) {
             chain.doFilter(request, response);
             return;
         } else {
