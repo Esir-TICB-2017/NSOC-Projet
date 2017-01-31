@@ -3,9 +3,11 @@ package webserver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.gson.Gson;
 import computeAggregatedData.Indicators;
+import database.Database;
 import database.ReadInDatabase;
 import database.data.DataLinkToDate;
 import org.eclipse.jetty.websocket.api.Session;
@@ -15,6 +17,8 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.json.JSONObject;
+import sensor.sensorClass.Sensor;
+import sensor.sensorClass.Sensors;
 
 import javax.json.Json;
 
@@ -36,14 +40,22 @@ public class MyWebSocketHandler {
         // this unique ID
 
         try {
-            ArrayList<DataLinkToDate> result;
-            result = ReadInDatabase.getAllLastValues();
-            Gson gson = new Gson();
-            JSONObject last = new JSONObject();
-            last.put("data",result);
-            String strLast = last.toString();
-            System.out.println(strLast);
-            session.getRemote().sendString(strLast);
+            List<Sensor> sensors = Sensors.getInstance().getSensors();
+            for(Sensor sensor : sensors) {
+                Double value = ReadInDatabase.getLastValue(sensor).getData();
+                String type = Database.getTypeFromSensorClass(sensor);
+                JSONObject result = new JSONObject();
+                result.put("key", type);
+                result.put("value", value);
+                String str = result.toString();
+                session.getRemote().sendString(str);
+            }
+            DataLinkToDate globalIndicator = ReadInDatabase.getLastIndicator(Indicators.GLOBAL);
+            JSONObject result = new JSONObject();
+            result.put("key", Indicators.GLOBAL);
+            result.put("value", globalIndicator);
+            String str = result.toString();
+            session.getRemote().sendString(str);
         } catch (IOException e) {
             e.printStackTrace();
         }

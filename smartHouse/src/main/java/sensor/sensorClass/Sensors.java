@@ -13,7 +13,7 @@ public class Sensors {
 	public static Sensors getInstance() {
 		return INSTANCE;
 	}
-	private List<Sensor> sensors = new ArrayList<>();;
+	private List<Sensor> sensors = new ArrayList<>();
 
 	public List<Sensor> getSensors() {
 		return sensors;
@@ -23,6 +23,6 @@ public class Sensors {
 		sensors.add(sensor);
 	}
 	public void removeSensors(Sensor sensor) {
-		this.sensors.remove(sensor);
+		sensors.remove(sensor);
 	}
 }

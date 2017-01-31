@@ -30,7 +30,7 @@ public class Database {
         return list;
     }
 
-    protected static String getTypeFromSensorClass(Sensor sensor){
+    public static String getTypeFromSensorClass(Sensor sensor){
         String className = sensor.getClass().getSimpleName();
         String[] split = className.split("Sensor");
         String type = split[0];
