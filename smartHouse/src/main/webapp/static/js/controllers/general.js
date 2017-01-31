@@ -24,13 +24,7 @@ angular.module('nsoc')
 				if (index !== -1) {
 					$scope.sensors[index].value = parseInt(obj.value);
 				} else {
-					let side = null;
-					if ($scope.sensors[$scope.sensors.length - 1] && $scope.sensors[$scope.sensors.length - 1].side === 'left') {
-						side = 'right';
-					} else {
-						side = 'left';
-					}
-					$scope.sensors.push({key: obj.key, value: parseInt(obj.value), side});
+					$scope.sensors.push({key: obj.key, value: parseInt(obj.value)});
 				}
 			}
 		});
