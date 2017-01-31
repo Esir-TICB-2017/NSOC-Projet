@@ -5,7 +5,7 @@ import database.data.DataLinkToDate;
 import sensor.sensorClass.*;
 import database.Database;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +14,13 @@ import java.util.Map;
  */
 public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
     private Database db;
-    private ConsumptionSensor consumption;
-    private ProductionSensor production;
-    private CO2Sensor co2;
-    private HumiditySensor humidity;
-    private TemperatureSensor temperature;
+//    private ConsumptionSensor consumption;
+//    private ProductionSensor production;
+//    private CO2Sensor co2;
+//    private HumiditySensor humidity;
+//    private TemperatureSensor temperature;
+    private List<Sensor> sensors;
+    private Sensors sns;
     private int co2Indicator = 100;
     private int humidityIndicator = 100;
     private int temperatureIndicator = 100;
@@ -27,11 +29,13 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
 
     public ComputeAggregatedData(){
         db = new Database();
-        consumption = ConsumptionSensor.getInstance();
-        production =  ProductionSensor.getInstance();
-        co2 = CO2Sensor.getInstance();
-        humidity = HumiditySensor.getInstance();
-        temperature = TemperatureSensor.getInstance();
+//        consumption = ConsumptionSensor.getInstance();
+//        production =  ProductionSensor.getInstance();
+//        co2 = CO2Sensor.getInstance();
+//        humidity = HumiditySensor.getInstance();
+//        temperature = TemperatureSensor.getInstance();
+        sns = Sensors.getInstance();
+        sensors = sns.getAllSensors();
 
     }
 
@@ -44,8 +48,15 @@ public class ComputeAggregatedData implements InterfaceComputeAggregatedData{
 
 
     public void  createCO2Indicator() {
+        Sensor co2 = new Sensor();
+        for(Sensor sensor:sensors)
+        {
+            if(sensor.getType() == "CO2")
+                co2 = sensor;
+        }
         double currentCO2Value = co2.getLastValue().getData();
-         co2Indicator = 100;
+
+        co2Indicator = 100;
         if(currentCO2Value <= 600){
             // do nothing
         }

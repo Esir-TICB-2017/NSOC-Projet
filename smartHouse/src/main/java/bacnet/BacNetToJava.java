@@ -13,20 +13,16 @@ import com.serotonin.bacnet4j.transport.Transport;
 import com.serotonin.bacnet4j.type.constructed.Address;
 import com.serotonin.bacnet4j.type.enumerated.ObjectType;
 import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
-import com.serotonin.bacnet4j.type.primitive.Double;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
-import computeAggregatedData.Indicators;
-import database.WriteInDatabase;
-import sensor.sensorClass.*;
+import sensor.sensorClass.Sensor;
+import sensor.sensorClass.Sensors;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import static org.apache.http.protocol.HTTP.USER_AGENT;
+import java.util.List;
 
 /**
  * Created by clement on 16/01/2017.
@@ -44,25 +40,34 @@ public class  BacNetToJava implements InterfaceReadBacnet {
     private  LocalDevice localDevice;
     private  int numDevice;
     private  RemoteDevice r;
-    private  String typeSensor;
-    private  ConsumptionSensor cs;
-    private  CO2Sensor co2s;
-    private  HumiditySensor hs;
-    private  ProductionSensor ps;
-    private  TemperatureSensor ts;
+//    private  String typeSensor;
+//    private  ConsumptionSensor cs;
+//    private  CO2Sensor co2s;
+//    private  HumiditySensor hs;
+//    private  ProductionSensor ps;
+//    private  TemperatureSensor ts;
+
+    private Sensors sns;
+    private List<Sensor> sensors;
+
     private static BacNetToJava bacNetTojava = new BacNetToJava();
 
-    private BacNetToJava () {
-        cs =  ConsumptionSensor.getInstance();
-        Sensors.getInstance().addSensor(cs);
-        co2s = CO2Sensor.getInstance();
-        Sensors.getInstance().addSensor(co2s);
-        hs =  HumiditySensor.getInstance();
-        Sensors.getInstance().addSensor(hs);
-        ps =  ProductionSensor.getInstance();
-        Sensors.getInstance().addSensor(ps);
-        ts =  TemperatureSensor.getInstance();
-        Sensors.getInstance().addSensor(ts);
+    private BacNetToJava ()
+    {
+//  To uncomment when the Database API will be ready
+        sns = Sensors.getInstance();
+        sensors = sns.getAllSensors();
+
+//        cs =  ConsumptionSensor.getInstance();
+//        Sensors.getInstance().addSensor(cs);
+//        co2s = CO2Sensor.getInstance();
+//        Sensors.getInstance().addSensor(co2s);
+//        hs =  HumiditySensor.getInstance();
+//        Sensors.getInstance().addSensor(hs);
+//        ps =  ProductionSensor.getInstance();
+//        Sensors.getInstance().addSensor(ps);
+//        ts =  TemperatureSensor.getInstance();
+//        Sensors.getInstance().addSensor(ts);
 
         getSensorValue();
     }
@@ -83,24 +88,48 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                         e.printStackTrace();
                     }
                     while(true) {
-   //                   value = getValue();
-                        value = Math.random()*1000;
-                        cs.setNewValue(value);
-                        value = Math.random()*1000;
-                        co2s.setNewValue(value);
-                        value = Math.random()*100;
-                        hs.setNewValue(value);
-                        value = Math.random()*100;
-                        WriteInDatabase.writeIndicatorValue(Indicators.GLOBAL, Math.toIntExact((long) value));
-                        value = Math.random()*1000;
-                        ps.setNewValue(value);
+//To uncomment             value = getValue();
+//                        value = Math.random()*1000;
+//                        cs.setNewValue(value);
+//                        value = Math.random()*1000;
+//                        co2s.setNewValue(value);
+//                        value = Math.random()*100;
+//                        hs.setNewValue(value);
+//                        value = Math.random()*100;
+//                        WriteInDatabase.writeIndicatorValue(Indicators.GLOBAL, Math.toIntExact((long) value));
+//                        value = Math.random()*1000;
+//                        ps.setNewValue(value);
 
-                        try {
-                            value = getTemperature();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        for(Sensor sn:sensors)
+                        {
+                            if(sn.getType()=="Consumption" || sn.getType()=="CO2" || sn.getType()=="Production")
+                            {
+                                value = Math.random()*1000;
+                                sn.setNewValue(value);
+                            }
+                            else if(sn.getType()=="Humidity" || sn.getType()=="Indicator")
+                            {
+                                value = Math.random()*100;
+                                sn.setNewValue(value);
+                            }
+                            else if(sn.getType()=="Temperature")
+                            {
+                                try {
+                                    value = getTemperature();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                sn.setNewValue(value);
+                            }
+
                         }
-                        ts.setNewValue(value);
+
+//                        try {
+//                            value = getTemperature();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        ts.setNewValue(value);
 
                         try {
                             Thread.sleep(1000*10*60);

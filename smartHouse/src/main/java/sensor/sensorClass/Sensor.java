@@ -1,25 +1,26 @@
 package sensor.sensorClass;
 
-import database.Database;
 import database.ReadInDatabase;
 import database.WriteInDatabase;
 import database.data.DataLinkToDate;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 /**
  * Created by loulou on 21/01/2017.
  */
 public class Sensor {
     private double currentValue;
+    private String sensorType = "default";
+
+    public String getType() {return sensorType;}
+    public void setType(String type) {sensorType = type;}
 
     public void setCurrentValue(double currentValue) {
         this.currentValue = currentValue;
     }
-
     public double getCurrentValue() {
         return currentValue;
     }
@@ -28,11 +29,13 @@ public class Sensor {
         return ReadInDatabase.getLastValue(this);
     }
 
-    public ArrayList<DataLinkToDate> getValuesOnPeriod(Timestamp startDate, Timestamp endDate){
+    public ArrayList<DataLinkToDate> getValuesOnPeriod(Timestamp startDate, Timestamp endDate)
+    {
         return  ReadInDatabase.getValuesOnPeriod(this, startDate, endDate);
     }
 
-    public void setNewValue(double newValue){
+    public void setNewValue(double newValue)
+    {
         if (newValue != currentValue){
             WriteInDatabase.writeSensorValue(this, newValue);
             this.setCurrentValue(newValue);

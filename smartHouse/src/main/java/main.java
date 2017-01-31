@@ -1,12 +1,19 @@
 import bacnet.BacNetToJava;
-import org.eclipse.jetty.server.*;
+import database.ReadInDatabase;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import sensor.sensorClass.Sensor;
+import sensor.sensorClass.Sensors;
 import webserver.*;
 
-import javax.servlet.*;
+import javax.servlet.DispatcherType;
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 
@@ -68,7 +75,18 @@ public class main {
         handlers.setHandlers(new Handler[]{wsHandler, context });
         server.setHandler(handlers);
         server.start();
+
         BacNetToJava physicalSensor = BacNetToJava.getInstance();
+
+        Sensors sns = Sensors.getInstance();
+        ArrayList<String> sensorsList = ReadInDatabase.getAllSensorsName();
+        for(String sensorType:sensorsList)
+        {
+            Sensor sn = new Sensor();
+            sn.setType(sensorType);
+            sns.addSensor(sn);
+        }
+
         server.join();
     }
 
