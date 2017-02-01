@@ -2,15 +2,7 @@ package webserver;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
-<<<<<<< HEAD
-import com.google.api.client.json.Json;
-import com.google.gson.Gson;
-=======
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
->>>>>>> e863d40a03c3cabbcdbdfa646553a62ddb566919
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import computeAggregatedData.Indicators;
@@ -23,9 +15,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 
 @WebSocket
