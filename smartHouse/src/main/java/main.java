@@ -23,7 +23,15 @@ import java.util.EnumSet;
 public class main {
     public static void main (String[] args) throws Exception {
 
-       // BacNetToJava.getInstance();
+
+        Sensors sensors = Sensors.getInstance();
+        ArrayList<String> sensorsList = ReadInDatabase.getAllSensorsName();
+        for(String sensorType : sensorsList)
+        {
+            Sensor sensor = new Sensor(sensorType);
+            sensors.addSensor(sensor);
+        }
+
 
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
@@ -76,16 +84,6 @@ public class main {
         server.setHandler(handlers);
         server.start();
 
-        BacNetToJava physicalSensor = BacNetToJava.getInstance();
-
-        Sensors sns = Sensors.getInstance();
-        ArrayList<String> sensorsList = ReadInDatabase.getAllSensorsName();
-        for(String sensorType:sensorsList)
-        {
-            Sensor sn = new Sensor();
-            sn.setType(sensorType);
-            sns.addSensor(sn);
-        }
 
         server.join();
     }

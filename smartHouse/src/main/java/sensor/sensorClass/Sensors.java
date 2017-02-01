@@ -15,16 +15,18 @@ public class Sensors {
 
 	private List<Sensor> sensors = new ArrayList();
 
-	public List<Sensor> getAllSensors() {
+	public List<Sensor> getSensors() {
 		return sensors;
 	}
 
 	public Sensor getSensorByString(String type) {
+		Sensor sensorResult = null;
 		for (Sensor sensor : sensors) {
-			if (sensor.getType() == type)
-				
+			if (sensor.getType() == type) {
+				sensorResult = sensor;
+			}
 		}
-		return sensor;
+		return sensorResult;
 	}
 
 	public void addSensor(Sensor sensor) {

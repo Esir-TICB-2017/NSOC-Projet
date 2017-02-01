@@ -12,33 +12,41 @@ import java.util.ArrayList;
  * Created by loulou on 21/01/2017.
  */
 public class Sensor {
-    private double currentValue;
-    private String sensorType = "default";
+	private double currentValue;
+	private String type;
 
-    public String getType() {return sensorType;}
-    public void setType(String type) {sensorType = type;}
+	public Sensor(String type) {
+		this.type = type;
+	}
 
-    public void setCurrentValue(double currentValue) {
-        this.currentValue = currentValue;
-    }
-    public double getCurrentValue() {
-        return currentValue;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public DataLinkToDate getLastValue() {
-        return ReadInDatabase.getLastValue(this);
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public ArrayList<DataLinkToDate> getValuesOnPeriod(Timestamp startDate, Timestamp endDate)
-    {
-        return  ReadInDatabase.getValuesOnPeriod(this, startDate, endDate);
-    }
+	public void setCurrentValue(double currentValue) {
+		this.currentValue = currentValue;
+	}
 
-    public void setNewValue(double newValue)
-    {
-        if (newValue != currentValue){
-            WriteInDatabase.writeSensorValue(this, newValue);
-            this.setCurrentValue(newValue);
-        }
-    }
+	public double getCurrentValue() {
+		return currentValue;
+	}
+
+	public DataLinkToDate getLastValue() {
+		return ReadInDatabase.getLastValue(this);
+	}
+
+	public ArrayList<DataLinkToDate> getValuesOnPeriod(Timestamp startDate, Timestamp endDate) {
+		return ReadInDatabase.getValuesOnPeriod(this, startDate, endDate);
+	}
+
+	public void setNewValue(double newValue) {
+		if (newValue != currentValue) {
+			WriteInDatabase.writeSensorValue(this, newValue);
+			this.setCurrentValue(newValue);
+		}
+	}
 }

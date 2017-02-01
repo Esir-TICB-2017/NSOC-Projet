@@ -22,32 +22,8 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         Long end = Long.parseLong(request.getParameter("endDate"));
         Timestamp startDate = new Timestamp(start * 1000);
         Timestamp endDate = new Timestamp(end * 1000);
-        ArrayList<DataLinkToDate> result;
         String sensorName = request.getParameter("sensorName");
-        switch (sensorName) {
-            case "temperature" : {
-                result = TemperatureSensor.getInstance().getValuesOnPeriod(startDate, endDate);
-                break;
-            }
-            case "co2": {
-                result = CO2Sensor.getInstance().getValuesOnPeriod(startDate, endDate);
-                break;
-            }
-            case "consumption" : {
-                result = ConsumptionSensor.getInstance().getValuesOnPeriod(startDate, endDate);
-                break;
-            }
-            case "humidity" : {
-                result = HumiditySensor.getInstance().getValuesOnPeriod(startDate, endDate);
-                break;
-            }
-            case "production" : {
-                result = ProductionSensor.getInstance().getValuesOnPeriod(startDate, endDate);
-                break;
-            }
-            default:
-                result = null;
-        }
+        ArrayList<DataLinkToDate> result = Sensors.getInstance().getSensorByString(sensorName).getValuesOnPeriod(startDate, endDate);
 
         if(result != null) {
             Gson gson = new Gson();
