@@ -38,7 +38,6 @@ public class WebSocketHandler {
         // this unique ID
         try {
             JsonElement results = Sensors.getInstance().getLastValues();
-            System.out.println(results);
             Double globalIndicator = ReadInDatabase.getLastIndicator("global").getData();
             JSONObject result = new JSONObject();
             result.put("key", Indicators.GLOBAL);
