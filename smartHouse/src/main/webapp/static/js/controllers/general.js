@@ -14,19 +14,17 @@ angular.module('nsoc')
 	};
 	$scope.actualSelector;
 
-	$scope.$on('newValue', (event, obj) => {
+	$scope.$on('firstData', (event, data) => {
 		$scope.$apply(() => {
-			if (obj.key === 'GlobalIndicators') {
-				$rootScope.houseIndicator = obj.value;
-				getHouseHealth();
-			} else {
-				const index = _.findIndex($scope.sensors, (sensor) => sensor.key === obj.key);
-				if (index !== -1) {
-					$scope.sensors[index].value = parseInt(obj.value);
-				} else {
-					$scope.sensors.push({key: obj.key, value: parseInt(obj.value)});
+				if (data.globalIndicator.key === 'GlobalIndicators') {
+					$rootScope.houseIndicator = data.globalIndicator.value;
+					getHouseHealth();
 				}
-			}
+				data.lastValues.forEach((sensor) => {
+					if (sensor.type === "sensor") {
+						$scope.sensors.push(sensor);
+					}
+				});
 		});
 	});
 

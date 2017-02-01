@@ -26,10 +26,8 @@ angular.module('nsoc')
 
         websocketService.start('ws://127.0.0.1:8080/', (evt) => {
             var obj = JSON.parse(evt.data);
-						console.log(obj);
-			 			if (obj.key && obj.value) {
-                $scope.$broadcast('newValue', obj);
-            }
-
+						if (obj.globalIndicator && obj.lastValues) {
+							$scope.$broadcast('firstData', obj);
+						}
         });
     });
