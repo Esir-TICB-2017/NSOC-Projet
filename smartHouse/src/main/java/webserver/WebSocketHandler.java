@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.api.client.json.Json;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import computeAggregatedData.Indicators;
 import database.Database;
 import database.ReadInDatabase;
@@ -37,13 +40,17 @@ public class WebSocketHandler {
 
         // this unique ID
         try {
-            JsonElement results = Sensors.getInstance().getLastValues();
+            JsonElement lastValues = Sensors.getInstance().getLastValues();
             Double globalIndicator = ReadInDatabase.getLastIndicator("global").getData();
-            JSONObject result = new JSONObject();
-            result.put("key", Indicators.GLOBAL);
-            result.put("value", globalIndicator);
-            String str = result.toString();
-            session.getRemote().sendString(str);
+            JsonObject indicator = new JsonObject();
+            indicator.addProperty("key", Indicators.GLOBAL);
+            indicator.addProperty("value", globalIndicator);
+            JsonObject toSend = new JsonObject();
+            toSend.add("globalIndicator", indicator);
+            toSend.add("lastValues", lastValues);
+            String toSendString = toSend.toString();
+            System.out.println(toSendString);
+            session.getRemote().sendString(toSendString);
         } catch (IOException e) {
             e.printStackTrace();
         }
