@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gson.JsonElement;
 import computeAggregatedData.Indicators;
 import database.Database;
 import database.ReadInDatabase;
@@ -14,6 +15,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
@@ -35,14 +37,9 @@ public class WebSocketHandler {
 
         // this unique ID
         try {
-            List<Sensor> sensors = Sensors.getInstance().getSensors();
-            for(Sensor sensor : sensors) {
-                DataLinkToDate value = sensor.getLastValue();
-
-                String str = value.getDataToJson().toString();
-                session.getRemote().sendString(str);
-            }
-            Double globalIndicator = ReadInDatabase.getLastIndicator(Indicators.GLOBAL).getData();
+            JsonElement results = Sensors.getInstance().getLastValues();
+            System.out.println(results);
+            Double globalIndicator = ReadInDatabase.getLastIndicator("global").getData();
             JSONObject result = new JSONObject();
             result.put("key", Indicators.GLOBAL);
             result.put("value", globalIndicator);
