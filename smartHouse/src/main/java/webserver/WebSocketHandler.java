@@ -4,8 +4,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+<<<<<<< HEAD
 import com.google.api.client.json.Json;
 import com.google.gson.Gson;
+=======
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+>>>>>>> e863d40a03c3cabbcdbdfa646553a62ddb566919
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import computeAggregatedData.Indicators;
@@ -51,6 +56,7 @@ public class WebSocketHandler {
             String toSendString = toSend.toString();
             System.out.println(toSendString);
             session.getRemote().sendString(toSendString);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
