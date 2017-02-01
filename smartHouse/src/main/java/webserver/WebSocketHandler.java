@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import computeAggregatedData.Indicators;
 import database.Database;
@@ -37,13 +39,16 @@ public class WebSocketHandler {
 
         // this unique ID
         try {
-            JsonElement results = Sensors.getInstance().getLastValues();
-            System.out.println(results);
+            JsonElement sensorValues = Sensors.getInstance().getLastValues();
+            JsonArray sensors = sensorValues.getAsJsonArray();
             Double globalIndicator = ReadInDatabase.getLastIndicator("global").getData();
-            JSONObject result = new JSONObject();
-            result.put("key", Indicators.GLOBAL);
-            result.put("value", globalIndicator);
-            String str = result.toString();
+            JSONObject houseIndicator = new JSONObject();
+            houseIndicator.put("key", Indicators.GLOBAL);
+            houseIndicator.put("value", globalIndicator);
+            Gson gson = new Gson();
+            JsonElement result = gson.toJsonTree(houseIndicator).getAsJsonObject().get("map");
+            sensors.add(result);
+            String str = sensors.toString();
             session.getRemote().sendString(str);
         } catch (IOException e) {
             e.printStackTrace();
