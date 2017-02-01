@@ -3,12 +3,8 @@ package database;
 import computeAggregatedData.Indicators;
 import database.data.DataLinkToDate;
 import database.databaseInterface.InterfaceReadDatabase;
-import jdk.nashorn.api.scripting.JSObject;
-import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
-
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +36,25 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
             ex.printStackTrace();
         }
         return dltd;
+    }
+
+    public static ArrayList<String> getAllSensorsName() {
+        Connection connection = ConnectionManager.getConnection();
+        ArrayList<String> SensorsNamelist = new ArrayList(1);
+        String sql = "SELECT type_name FROM sensor_type";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            try(ResultSet rs = preparedStatement.executeQuery()) {
+                while(rs.next()){
+                    String name = rs.getString("type_name");
+                    SensorsNamelist.add(name);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return SensorsNamelist;
     }
 
     public static ArrayList<DataLinkToDate> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate) {

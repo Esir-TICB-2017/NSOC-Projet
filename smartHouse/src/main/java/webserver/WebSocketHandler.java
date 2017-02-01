@@ -33,7 +33,6 @@ public class WebSocketHandler {
         this.session = session;
 
         // this unique ID
-
         try {
             List<Sensor> sensors = Sensors.getInstance().getSensors();
             for(Sensor sensor : sensors) {
