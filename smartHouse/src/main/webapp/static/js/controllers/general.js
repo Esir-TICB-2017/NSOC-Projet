@@ -33,7 +33,7 @@ angular.module('nsoc')
 		const startDate = moment().startOf(selector.value).format('X');
 		const endDate = moment().format('X');
 		getDataService.get(startDate, endDate, (data) => {
-			d3ChartService.draw(data, 'homeChart');
+			// d3ChartService.draw(data, 'homeChart');
 		});
 	};
 
