@@ -1,5 +1,8 @@
 package database.data;
 
+import com.google.gson.JsonObject;
+import org.json.JSONObject;
+
 import java.sql.Timestamp;
 
 /**
@@ -34,4 +37,13 @@ public class DataLinkToDate {
 		return date;
 	}
 
+	public JSONObject getDataToJson() {
+		JSONObject json = new JSONObject();
+		json.put("value", this.getData());
+		json.put("type", this.getType());
+		json.put("date", this.getDate());
+		json.put("name", this.getName());
+
+		return json;
+	}
 }

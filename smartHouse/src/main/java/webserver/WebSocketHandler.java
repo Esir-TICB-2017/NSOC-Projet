@@ -7,6 +7,7 @@ import java.util.List;
 import computeAggregatedData.Indicators;
 import database.Database;
 import database.ReadInDatabase;
+import database.data.DataLinkToDate;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -36,12 +37,9 @@ public class WebSocketHandler {
         try {
             List<Sensor> sensors = Sensors.getInstance().getSensors();
             for(Sensor sensor : sensors) {
-                Double value = ReadInDatabase.getLastValue(sensor).getData();
-                String type = Database.getTypeFromSensorClass(sensor);
-                JSONObject result = new JSONObject();
-                result.put("key", type);
-                result.put("value", value);
-                String str = result.toString();
+                DataLinkToDate value = sensor.getLastValue();
+
+                String str = value.getDataToJson().toString();
                 session.getRemote().sendString(str);
             }
             Double globalIndicator = ReadInDatabase.getLastIndicator(Indicators.GLOBAL).getData();
