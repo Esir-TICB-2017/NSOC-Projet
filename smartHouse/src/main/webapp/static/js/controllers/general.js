@@ -26,7 +26,7 @@ angular.module('nsoc')
 					}
 				});
 		});
-		document.getElementsByClassName('home')[0].style.opacity = "1";
+		$rootScope.loading = false;
 	});
 
 	$scope.getData = function (selector) {

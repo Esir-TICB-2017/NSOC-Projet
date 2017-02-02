@@ -2,6 +2,7 @@ angular.module('nsoc')
 .controller('loginController', function($scope, $rootScope, $http, $location, $cookies, websocketService) {
 	$scope.options = {
 		'onsuccess': function(googleUser) {
+			$rootScope.loading = true;
 			// Useful data for our client-side scripts:
 			var profile = googleUser.getBasicProfile();
 			const userId = profile.Eea;
@@ -37,11 +38,14 @@ angular.module('nsoc')
 					}
 				});
 			}, function error(err) {
+				$rootScope.loading = false;
 				console.log(err);
 				console.log('Please try to login again');
 			});
-
-		}
+		},
+		'onerror': function(err) {
+			console.log("error", err);
+		},
 	}
 })
 .directive('googleSignInButton', function() {

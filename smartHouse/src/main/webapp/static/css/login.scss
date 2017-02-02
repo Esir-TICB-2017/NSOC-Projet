@@ -3,6 +3,10 @@
 &>.login {
 	margin: auto;
 
+	&.loading {
+		opacity: 0.2;
+	}
+
 	&>.welcome {
 		font-size: 30px;
 		text-align: center;
