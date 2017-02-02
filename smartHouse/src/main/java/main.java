@@ -15,6 +15,8 @@ import webserver.*;
 import javax.servlet.DispatcherType;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -25,12 +27,15 @@ public class main {
 
 
         Sensors sensors = Sensors.getInstance();
-        ArrayList<String> sensorsList = ReadInDatabase.getAllSensorsName();
-        for(String sensorType : sensorsList)
-        {
-            Sensor sensor = new Sensor(sensorType);
+        Map<String, Integer> sensorsList = ReadInDatabase.getAllSensorsName();
+        Iterator it = sensorsList.entrySet().iterator();
+        while(it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Sensor sensor = new Sensor((String) pair.getKey(), (Integer) pair.getValue());
             sensors.addSensor(sensor);
         }
+
+
 
 
         // Get webapp directory

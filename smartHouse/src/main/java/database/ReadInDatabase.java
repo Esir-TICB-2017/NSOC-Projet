@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by loulou on 21/01/2017.
@@ -46,15 +47,17 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
-	public static ArrayList<String> getAllSensorsName() {
+	public static Map<String, Integer> getAllSensorsName() {
 		Connection connection = ConnectionManager.getConnection();
-		ArrayList<String> SensorsNamelist = new ArrayList(1);
-		String sql = "SELECT type_name FROM sensor_type";
+		Map<String, Integer> Sensorslist = new HashMap<String, Integer>(1);
+		String sql = "SELECT type_name, id FROM sensor_type";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					String name = rs.getString("type_name");
-					SensorsNamelist.add(name);
+					Integer id = rs.getInt("id");
+					Sensorslist.put(name, id);
+
 				}
 			} catch (SQLException ex) {
 				ex.printStackTrace();
@@ -62,7 +65,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		return SensorsNamelist;
+		return Sensorslist;
 	}
 
 	public static ArrayList<DataLinkToDate> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate) {
