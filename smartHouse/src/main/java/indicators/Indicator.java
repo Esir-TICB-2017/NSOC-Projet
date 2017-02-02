@@ -22,15 +22,20 @@ public class Indicator {
 		this.id = id;
 		this.type = type;
 		this.currentValue = null;
-//		Double[] comfortValues = ReadInDatabase.getIndicatorComfortValue(id);
-//		this.minComfortValue = comfortValues[0];
-//		this.minComfortValue = comfortValues[1];
+		Double[] comfortValues = ReadInDatabase.getIndicatorValues(id);
+		this.minComfortValue = comfortValues[0];
+		this.minComfortValue = comfortValues[1];
+		this.minValue = comfortValues[2];
+		this.maxValue = comfortValues[3];
 	}
 
 	public Indicator(Integer id, String type, Double minComfortValue, Double maxComfortValue) {
 		this(id, type);
 		this.minComfortValue = minComfortValue;
 		this.maxComfortValue = maxComfortValue;
+		Double[] comfortValues = ReadInDatabase.getIndicatorValues(id);
+		this.minValue = comfortValues[2];
+		this.maxValue = comfortValues[3];
 	}
 
 	public String getType() {
@@ -50,11 +55,11 @@ public class Indicator {
 		} else {
 			if (currentSensorValue > minValue && currentSensorValue < minComfortValue) {
 				Double x = (currentSensorValue * 100) / minComfortValue;
-				indicator = Math.log(x);
+				indicator = x;
 			} else {
 				if (currentSensorValue > maxComfortValue) {
 					Double x = (currentSensorValue * 100) / maxComfortValue;
-					indicator = -Math.log(x);
+					indicator = x;
 				} else {
 					indicator = currentValue;
 				}

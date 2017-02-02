@@ -172,7 +172,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		Timestamp date;
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<DataLinkToDate> list = new ArrayList(1);
-		String sql = "SELECT indicators.submission_date, indicators.indicator_value" +
+		String sql = "SELECT indicators.submission_date, indicators.indicator_value " +
 				" FROM indicators " +
 				"INNER JOIN indicators_type " +
 				"ON indicators.indicator_type_id = indicators_type.id " +
@@ -195,6 +195,30 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			ex.printStackTrace();
 		}
 		return list;
+	}
+
+	public static Double[] getIndicatorValues(Integer id) {
+		Double[] comfortValues = new Double[2];
+		String sql = "SELECT min_comfort_value, max_comfort_value " +
+				"FROM indicators " +
+				"WHERE indicators.id = ?";
+		Connection connection = ConnectionManager.getConnection();
+		try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, id);
+			try(ResultSet rs = preparedStatement.executeQuery()) {
+				while(rs.next()) {
+					comfortValues[0] = rs.getDouble("min_comfort_value");
+					comfortValues[1] = rs.getDouble("max_comfort_value");
+					comfortValues[2] = rs.getDouble("min_value");
+					comfortValues[3] = rs.getDouble("max_value");
+				}
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return comfortValues;
 	}
 
 	public static ArrayList<HashMap> getUser(String userId) {
