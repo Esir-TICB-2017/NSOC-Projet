@@ -18,11 +18,11 @@ public class RequestFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String path = request.getRequestURI().substring(request.getContextPath().length());
-        System.out.println(request.getRequestURI());
         Boolean isStatic = path.startsWith("/static");
         Boolean isLoginServlet = request.getRequestURI().equals("/login");
+        Boolean isLogoutServlet = request.getRequestURI().equals("/logout");
         Boolean isIndex = request.getRequestURI().equals("/") || request.getRequestURI().equals("index.html");
-        if (isStatic || isLoginServlet || isIndex) {
+        if (isStatic || isLoginServlet || isIndex || isLogoutServlet) {
             chain.doFilter(request, response);
             return;
         } else {

@@ -14,20 +14,19 @@ angular.module('nsoc')
 	};
 	$scope.actualSelector;
 
-	$scope.$on('newValue', (event, obj) => {
+	$scope.$on('firstData', (event, data) => {
 		$scope.$apply(() => {
-			if (obj.key === 'GlobalIndicators') {
-				$rootScope.houseIndicator = obj.value;
-				getHouseHealth();
-			} else {
-				const index = _.findIndex($scope.sensors, (sensor) => sensor.key === obj.key);
-				if (index !== -1) {
-					$scope.sensors[index].value = parseInt(obj.value);
-				} else {
-					$scope.sensors.push({key: obj.key, value: parseInt(obj.value)});
+				if (data.globalIndicator.key === 'GlobalIndicators') {
+					$rootScope.houseIndicator = data.globalIndicator.value;
+					getHouseHealth();
 				}
-			}
+				data.lastValues.forEach((sensor) => {
+					if (sensor.type === "sensor") {
+						$scope.sensors.push(sensor);
+					}
+				});
 		});
+		$rootScope.loading = false;
 	});
 
 	$scope.getData = function (selector) {
@@ -35,7 +34,7 @@ angular.module('nsoc')
 		const startDate = moment().startOf(selector.value).format('X');
 		const endDate = moment().format('X');
 		getDataService.get(startDate, endDate, (data) => {
-			d3ChartService.draw(data, 'homeChart');
+			// d3ChartService.draw(data, 'homeChart');
 		});
 	};
 

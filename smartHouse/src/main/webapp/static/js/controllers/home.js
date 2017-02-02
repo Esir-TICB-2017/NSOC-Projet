@@ -1,34 +1,31 @@
 angular.module('nsoc')
-    .controller('homeController', ($scope, $http, $location, websocketService, _) => {
-        $scope.tabs = ['general', 'data', 'settings'];
-        $scope.actualTab = $scope.tabs[0];
-        $scope.sensors = [];
+.controller('homeController', ($scope, $rootScope, $http, $location, _, websocketService) => {
+	$scope.tabs = ['general', 'data', 'settings'];
+	$scope.actualTab = $scope.tabs[0];
+	$scope.sensors = [];
 
-        $scope.changeTab = (newTab) => {
-            $scope.actualTab = newTab;
-        };
-        $scope.signOut = function () {
-            $scope.GoogleAuth.signOut().then(() => {
-                $http({
-                    method: 'GET',
-                    url: '/logout'
-                }).then(function success(res) {
-                    console.log(res);
-                    console.log('User signed out.');
-                    $location.path('/login');
-                }, function error(err) {
-                    // TODO Force logout on server
-                    console.log(err);
-                    console.log('Please try to logout again');
-                });
-            });
-        }
+	$scope.changeTab = (newTab) => {
+		$scope.actualTab = newTab;
+	};
+	// Rediriger vers login si on reçoit un forbidden (refresh de la page mais plus authentifié, le serveur renvoie 403)
 
-        websocketService.start('ws://127.0.0.1:8080/', (evt) => {
-            var obj = JSON.parse(evt.data);
-			 			if (obj.key && obj.value) {
-                $scope.$broadcast('newValue', obj);
-            }
+	$scope.signOut = function () {
+		$scope.GoogleAuth.signOut().then(() => {
+			$http({
+				method: 'GET',
+				url: '/logout'
+			}).then(function success(res) {
+				console.log('User signed out.');
+				$rootScope.authenticated = false;
+				$location.path('/login');
+			}, function error(err) {
+				console.log(err);
+				console.log('Please try to logout again');
+			});
+		});
+	}
 
-        });
-    });
+	$scope.$on('signOut', function() {
+		$scope.signOut();
+	});
+});

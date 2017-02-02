@@ -18,6 +18,7 @@ public class SessionManager {
 
 	public static Boolean checkAuthentication(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
+
 		if (session != null) {
 			String userId = (String) session.getAttribute("userId");
 			String userToken = (String) session.getAttribute("userToken");

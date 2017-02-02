@@ -2,10 +2,9 @@ package webserver;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import computeAggregatedData.Indicators;
-import database.Database;
 import database.ReadInDatabase;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -13,8 +12,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.json.JSONObject;
-import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 
 @WebSocket
@@ -31,26 +28,21 @@ public class WebSocketHandler {
     @OnWebSocketConnect
     public void onConnect(Session session) {
         this.session = session;
-
         // this unique ID
-
         try {
-            List<Sensor> sensors = Sensors.getInstance().getSensors();
-            for(Sensor sensor : sensors) {
-                Double value = ReadInDatabase.getLastValue(sensor).getData();
-                String type = Database.getTypeFromSensorClass(sensor);
-                JSONObject result = new JSONObject();
-                result.put("key", type);
-                result.put("value", value);
-                String str = result.toString();
-                session.getRemote().sendString(str);
-            }
-            Double globalIndicator = ReadInDatabase.getLastIndicator(Indicators.GLOBAL).getData();
-            JSONObject result = new JSONObject();
-            result.put("key", Indicators.GLOBAL);
-            result.put("value", globalIndicator);
-            String str = result.toString();
-            session.getRemote().sendString(str);
+            JsonElement lastValues = Sensors.getInstance().getLastValues();
+            Double globalIndicator = ReadInDatabase.getLastIndicator("global").getData();
+            JsonObject indicator = new JsonObject();
+            indicator.addProperty("key", Indicators.GLOBAL);
+            indicator.addProperty("value", globalIndicator);
+            JsonObject toSend = new JsonObject();
+            toSend.add("globalIndicator", indicator);
+            toSend.add("lastValues", lastValues);
+            String toSendString = toSend.toString();
+            System.out.println(toSendString);
+            session.getRemote().sendString(toSendString);
+            // session.setIdleTimeout(5 * 60 * 1000);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

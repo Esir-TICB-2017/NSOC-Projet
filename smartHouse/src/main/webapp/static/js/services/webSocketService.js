@@ -1,24 +1,26 @@
 /**
- * Created by loulou on 30/01/2017.
- */
+* Created by loulou on 30/01/2017.
+*/
 angular.module('nsoc')
-    .factory('websocketService', () => {
-    return {
-        start: function (url, callback) {
-            var websocket = new WebSocket(url);
-            websocket.onopen = () => {
-                console.log("Opened!");
-                websocket.send("Hello Server");
-            };
-            websocket.onclose = () => {
-                console.log("Closed!");
-            };
-            websocket.onmessage = (evt) => {
-                callback(evt);
-            };
-            websocket.onerror = (err) => {
-                console.log("Error: " + err);
-            };
-        }
-    }
+.factory('websocketService', () => {
+	return {
+		start: function (url, onOpen, onClose, onMessage) {
+			this.websocket = new WebSocket(url);
+			this.websocket.onopen = () => {
+				console.log("Opened!");
+				this.websocket.send("");
+				onOpen(this.websocket);
+			};
+			this.websocket.onclose = () => {
+				console.log("Closed!");
+				onClose();
+			};
+			this.websocket.onmessage = (evt) => {
+				onMessage(evt);
+			};
+			this.websocket.onerror = (err) => {
+				console.log("Error: " + err);
+			};
+		}
+	}
 });

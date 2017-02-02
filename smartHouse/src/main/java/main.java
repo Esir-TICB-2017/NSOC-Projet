@@ -1,13 +1,22 @@
 import bacnet.BacNetToJava;
-import org.eclipse.jetty.server.*;
+import database.ReadInDatabase;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import sensor.sensorClass.Sensor;
+import sensor.sensorClass.Sensors;
 import webserver.*;
 
-import javax.servlet.*;
+import javax.servlet.DispatcherType;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -16,7 +25,18 @@ import java.util.EnumSet;
 public class main {
     public static void main (String[] args) throws Exception {
 
-       // BacNetToJava.getInstance();
+
+        Sensors sensors = Sensors.getInstance();
+        Map<String, Integer> sensorsList = ReadInDatabase.getAllSensorsName();
+        Iterator it = sensorsList.entrySet().iterator();
+        while(it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Sensor sensor = new Sensor((String) pair.getKey(), (Integer) pair.getValue());
+            sensors.addSensor(sensor);
+        }
+
+
+
 
         // Get webapp directory
         String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
@@ -64,12 +84,12 @@ public class main {
 
         context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 
-
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{wsHandler, context });
         server.setHandler(handlers);
         server.start();
-        BacNetToJava physicalSensor = BacNetToJava.getInstance();
+
+
         server.join();
     }
 

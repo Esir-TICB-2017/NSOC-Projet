@@ -45,13 +45,13 @@
 				color        : black;
 			}
 			&>.value {
-				margin      : auto;
+				margin : auto;
 			}
 		}
 
 		&>.sensors {
 			display: flex;
-			margin: 0 auto auto auto;
+			margin: 0 20% auto 20%;
 
 			&>.sensor {
 				position       : relative;
@@ -61,10 +61,6 @@
 				align-items    : center;
 				color          : white;
 				font-size      : 18px;
-				margin-right   : 40px;
-				&:last-child {
-					margin-right: 0;
-				}
 
 				&>.name {
 					position: absolute;
