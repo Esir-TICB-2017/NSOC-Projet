@@ -22,9 +22,9 @@ public class Indicator {
 		this.id = id;
 		this.type = type;
 		this.currentValue = null;
-		Double[] comfortValues = ReadInDatabase.getIndicatorComfortValue(id);
-		this.minComfortValue = comfortValues[0];
-		this.minComfortValue = comfortValues[1];
+//		Double[] comfortValues = ReadInDatabase.getIndicatorComfortValue(id);
+//		this.minComfortValue = comfortValues[0];
+//		this.minComfortValue = comfortValues[1];
 	}
 
 	public Indicator(Integer id, String type, Double minComfortValue, Double maxComfortValue) {
