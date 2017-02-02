@@ -79,7 +79,6 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .ease(d3.easeLinear)
                 .style('opacity', 1)
                 .attr("d", areaGen);
-            console.log(test);
             /*
             var totalLength = test.node().getTotalLength();
 

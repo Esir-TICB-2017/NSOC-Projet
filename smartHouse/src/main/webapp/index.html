@@ -28,6 +28,7 @@
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</head>
 	<body ng-app="nsoc" ng-controller="mainController">
+		<div ng-if="$root.loading" class="loader"></div>
 		<div class="view" ng-view></div>
 	</body>
 </html>

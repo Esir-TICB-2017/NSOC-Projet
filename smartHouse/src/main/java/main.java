@@ -83,7 +83,6 @@ public class main {
 
         context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 
-
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{wsHandler, context });
         server.setHandler(handlers);
