@@ -22,7 +22,7 @@ public class GetSettingsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<String> result=null;
-        String userid = request.getParameter("userid");
+        String userid = (String) request.getSession().getAttribute("userId");
 
         result = ReadInDatabase.getSettings(userid);
 
