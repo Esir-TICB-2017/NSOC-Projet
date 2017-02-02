@@ -156,12 +156,14 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 			preparedStatement.setString(1, userId); //set user id
 
+            //step settings
 			preparedStatement.setDouble(2, Double.parseDouble(settings.get(0)));	//setTempStep
 			preparedStatement.setDouble(3, Double.parseDouble(settings.get(1)));	//setCo2MinStep
 			preparedStatement.setDouble(4, Double.parseDouble(settings.get(2)));	//setCo2MaxStep
 			preparedStatement.setDouble(5, Double.parseDouble(settings.get(3)));	//setConsObj
 			preparedStatement.setDouble(6, Double.parseDouble(settings.get(4)));	//setProdObj
 
+            //home page settings
 			preparedStatement.setBoolean(7, Boolean.parseBoolean(settings.get(5)));		//displayTemperatureIndOnHome
 			preparedStatement.setBoolean(8, Boolean.parseBoolean(settings.get(6)));		//displayHumidityIndOnHome
 			preparedStatement.setBoolean(9, Boolean.parseBoolean(settings.get(7)));		//displayCo2IndOnHome
@@ -169,6 +171,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setBoolean(11, Boolean.parseBoolean(settings.get(9)));		//displayProductionIndOnHome
 			preparedStatement.setInt(12, Integer.parseInt(settings.get(10)));	            //periodChartOnHome
 
+            //data page settings
 			preparedStatement.setBoolean(13, Boolean.parseBoolean(settings.get(11)));	//displayGlobalChartOnData
 			preparedStatement.setBoolean(14, Boolean.parseBoolean(settings.get(12)));	//displayTemperatureChartOnData
 			preparedStatement.setBoolean(15, Boolean.parseBoolean(settings.get(13)));	//displayHumidityChartOnData
@@ -179,6 +182,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
             //query execution
 			preparedStatement.executeQuery();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

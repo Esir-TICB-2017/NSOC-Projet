@@ -14,62 +14,38 @@ import java.util.ArrayList;
  * Created by Quentin on 31/1/17.
  */
 
-/////////////////////TO DO
 public class PostSettingsServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<String> result=null;
 
         //retrieve userid
-        String userid = request.getParameter("userid");
-
-        //retrieve sensor steps settings
-        String setTempStep = request.getParameter("settemp");
-        String setCo2MinStep = request.getParameter("setco2min");
-        String setCo2MaxStep = request.getParameter("setco2max");
-        String setConsObj = request.getParameter("setconsobj");
-        String setProdObj = request.getParameter("setprodobj");
-
-        //retrieve home page settings
-        String displayTemperatureIndOnHome = request.getParameter("tempind");
-        String displayHumidityIndOnHome = request.getParameter("humidityind");
-        String displayCo2IndOnHome = request.getParameter("co2ind");
-        String displayConsumptionIndOnHome = request.getParameter("consind");
-        String displayProductionIndOnHome = request.getParameter("prodind");
-        String periodChartOnHome = request.getParameter("perhome");
-
-        //retrieve data page settings
-        String displayGlobalChartOnData = request.getParameter("globalchart");
-        String displayTemperatureChartOnData = request.getParameter("tempchart");
-        String displayHumidityChartOnData = request.getParameter("humiditychart");
-        String displayCo2ChartOnData = request.getParameter("co2chart");
-        String displayConsumptionChartOnData = request.getParameter("conschart");
-        String displayProductionChartOnData = request.getParameter("prodchart");
-        String periodChartsOnData = request.getParameter("perdata");
-
+        String userid = (String) request.getSession().getAttribute("userId");
 
         //build result Arraylist
-        result.set(0, setTempStep);
-        result.set(1, setCo2MinStep);
-        result.set(2, setCo2MaxStep);
-        result.set(3, setConsObj);
-        result.set(4, setProdObj);
+        //step settings
+        result.set(0, request.getParameter("settemp"));     //setTempStep
+        result.set(1, request.getParameter("setco2min"));   //setCo2MinStep
+        result.set(2, request.getParameter("setco2max"));   //setCo2MaxStep
+        result.set(3, request.getParameter("setconsobj"));  //setConsObj
+        result.set(4, request.getParameter("setprodobj"));  //setProdObj
 
-        result.set(5, displayTemperatureIndOnHome);
-        result.set(6, displayHumidityIndOnHome);
-        result.set(7, displayCo2IndOnHome);
-        result.set(8, displayConsumptionIndOnHome);
-        result.set(9, displayProductionIndOnHome);
-        result.set(10, periodChartOnHome);
+        //home page settings
+        result.set(5, request.getParameter("tempind"));         //displayTemperatureIndOnHome
+        result.set(6, request.getParameter("humidityind"));     //displayHumidityIndOnHome
+        result.set(7, request.getParameter("co2ind"));          //displayCo2IndOnHome
+        result.set(8, request.getParameter("consind"));         //displayConsumptionIndOnHome
+        result.set(9, request.getParameter("prodind"));         //displayProductionIndOnHome
+        result.set(10, request.getParameter("perhome"));        //periodChartOnHome
 
-        result.set(11, displayGlobalChartOnData);
-        result.set(12, displayTemperatureChartOnData);
-        result.set(13, displayHumidityChartOnData);
-        result.set(14, displayCo2ChartOnData);
-        result.set(15, displayConsumptionChartOnData);
-        result.set(16, displayProductionChartOnData);
-        result.set(17, periodChartsOnData);
-
+        //data page settings
+        result.set(11, request.getParameter("globalchart"));    //displayGlobalChartOnData
+        result.set(12, request.getParameter("tempchart"));      //displayTemperatureChartOnData
+        result.set(13, request.getParameter("humiditychart"));  //displayHumidityChartOnData
+        result.set(14, request.getParameter("co2chart"));       //displayCo2ChartOnData
+        result.set(15, request.getParameter("conschart"));      //displayConsumptionChartOnData
+        result.set(16, request.getParameter("prodchart"));      //displayProductionChartOnData
+        result.set(17, request.getParameter("perdata"));        //periodChartsOnData
 
         //write settings in database
         WriteInDatabase.writeSettings(userid ,result);

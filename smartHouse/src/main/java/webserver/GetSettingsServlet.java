@@ -17,12 +17,11 @@ import java.util.ArrayList;
  * Created by Quentin on 31/1/17.
  */
 
-/////////////////////TO DO
 public class GetSettingsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<String> result=null;
-        String userid = request.getParameter("userid");
+        ArrayList<String> result;
+        String userid = (String) request.getSession().getAttribute("userId");
 
         result = ReadInDatabase.getSettings(userid);
 
