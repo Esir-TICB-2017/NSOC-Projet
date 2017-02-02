@@ -28,7 +28,6 @@ public class WebSocketHandler {
     @OnWebSocketConnect
     public void onConnect(Session session) {
         this.session = session;
-
         // this unique ID
         try {
             JsonElement lastValues = Sensors.getInstance().getLastValues();
@@ -42,6 +41,7 @@ public class WebSocketHandler {
             String toSendString = toSend.toString();
             System.out.println(toSendString);
             session.getRemote().sendString(toSendString);
+            // session.setIdleTimeout(5 * 60 * 1000);
 
         } catch (IOException e) {
             e.printStackTrace();

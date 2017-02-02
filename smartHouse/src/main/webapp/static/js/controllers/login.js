@@ -1,12 +1,12 @@
 angular.module('nsoc')
-.controller('loginController', function($scope, $http, $location, $cookies) {
+.controller('loginController', function($scope, $rootScope, $http, $location, $cookies, websocketService) {
 	$scope.options = {
 		'onsuccess': function(googleUser) {
 			// Useful data for our client-side scripts:
 			var profile = googleUser.getBasicProfile();
+			const userId = profile.Eea;
 			$cookies.put('givenName', profile.ofa);
 			$cookies.put('pictureUrl', profile.Paa);
-			// $cookies.put('givenName', )
 			// The ID token we need to pass to your backend:
 			var id_token = googleUser.getAuthResponse().id_token;
 			$http({
@@ -18,7 +18,24 @@ angular.module('nsoc')
 				data: "idtoken=" + id_token,
 			}).then(function success(res) {
 				console.log('User signed in');
+				// user is authenticated
+				$rootScope.authenticated = true;
+				// redirect on home
 				$location.path('/home');
+				// start web socket service
+				websocketService.start('ws://127.0.0.1:8080/',
+				function onOpen(websocket) {
+					websocket.send(JSON.stringify({userId}));
+				},
+				function onClose() {
+					$rootScope.$broadcast('signOut');
+				},
+				function onMessage(evt) {
+					var obj = JSON.parse(evt.data);
+					if (obj.globalIndicator && obj.lastValues) {
+						$rootScope.$broadcast('firstData', obj);
+					}
+				});
 			}, function error(err) {
 				console.log(err);
 				console.log('Please try to login again');

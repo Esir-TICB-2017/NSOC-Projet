@@ -2,6 +2,8 @@
 
 &>.home {
 	flex             : 1;
+	opacity          : 0;
+	transition       : opacity 0.5s;
 	position         : relative;
 	display          : flex;
 	overflow         : hidden;
