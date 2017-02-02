@@ -21,14 +21,15 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		System.out.println(sensor.getClass().getSimpleName() + " " + value);
 
 		Connection connection = ConnectionManager.getConnection();
-		String className = sensor.getClass().getSimpleName();
-		String sql = "INSERT INTO " + className
-				+ "(VALUE, SUBMISSION_DATE) VALUES"
-				+ "(?, ?)";
+		String className = sensor.getType();
+		String sql = "INSERT INTO sensors_data "
+				+ "(sensor_value, submission_date, sensor_type_id) VALUES"
+				+ "(?, ?, ?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setDouble(1, value);
 			preparedStatement.setTimestamp(2, getCurrentTimeStamp());
+			preparedStatement.setInt(3, sensor.getId());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -39,7 +40,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	public static void writeIndicatorValue(String indicator, int value) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "INSERT INTO " + indicator + "(VALUE, SUBMISSION_DATE) VALUES" + "(?, ?)";
+		String sql = "INSERT INTO indicators (VALUE, SUBMISSION_DATE) VALUES" + "(?, ?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, value);

@@ -14,9 +14,16 @@ import java.util.ArrayList;
 public class Sensor {
 	private double currentValue;
 	private String type;
+	private Integer id;
 
-	public Sensor(String type) {
+	public int getId() {
+		return id;
+	}
+
+
+	public Sensor(String type, Integer id) {
 		this.type = type;
+		this.id = id;
 	}
 
 	public String getType() {
