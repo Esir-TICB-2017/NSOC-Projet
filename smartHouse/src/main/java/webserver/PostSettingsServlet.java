@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * Created by Quentin on 31/1/17.
  */
 
-/////////////////////TO DO
 public class PostSettingsServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
