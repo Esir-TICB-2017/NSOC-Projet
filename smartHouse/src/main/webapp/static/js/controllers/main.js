@@ -13,8 +13,8 @@ angular.module('nsoc')
 		if($location.path() == '/home'){
 			if (!$rootScope.authenticated) {
 				e.preventDefault();
-				$location.path('/login');
 				console.log('Please login first');
+				$location.path('/login');
 			}
 		}
 	});
