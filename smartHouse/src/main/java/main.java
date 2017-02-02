@@ -59,7 +59,8 @@ public class main {
         context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/getValuesOverPeriod");
         context.addServlet(new ServletHolder(new GetLastIndicatorsServlet()), "/getLastIndicators");
         context.addServlet(new ServletHolder(new GetIndicatorsOnPeriodServlet()), "/getIndicatorsOverPeriod");
-
+        context.addServlet(new ServletHolder(new GetSettingsServlet()), "/getSettings");
+        context.addServlet(new ServletHolder(new PostSettingsServlet()), "/postSettings");
 
         context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 

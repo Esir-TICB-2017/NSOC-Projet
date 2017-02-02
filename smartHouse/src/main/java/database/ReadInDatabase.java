@@ -13,11 +13,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Created by loulou on 21/01/2017.
  */
 public class ReadInDatabase extends Database implements InterfaceReadDatabase {
+
     public static DataLinkToDate getLastValue(Sensor sensor) {
         double data;
         Timestamp date;
@@ -166,5 +168,45 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
             ex.printStackTrace();
         }
         return list;
+    }
+
+
+    public static ArrayList<String> getSettings(String userId) {
+
+        Connection connection = ConnectionManager.getConnection();
+        ArrayList<String> listSettings = new ArrayList();
+        String sql = "SELECT * FROM settings WHERE userid=?";
+
+        //Values attribution and query execution
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, userId);
+            try(ResultSet rs = preparedStatement.executeQuery()) {
+                listSettings.set(0, rs.getString("settemp"));
+                listSettings.set(1, rs.getString("setco2min"));
+                listSettings.set(2, rs.getString("setco2max"));
+                listSettings.set(3, rs.getString("setconsobj"));
+                listSettings.set(4, rs.getString("setprodobj"));
+
+                listSettings.set(5, rs.getString("tempind"));
+                listSettings.set(6, rs.getString("humidityind"));
+                listSettings.set(7, rs.getString("co2ind"));
+                listSettings.set(8, rs.getString("consind"));
+                listSettings.set(9, rs.getString("prodind"));
+                listSettings.set(10, rs.getString("perhome"));
+
+                listSettings.set(11, rs.getString("globalchart"));
+                listSettings.set(12, rs.getString("tempchart"));
+                listSettings.set(13, rs.getString("humiditychart"));
+                listSettings.set(14, rs.getString("co2chart"));
+                listSettings.set(14, rs.getString("conschart"));
+                listSettings.set(16, rs.getString("prodchart"));
+                listSettings.set(17, rs.getString("perdata"));
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    return listSettings;
     }
 }
