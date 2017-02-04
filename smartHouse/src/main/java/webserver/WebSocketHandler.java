@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import computeAggregatedData.Indicators;
 import database.ReadInDatabase;
+import indicators.Indicator;
+import indicators.Indicators;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -31,12 +32,13 @@ public class WebSocketHandler {
         // this unique ID
         try {
             JsonElement lastValues = Sensors.getInstance().getLastValues();
-            Double globalIndicator = ReadInDatabase.getLastIndicator("global").getData();
-            JsonObject indicator = new JsonObject();
-            indicator.addProperty("key", Indicators.GLOBAL);
-            indicator.addProperty("value", globalIndicator);
+            Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
+            Double globalIndicator = ReadInDatabase.getLastIndicator(indicator).getData();
+            JsonObject indicatorJson = new JsonObject();
+            indicatorJson.addProperty("key", indicator.getType());
+            indicatorJson.addProperty("value", globalIndicator);
             JsonObject toSend = new JsonObject();
-            toSend.add("globalIndicator", indicator);
+            toSend.add("globalIndicator", indicatorJson);
             toSend.add("lastValues", lastValues);
             String toSendString = toSend.toString();
             System.out.println(toSendString);

@@ -87,7 +87,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                                 sensor.setNewValue(value);
                             }
                             Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
-                            indicator.calculateIndicator(sensor);
+                            indicator.calculateIndicator();
                         }
 //                        try {
 //                            value = getTemperature();

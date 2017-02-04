@@ -1,9 +1,10 @@
 package webserver;
 
 import com.google.gson.Gson;
-import computeAggregatedData.Indicators;
 import database.ReadInDatabase;
 import database.data.DataLinkToDate;
+import indicators.Indicator;
+import indicators.Indicators;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -19,35 +20,9 @@ public class GetLastIndicatorsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataLinkToDate result;
-        String indicator = request.getParameter("indicator");
-        switch (indicator) {
-            case "global": {
-                result = ReadInDatabase.getLastIndicator(Indicators.GLOBAL);
-                break;
-            }
-            case "temperature": {
-                result = ReadInDatabase.getLastIndicator(Indicators.TEMPERATURE);
-                break;
-            }
-            case "co2": {
-                result = ReadInDatabase.getLastIndicator(Indicators.CO2);
-                break;
-            }
-            case "consumption": {
-                result = ReadInDatabase.getLastIndicator(Indicators.CONSUMPTION);
-                break;
-            }
-            case "humidity": {
-                result = ReadInDatabase.getLastIndicator(Indicators.HUMIDITY);
-                break;
-            }
-            case "production": {
-                result = ReadInDatabase.getLastIndicator(Indicators.PRODUCTION);
-                break;
-            }
-            default:
-                result = null;
-        }
+        String type = request.getParameter("indicator");
+        Indicator indicator = Indicators.getInstance().getIndicatorByString(type);
+        result = ReadInDatabase.getLastIndicator(indicator);
 
         if (result != null) {
             Gson gson = new Gson();

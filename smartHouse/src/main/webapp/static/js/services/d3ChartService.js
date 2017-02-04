@@ -4,6 +4,7 @@
 angular.module('nsoc').factory('d3ChartService', () => {
     return {
         draw: (data, svgId) => {
+            console.log(data);
 
             const svg = d3.select(`svg#${svgId}`);
 

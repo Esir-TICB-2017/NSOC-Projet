@@ -16,7 +16,8 @@ angular.module('nsoc')
 
 	$scope.$on('firstData', (event, data) => {
 		$scope.$apply(() => {
-				if (data.globalIndicator.key === 'GlobalIndicators') {
+            if (data.globalIndicator.key === 'global') {
+            	console.log('ici')
 					$rootScope.houseIndicator = data.globalIndicator.value;
 					getHouseHealth();
 				}
@@ -34,7 +35,7 @@ angular.module('nsoc')
 		const startDate = moment().startOf(selector.value).format('X');
 		const endDate = moment().format('X');
 		getDataService.get(startDate, endDate, (data) => {
-			// d3ChartService.draw(data, 'homeChart');
+			d3ChartService.draw(data, 'homeChart');
 		});
 	};
 

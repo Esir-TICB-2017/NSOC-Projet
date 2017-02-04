@@ -1,8 +1,8 @@
 package database;
 
-import computeAggregatedData.Indicators;
 import database.data.DataLinkToDate;
 import database.databaseInterface.InterfaceReadDatabase;
+import indicators.Indicator;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 
@@ -123,15 +123,18 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return list;
 	}
 
-
+/*
 	public static ArrayList<DataLinkToDate> getAllLastIndicators() {
+
 		ArrayList<DataLinkToDate> list = new ArrayList(Indicators.ALL_INDICATORS.length);
 
 		for (String indicator : Indicators.ALL_INDICATORS) {
 			list.add(getLastIndicator(indicator));
 		}
 		return list;
+
 	}
+	*/
 
 	public static ArrayList<DataLinkToDate> getLastSensorsValues() {
 		ArrayList<DataLinkToDate> list = new ArrayList();
@@ -186,7 +189,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return list;
 	}
 
-	public static DataLinkToDate getLastIndicator(String indicator) {
+	public static DataLinkToDate getLastIndicator(Indicator indicator) {
 		DataLinkToDate result = null;
 		double data;
 		Timestamp date;
@@ -198,12 +201,13 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"WHERE indicators_type.type_name = ? " +
 				"ORDER BY indicators.submission_date DESC LIMIT 1";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setString(1, indicator);
+			System.out.println(indicator.getId());
+			preparedStatement.setString(1, indicator.getType());
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					date = rs.getTimestamp("submission_date");
 					data = rs.getDouble("indicator_value");
-					result = new DataLinkToDate(data, date, "indicator", indicator);
+					result = new DataLinkToDate(data, date, "indicator", indicator.getType());
 				}
 			} catch (SQLException ex) {
 				ex.printStackTrace();
@@ -214,9 +218,10 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
-	public static ArrayList<DataLinkToDate> getIndicatorsOnPeriod(String indicator, Timestamp startDate, Timestamp endDate) {
+	public static ArrayList<DataLinkToDate> getIndicatorsOnPeriod(Indicator indicator, Timestamp startDate, Timestamp endDate) {
 		double data;
 		Timestamp date;
+		String type = indicator.getType();
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<DataLinkToDate> list = new ArrayList(1);
 		String sql = "SELECT indicators.submission_date, indicators.indicator_value " +
@@ -226,14 +231,14 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"WHERE indicators_type.type_name = ? " +
 				"AND indicators.submission_date BETWEEN ? AND ?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setString(1, indicator);
+			preparedStatement.setString(1, type);
 			preparedStatement.setTimestamp(2, startDate);
 			preparedStatement.setTimestamp(3, endDate);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					date = rs.getTimestamp("submission_date");
 					data = rs.getDouble("indicator_value");
-					list.add(new DataLinkToDate(data, date, "indicator", indicator));
+					list.add(new DataLinkToDate(data, date, "indicator", type));
 				}
 			} catch (SQLException ex) {
 				ex.printStackTrace();

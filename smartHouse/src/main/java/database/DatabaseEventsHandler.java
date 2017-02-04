@@ -1,6 +1,7 @@
 package database;
 
 import com.google.gson.Gson;
+import indicators.Indicator;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 import webserver.ConnectedClients;
@@ -20,10 +21,9 @@ public class DatabaseEventsHandler {
         ConnectedClients.getInstance().writeAllMembers(str);
     }
 
-
-    public static void broadcastIndicatorValue (String indicator, int value) {
+    public static void broadcastIndicatorValue (Indicator indicator, Double value) {
         JSONObject result = new JSONObject();
-        result.put(indicator,value);
+        result.put(indicator.getType(),value);
         String str = result.toString();
         ConnectedClients.getInstance().writeAllMembers(str);
     }

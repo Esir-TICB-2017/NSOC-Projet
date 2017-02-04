@@ -29,7 +29,7 @@ public class Sensors {
 	public Sensor getSensorByString(String type) {
 		Sensor sensorResult = null;
 		for (Sensor sensor : sensors) {
-			if (sensor.getType() == type) {
+			if (sensor.getType().equals(type)) {
 				sensorResult = sensor;
 			}
 		}

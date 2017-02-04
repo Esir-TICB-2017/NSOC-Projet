@@ -1,9 +1,10 @@
 package webserver;
 
 import com.google.gson.Gson;
-import computeAggregatedData.Indicators;
 import database.ReadInDatabase;
 import database.data.DataLinkToDate;
+import indicators.Indicator;
+import indicators.Indicators;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -26,35 +27,10 @@ public class GetIndicatorsOnPeriodServlet extends HttpServlet {
         Timestamp endDate = new Timestamp(end * 1000);
 
         ArrayList<DataLinkToDate> result;
-        String indicator = request.getParameter("indicator");
-        switch (indicator) {
-            case "global": {
-                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.GLOBAL, startDate, endDate);
-                break;
-            }
-            case "temperature": {
-                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.TEMPERATURE, startDate, endDate);
-                break;
-            }
-            case "co2": {
-                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.CO2, startDate, endDate);
-                break;
-            }
-            case "consumption": {
-                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.CONSUMPTION, startDate, endDate);
-                break;
-            }
-            case "humidity": {
-                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.HUMIDITY, startDate, endDate);
-                break;
-            }
-            case "production": {
-                result = ReadInDatabase.getIndicatorsOnPeriod(Indicators.PRODUCTION, startDate, endDate);
-                break;
-            }
-            default:
-                result = null;
-        }
+        Indicator indicator = Indicators.getInstance().getIndicatorByString(request.getParameter("indicator"));
+        System.out.println(request.getParameter("indicator"));
+        System.out.println(indicator.getType());
+        result = ReadInDatabase.getIndicatorsOnPeriod(indicator, startDate, endDate);
 
         if(result != null) {
             JSONObject obj = new JSONObject(result);

@@ -1,10 +1,13 @@
 package indicators;
 
 import database.ReadInDatabase;
+import database.WriteInDatabase;
 import sensor.sensorClass.Sensor;
+import sensor.sensorClass.Sensors;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Loulou on 02/02/2017.
@@ -38,6 +41,9 @@ public class Indicator {
 		this.minValue = comfortValues.get(2);
 		this.maxValue = comfortValues.get(3);
 	}
+	public int getId() {
+		return id;
+	}
 
 	public String getType() {
 		return type;
@@ -47,28 +53,51 @@ public class Indicator {
 		return currentValue;
 	}
 
-	public Double calculateIndicator(Sensor sensor) {
+	public void setCurrentValue(Double currentValue) {
+		this.currentValue = currentValue;
+	}
+
+	public Double calculateIndicator() {
 		Double indicator;
-		Double currentSensorValue = sensor.getCurrentValue();
-		System.out.println(minComfortValue);
-		System.out.println(maxComfortValue);
-		System.out.println(currentSensorValue);
-		if (currentSensorValue > minComfortValue && currentSensorValue < maxComfortValue) {
-			indicator = 100.0;
-		} else {
-			if (currentSensorValue > minValue && currentSensorValue < minComfortValue) {
-				Double x = (currentSensorValue * 100) / maxComfortValue;
-				indicator = x;
+		if(!this.getType().equals("global")){
+			Sensor sensor = Sensors.getInstance().getSensorByString(this.getType());
+
+			Double currentSensorValue = sensor.getCurrentValue();
+			if (currentSensorValue > minComfortValue && currentSensorValue < maxComfortValue) {
+				indicator = 100.0;
 			} else {
-				if (currentSensorValue > maxComfortValue) {
-					Double x = (currentSensorValue * 100) / minComfortValue;
+				if (currentSensorValue > minValue && currentSensorValue < minComfortValue) {
+					Double x = (currentSensorValue * 100) / maxComfortValue;
 					indicator = x;
 				} else {
-					indicator = currentValue;
+					if (currentSensorValue > maxComfortValue) {
+						Double x = (currentSensorValue * 100) / minComfortValue;
+						indicator = x;
+					} else {
+						indicator = currentValue;
+					}
 				}
 			}
+		} else {
+			indicator = calculateGlobalIndicator();
 		}
-		System.out.println("indicator " + sensor.getType() + " " + indicator);
+		this.setCurrentValue(indicator);
+		WriteInDatabase.writeIndicatorValue(this, indicator);
 		return indicator;
+	}
+
+	private  Double calculateGlobalIndicator() {
+		Double globalIndicator;
+		List<Indicator> indicators;
+		indicators = Indicators.getInstance().getIndicators();
+		int length = indicators.size();
+		Double sum = 0.0;
+		for(Indicator indicator : indicators){
+			if(!indicator.getType().equals("global")) {
+				sum += indicator.getCurrentValue();
+			}
+		}
+		globalIndicator = sum / length;
+		return globalIndicator;
 	}
 }

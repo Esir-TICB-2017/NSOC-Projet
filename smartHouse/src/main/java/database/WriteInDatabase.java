@@ -1,6 +1,7 @@
 package database;
 
 import database.databaseInterface.InterfaceWriteDatabase;
+import indicators.Indicator;
 import javafx.beans.binding.BooleanBinding;
 import sensor.sensorClass.Sensor;
 import webserver.ConnectedClients;
@@ -38,13 +39,16 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	}
 
-	public static void writeIndicatorValue(String indicator, int value) {
+	public static void writeIndicatorValue(Indicator indicator, Double value) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "INSERT INTO indicators (VALUE, SUBMISSION_DATE) VALUES" + "(?, ?)";
+		String sql = "INSERT INTO indicators "
+				+ "(indicator_value, submission_date, indicator_type_id) VALUES"
+				+ "(?, ?, ?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, value);
+			preparedStatement.setDouble(1, value);
 			preparedStatement.setTimestamp(2, getCurrentTimeStamp());
+			preparedStatement.setInt(3, indicator.getId());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

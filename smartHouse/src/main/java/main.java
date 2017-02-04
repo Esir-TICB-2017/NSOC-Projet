@@ -38,13 +38,30 @@ public class main {
 		}
 		Indicators indicators = Indicators.getInstance();
 		Map<String, Integer> indicatorsList = ReadInDatabase.getAllIndicatorsName();
-		Iterator iti = sensorsList.entrySet().iterator();
+		Iterator iti = indicatorsList.entrySet().iterator();
 		while (iti.hasNext()) {
 			Map.Entry pair = (Map.Entry) iti.next();
 			Indicator indicator = new Indicator((String) pair.getKey(), (Integer) pair.getValue());
 			indicators.addIndicator(indicator);
 		}
 		BacNetToJava.getInstance();
+
+		Thread thread = new Thread() {
+			public void run() {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				while(true) {
+					Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
+					indicator.calculateIndicator();
+
+				}
+			}
+		};
+		thread.start();
 
 
 		// Get webapp directory

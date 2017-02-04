@@ -27,7 +27,7 @@ public class Indicators {
 	public Indicator getIndicatorByString(String type) {
 		Indicator indicatorResult = null;
 		for (Indicator indicator : indicators) {
-			if (indicator.getType() == type) {
+			if (indicator.getType().equals(type)) {
 				indicatorResult = indicator;
 			}
 		}
