@@ -29,13 +29,4 @@ public class Database {
         }
         return list;
     }
-
-    public static String getTypeFromSensorClass(Sensor sensor){
-        String className = sensor.getClass().getSimpleName();
-        String[] split = className.split("Sensor");
-        String type = split[0];
-        type = type.toLowerCase();
-        return type;
-
-    }
 }

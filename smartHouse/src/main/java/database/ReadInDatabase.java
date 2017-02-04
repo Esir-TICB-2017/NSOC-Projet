@@ -70,6 +70,27 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return Sensorslist;
 	}
+	public static Map<String, Integer> getAllIndicatorsName() {
+		Connection connection = ConnectionManager.getConnection();
+		Map<String, Integer> Indicatorslist = new HashMap<String, Integer>(1);
+		String sql = "SELECT type_name, id FROM indicators_type";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					String name = rs.getString("type_name");
+					Integer id = rs.getInt("id");
+					Indicatorslist.put(name, id);
+
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return Indicatorslist;
+	}
+
 
 	public static ArrayList<DataLinkToDate> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate) {
 		double data;
@@ -128,6 +149,32 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					Double data = rs.getDouble("sensor_value");
 					String type = rs.getString("type_name");
 					DataLinkToDate row = new DataLinkToDate(data, date, "sensor", type);
+					list.add(row);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public static ArrayList<DataLinkToDate> getLastIndicatorsValues() {
+		ArrayList<DataLinkToDate> list = new ArrayList();
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT indicators.submission_date, indicators.sensor_value, indicators_type.type_name " +
+				"FROM indicators LEFT JOIN indicators_type " +
+				"ON indicators.indicator_type_id=indicators_type.id " +
+				"WHERE indicators.submission_date = (SELECT MAX(indicators.submission_date) FROM indicators WHERE indicators.indicators_type_id=indicators_type.id) " +
+				"ORDER BY indicators_type.type_name";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					Timestamp date = rs.getTimestamp("submission_date");
+					Double data = rs.getDouble("indicator_value");
+					String type = rs.getString("type_name");
+					DataLinkToDate row = new DataLinkToDate(data, date, "indicator", type);
 					list.add(row);
 				}
 			} catch (SQLException e) {
@@ -197,20 +244,20 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return list;
 	}
 
-	public static Double[] getIndicatorValues(Integer id) {
-		Double[] comfortValues = new Double[2];
-		String sql = "SELECT min_comfort_value, max_comfort_value " +
-				"FROM indicators " +
-				"WHERE indicators.id = ?";
+	public static ArrayList<Double> getIndicatorValues(Integer id) {
+		ArrayList<Double> comfortValues = new ArrayList<>();
+		String sql = "SELECT min_comfort_value, max_comfort_value, min_value, max_value " +
+				"FROM indicators_type " +
+				"WHERE indicators_type.id = ?";
 		Connection connection = ConnectionManager.getConnection();
 		try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
 			try(ResultSet rs = preparedStatement.executeQuery()) {
 				while(rs.next()) {
-					comfortValues[0] = rs.getDouble("min_comfort_value");
-					comfortValues[1] = rs.getDouble("max_comfort_value");
-					comfortValues[2] = rs.getDouble("min_value");
-					comfortValues[3] = rs.getDouble("max_value");
+					comfortValues.add(rs.getDouble("min_comfort_value"));
+					comfortValues.add(rs.getDouble("max_comfort_value"));
+					comfortValues.add(rs.getDouble("min_value"));
+					comfortValues.add(rs.getDouble("max_value"));
 				}
 			}catch (SQLException e) {
 				e.printStackTrace();

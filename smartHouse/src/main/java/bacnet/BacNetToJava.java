@@ -15,6 +15,8 @@ import com.serotonin.bacnet4j.type.enumerated.ObjectType;
 import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
+import indicators.Indicator;
+import indicators.Indicators;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 
@@ -38,23 +40,13 @@ public class  BacNetToJava implements InterfaceReadBacnet {
 
     private  IpNetwork network;
     private  LocalDevice localDevice;
-    private  int numDevice;
     private  RemoteDevice r;
-//    private  String typeSensor;
-//    private  ConsumptionSensor cs;
-//    private  CO2Sensor co2s;
-//    private  HumiditySensor hs;
-//    private  ProductionSensor ps;
-//    private  TemperatureSensor ts;
-
-    private Sensors sns;
-    private List<Sensor> sensors;
 
     private static BacNetToJava bacNetTojava = new BacNetToJava();
 
     private BacNetToJava ()
     {
-//        getSensorValue();
+        getSensorValue();
     }
 
     public static BacNetToJava getInstance() {
@@ -73,51 +65,38 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                         e.printStackTrace();
                     }
                     while(true) {
-//To uncomment             value = getValue();
-//                        value = Math.random()*1000;
-//                        cs.setNewValue(value);
-//                        value = Math.random()*1000;
-//                        co2s.setNewValue(value);
-//                        value = Math.random()*100;
-//                        hs.setNewValue(value);
-//                        value = Math.random()*100;
-//                        WriteInDatabase.writeIndicatorValue(Indicators.GLOBAL, Math.toIntExact((long) value));
-//                        value = Math.random()*1000;
-//                        ps.setNewValue(value);
-
-                        for(Sensor sn:sensors)
+                        for(Sensor sensor : Sensors.getInstance().getSensors())
                         {
-                            if(sn.getType()=="Consumption" || sn.getType()=="CO2" || sn.getType()=="Production")
+                            if(sensor.getType().equals("consumption") || sensor.getType().equals("co2") || sensor.getType().equals("production"))
                             {
                                 value = Math.random()*1000;
-                                sn.setNewValue(value);
+                                sensor.setNewValue(value);
                             }
-                            else if(sn.getType()=="Humidity" || sn.getType()=="Indicator")
+                            else if(sensor.getType().equals("humidity") || sensor.getType().equals("indicator"))
                             {
                                 value = Math.random()*100;
-                                sn.setNewValue(value);
+                                sensor.setNewValue(value);
                             }
-                            else if(sn.getType()=="Temperature")
+                            else if(sensor.getType().equals("temperature"))
                             {
                                 try {
                                     value = getTemperature();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                sn.setNewValue(value);
+                                sensor.setNewValue(value);
                             }
-
+                            Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
+                            indicator.calculateIndicator(sensor);
                         }
-
 //                        try {
 //                            value = getTemperature();
 //                        } catch (Exception e) {
 //                            e.printStackTrace();
 //                        }
 //                        ts.setNewValue(value);
-
                         try {
-                            Thread.sleep(1000*10*60);
+                            Thread.sleep(10000);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

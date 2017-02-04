@@ -12,7 +12,7 @@ import javax.json.Json;
  */
 public class DatabaseEventsHandler {
     public static void broadcastSensorValue (Sensor sensor, Double value) {
-       String type = Database.getTypeFromSensorClass(sensor);
+       String type = sensor.getType();
         JSONObject result = new JSONObject();
         result.put("key", type);
         result.put("value", value);

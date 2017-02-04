@@ -19,7 +19,6 @@ import java.util.HashMap;
 public class WriteInDatabase extends Database implements InterfaceWriteDatabase {
 
 	public static void writeSensorValue(Sensor sensor, double value) {
-		System.out.println(sensor.getClass().getSimpleName() + " " + value);
 
 		Connection connection = ConnectionManager.getConnection();
 		String className = sensor.getType();

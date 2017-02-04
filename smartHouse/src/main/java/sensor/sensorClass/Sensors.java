@@ -47,7 +47,7 @@ public class Sensors {
 		sensors.add(sensor);
 	}
 
-	public void removeSensors(Sensor sensor) {
+	public void removeSensor(Sensor sensor) {
 		sensors.remove(sensor);
 	}
 }

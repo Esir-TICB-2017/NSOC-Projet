@@ -1,5 +1,7 @@
 import bacnet.BacNetToJava;
 import database.ReadInDatabase;
+import indicators.Indicator;
+import indicators.Indicators;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -23,29 +25,36 @@ import java.util.Map;
  * Created by loulou on 18/01/2017.
  */
 public class main {
-    public static void main (String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 
 
-        Sensors sensors = Sensors.getInstance();
-        Map<String, Integer> sensorsList = ReadInDatabase.getAllSensorsName();
-        Iterator it = sensorsList.entrySet().iterator();
-        while(it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            Sensor sensor = new Sensor((String) pair.getKey(), (Integer) pair.getValue());
-            sensors.addSensor(sensor);
-        }
+		Sensors sensors = Sensors.getInstance();
+		Map<String, Integer> sensorsList = ReadInDatabase.getAllSensorsName();
+		Iterator its = sensorsList.entrySet().iterator();
+		while (its.hasNext()) {
+			Map.Entry pair = (Map.Entry) its.next();
+			Sensor sensor = new Sensor((String) pair.getKey(), (Integer) pair.getValue());
+			sensors.addSensor(sensor);
+		}
+		Indicators indicators = Indicators.getInstance();
+		Map<String, Integer> indicatorsList = ReadInDatabase.getAllIndicatorsName();
+		Iterator iti = sensorsList.entrySet().iterator();
+		while (iti.hasNext()) {
+			Map.Entry pair = (Map.Entry) iti.next();
+			Indicator indicator = new Indicator((String) pair.getKey(), (Integer) pair.getValue());
+			indicators.addIndicator(indicator);
+		}
+		BacNetToJava.getInstance();
 
 
+		// Get webapp directory
+		String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
+		String keyPath = System.getProperty("user.home") + "/NSOC/NSOC-Projet/keystore/";
 
-
-        // Get webapp directory
-        String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
-        String keyPath = System.getProperty("user.home") + "/NSOC/NSOC-Projet/keystore/";
-
-        Server server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(8080);
-        /*
+		Server server = new Server();
+		ServerConnector connector = new ServerConnector(server);
+		connector.setPort(8080);
+		/*
         HttpConfiguration https = new HttpConfiguration();
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
@@ -58,40 +67,40 @@ public class main {
         sslConnector.setPort(9998);
         server.setConnectors(new Connector[] { connector, sslConnector });
     */
-        server.setConnectors(new Connector[] { connector });
-        // WebSocket Handler
-        org.eclipse.jetty.websocket.server.WebSocketHandler wsHandler = new org.eclipse.jetty.websocket.server.WebSocketHandler() {
-            @Override
-            public void configure(WebSocketServletFactory webSocketServletFactory) {
-                webSocketServletFactory.register(WebSocketHandler.class);
-            }
-        };
+		server.setConnectors(new Connector[]{connector});
+		// WebSocket Handler
+		org.eclipse.jetty.websocket.server.WebSocketHandler wsHandler = new org.eclipse.jetty.websocket.server.WebSocketHandler() {
+			@Override
+			public void configure(WebSocketServletFactory webSocketServletFactory) {
+				webSocketServletFactory.register(WebSocketHandler.class);
+			}
+		};
 
-        WebAppContext context = new WebAppContext();
-        context.setDescriptor("webapp/WEB-INF/web.xml");
-        context.setResourceBase(pwdPath);
-        context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
-        context.setWelcomeFiles(new String[]{ "index.html" });
-        context.setParentLoaderPriority(true);
-        context.addServlet(new ServletHolder(new IsAuthenticatedServlet()), "/isAuthenticated");
-        context.addServlet(new ServletHolder(new LoginServlet()), "/login");
-        context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
-        context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/getValuesOverPeriod");
-        context.addServlet(new ServletHolder(new GetLastIndicatorsServlet()), "/getLastIndicators");
-        context.addServlet(new ServletHolder(new GetIndicatorsOnPeriodServlet()), "/getIndicatorsOverPeriod");
-        context.addServlet(new ServletHolder(new GetSettingsServlet()), "/getSettings");
-        context.addServlet(new ServletHolder(new PostSettingsServlet()), "/postSettings");
+		WebAppContext context = new WebAppContext();
+		context.setDescriptor("webapp/WEB-INF/web.xml");
+		context.setResourceBase(pwdPath);
+		context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
+		context.setWelcomeFiles(new String[]{"index.html"});
+		context.setParentLoaderPriority(true);
+		context.addServlet(new ServletHolder(new IsAuthenticatedServlet()), "/isAuthenticated");
+		context.addServlet(new ServletHolder(new LoginServlet()), "/login");
+		context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
+		context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/getValuesOverPeriod");
+		context.addServlet(new ServletHolder(new GetLastIndicatorsServlet()), "/getLastIndicators");
+		context.addServlet(new ServletHolder(new GetIndicatorsOnPeriodServlet()), "/getIndicatorsOverPeriod");
+		context.addServlet(new ServletHolder(new GetSettingsServlet()), "/getSettings");
+		context.addServlet(new ServletHolder(new PostSettingsServlet()), "/postSettings");
 
-        context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
+		context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 
-        HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{wsHandler, context });
-        server.setHandler(handlers);
-        server.start();
+		HandlerList handlers = new HandlerList();
+		handlers.setHandlers(new Handler[]{wsHandler, context});
+		server.setHandler(handlers);
+		server.start();
 
 
-        server.join();
-    }
+		server.join();
+	}
 
 
 }
