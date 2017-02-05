@@ -61,18 +61,20 @@ public class Indicator {
 		Double indicator;
 		if(!this.getType().equals("global")){
 			Sensor sensor = Sensors.getInstance().getSensorByString(this.getType());
-
 			Double currentSensorValue = sensor.getCurrentValue();
 			if (currentSensorValue > minComfortValue && currentSensorValue < maxComfortValue) {
 				indicator = 100.0;
 			} else {
 				if (currentSensorValue > minValue && currentSensorValue < minComfortValue) {
-					Double x = (currentSensorValue * 100) / maxComfortValue;
+					Double x = (currentSensorValue * 100) / minComfortValue;
 					indicator = x;
 				} else {
-					if (currentSensorValue > maxComfortValue) {
-						Double x = (currentSensorValue * 100) / minComfortValue;
-						indicator = x;
+					if (currentSensorValue > maxComfortValue && currentSensorValue < maxValue) {
+						Double x = (currentSensorValue * 100) / maxComfortValue;
+						indicator = 200 - x;
+						if(indicator < 0) {
+							indicator = 0.0;
+						}
 					} else {
 						indicator = currentValue;
 					}
@@ -81,6 +83,7 @@ public class Indicator {
 		} else {
 			indicator = calculateGlobalIndicator();
 		}
+
 		this.setCurrentValue(indicator);
 		WriteInDatabase.writeIndicatorValue(this, indicator);
 		return indicator;

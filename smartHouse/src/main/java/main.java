@@ -48,15 +48,16 @@ public class main {
 
 		Thread thread = new Thread() {
 			public void run() {
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				while(true) {
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
 					indicator.calculateIndicator();
+
 
 				}
 			}

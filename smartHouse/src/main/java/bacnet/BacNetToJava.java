@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by clement on 16/01/2017.
@@ -57,6 +58,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
 
             Thread thread = new Thread() {
                 double value = 0;
+                Random r = new Random();
                 public void run() {
    //                 connection();
                     try {
@@ -67,25 +69,44 @@ public class  BacNetToJava implements InterfaceReadBacnet {
                     while(true) {
                         for(Sensor sensor : Sensors.getInstance().getSensors())
                         {
-                            if(sensor.getType().equals("consumption") || sensor.getType().equals("co2") || sensor.getType().equals("production"))
-                            {
-                                value = Math.random()*1000;
-                                sensor.setNewValue(value);
+                            switch (sensor.getType()) {
+                                case "consumption":
+                                    value = r.nextGaussian() * 1000 + 2000;
+                                    sensor.setNewValue(value);
+                                    break;
+                                case "co2":
+                                    value = r.nextGaussian() * 400 + 600;
+                                    if(value > 2000) {
+                                        value = 2000;
+                                    }
+                                    if (value < 0) {
+                                        value = 0;
+                                    }
+                                    sensor.setNewValue(value);
+
+                                    break;
+                                case "production":
+                                    value = r.nextGaussian() * 1000 + 2000;
+                                    sensor.setNewValue(value);
+                                    break;
+                                case "humidity":
+                                    value = r.nextGaussian() * 10 + 40;
+                                    if(value > 100) {
+                                        value = 100;
+                                    }
+                                    if (value < 0) {
+                                        value = 0;
+                                    }
+                                    sensor.setNewValue(value);
+                                    break;
+                                case "temperature":
+                                    value = r.nextGaussian() * 2 + 20;
+                                    sensor.setNewValue(value);
+                                    break;
+                                default:
+                                    break;
                             }
-                            else if(sensor.getType().equals("humidity") || sensor.getType().equals("indicator"))
-                            {
-                                value = Math.random()*100;
-                                sensor.setNewValue(value);
-                            }
-                            else if(sensor.getType().equals("temperature"))
-                            {
-                                try {
-                                    value = getTemperature();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                sensor.setNewValue(value);
-                            }
+
                             Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
                             indicator.calculateIndicator();
                         }

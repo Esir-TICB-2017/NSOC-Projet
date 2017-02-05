@@ -17,7 +17,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
             const xScale = d3.scaleTime()
                 .domain([new Date(data[0].date), new Date(data[data.length - 1].date)])
                 .rangeRound([-widthMargin, width + widthMargin]);
-            const xAxis = d3.axisBottom(xScale)
+            const xAxis = d3.axisBottom(xScale).ticks(d3.timeHour);
             const yScale = d3.scaleLinear()
                 .domain([0, d3.max(data, (d) => d.data)])
                 .rangeRound([height, 0]);
@@ -93,13 +93,14 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 */
 
 
-            /*
+
             svg.append("g")
-                .attr("transform", "translate(0,0)")
+                .attr('class', 'xAxis')
                 .call(xAxis);
             svg.append("g")
+                .attr('class', 'yAxis')
                 .call(yAxis);
-                */
+
             line.transition()
                 .ease(d3.easeLinear)
                 .duration(500)
