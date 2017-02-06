@@ -3,25 +3,41 @@
  */
 angular.module('nsoc').factory('d3ChartService', () => {
     return {
-        draw: (data, svgId) => {
-            console.log(data);
+        draw: (data, period, svgId) => {
+            let ticks = d3.timeDay
+            switch (period) {
+                case "month":
+                    ticks = d3.timeWeek.every(1);
+                    break;
+                case "week":
+                    ticks = d3.timeDay.every(1);
+                    break;
+                case "day":
+                    ticks = d3.timeMinute.every(10);
+                    break;
+                default:
+                    ticks = d3.timeMonth;
+            }
 
             const svg = d3.select(`svg#${svgId}`);
+            console.log(d3.min(data, (d) => d.date), d3.max(data, (d) => d.date))
 
             const width = parseInt(svg.style('width'), 0);
             const height = parseInt(svg.style('height'), 0);
             const widthMargin = 15;
             const parseTime = d3.timeParse('%b %d, %Y %X');
-            const bisectDate = d3.bisector(function(d) { return d.date; }).left;
+            const bisectDate = d3.bisector(function (d) {
+                return d.date;
+            }).left;
             const curve = d3.curveBasis;
             const xScale = d3.scaleTime()
                 .domain([new Date(data[0].date), new Date(data[data.length - 1].date)])
                 .rangeRound([-widthMargin, width + widthMargin]);
-            const xAxis = d3.axisBottom(xScale).ticks(d3.timeHour);
+            const xAxis = d3.axisBottom(xScale).ticks(ticks);
             const yScale = d3.scaleLinear()
                 .domain([0, d3.max(data, (d) => d.data)])
                 .rangeRound([height, 0]);
-            const yAxis = d3.axisLeft(yScale);
+            const yAxis = d3.axisLeft(yScale).tickValues([25, 50, 75, 100]);
             const lineGen = d3.line()
                 .x((d) => xScale(d.date))
                 .y((d) => yScale(d.data))
@@ -56,13 +72,13 @@ angular.module('nsoc').factory('d3ChartService', () => {
                     },
                 ])
                 .enter().append("stop")
-                .attr("offset", function(d) {
+                .attr("offset", function (d) {
                     return d.offset;
                 })
-                .attr("stop-color", function(d) {
+                .attr("stop-color", function (d) {
                     return d.color;
                 })
-                .attr("stop-opacity", function(d) {
+                .attr("stop-opacity", function (d) {
                     return d.opacity;
                 });
 
@@ -81,24 +97,25 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .style('opacity', 1)
                 .attr("d", areaGen);
             /*
-            var totalLength = test.node().getTotalLength();
+             var totalLength = test.node().getTotalLength();
 
-            test
-                .attr("stroke-dasharray", totalLength + " " + totalLength)
-                .attr("stroke-dashoffset", totalLength)
-                .transition()
-                .duration(2000)
-                .ease(d3.easeLinear)
-                .attr("stroke-dashoffset", 0);
-                */
-
-
-
+             test
+             .attr("stroke-dasharray", totalLength + " " + totalLength)
+             .attr("stroke-dashoffset", totalLength)
+             .transition()
+             .duration(2000)
+             .ease(d3.easeLinear)
+             .attr("stroke-dashoffset", 0);
+             */
+            svg.select('g.xAxis').remove();
+            svg.select('g.yAxis').remove();
             svg.append("g")
                 .attr('class', 'xAxis')
+                .attr("transform", "translate(0," + (height - 30) + ")")
                 .call(xAxis);
             svg.append("g")
                 .attr('class', 'yAxis')
+                .attr("transform", "translate(30, 0)")
                 .call(yAxis);
 
             line.transition()
@@ -141,8 +158,12 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .attr("height", height)
                 .attr('fill', 'none')
                 .attr('pointer-events', 'all')
-                .on("mouseover", function() { focus.style("display", null); })
-                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mouseover", function () {
+                    focus.style("display", null);
+                })
+                .on("mouseout", function () {
+                    focus.style("display", "none");
+                })
                 .on("mousemove", mousemove);
 
             function mousemove() {
@@ -154,7 +175,6 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d.data) + ")");
                 focus.select("text").text(parseInt(d.data));
             }
-
 
 
         }
