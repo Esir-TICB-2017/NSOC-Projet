@@ -8,3 +8,31 @@
     stroke-width: 3;
     fill: none;
   }
+
+& > g.yAxis {
+  & > path {
+    opacity: 0;
+  }
+  & > g.tick {
+    & > line {
+      opacity: 0;
+    }
+    & > text {
+      fill: #FFFFFF;
+    }
+  }
+}
+
+  & > g.xAxis {
+    & > path {
+      opacity: 0;
+    }
+    & > g.tick {
+      & > line {
+        opacity: 0;
+      }
+      & > text {
+        fill: #FFFFFF;
+      }
+    }
+  }
