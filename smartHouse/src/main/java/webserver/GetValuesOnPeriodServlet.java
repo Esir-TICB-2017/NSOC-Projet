@@ -25,6 +25,7 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         String sensorName = request.getParameter("sensorName");
         ArrayList<DataLinkToDate> result = Sensors.getInstance().getSensorByString(sensorName).getValuesOnPeriod(startDate, endDate);
 
+
         if(result != null) {
             Gson gson = new Gson();
             String json = gson.toJson(result);

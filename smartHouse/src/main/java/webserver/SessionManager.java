@@ -20,11 +20,14 @@ public class SessionManager {
 		HttpSession session = request.getSession(false);
 
 		if (session != null) {
+
+			Long start = Long.parseLong(request.getParameter("startDate"));
 			String userId = (String) session.getAttribute("userId");
 			String userToken = (String) session.getAttribute("userToken");
 			java.util.Date today = new java.util.Date(System.currentTimeMillis());
 			Timestamp currentDate = new Timestamp(today.getTime());
 			HashMap userSession = ReadInDatabase.getUserSession(userId).get(0);
+
 			Boolean isSameToken = userSession.get("token").equals(userToken);
 			Boolean isSameUser = userSession.get("userid").equals(userId);
 			Timestamp expirationDate = (Timestamp) userSession.get("expiration_date");

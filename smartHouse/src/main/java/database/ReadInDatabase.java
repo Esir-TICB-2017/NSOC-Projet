@@ -40,9 +40,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					data = rs.getDouble("sensor_value");
 					result = new DataLinkToDate(data, date, "sensor", sensorType);
 				}
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -61,14 +63,17 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					Sensorslist.put(name, id);
 
 				}
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 		return Sensorslist;
 	}
+
 	public static Map<String, Integer> getAllIndicatorsName() {
 		Connection connection = ConnectionManager.getConnection();
 		Map<String, Integer> Indicatorslist = new HashMap<String, Integer>(1);
@@ -81,9 +86,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					Indicatorslist.put(name, id);
 
 				}
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -113,9 +120,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					data = rs.getDouble("value");
 					list.add(new DataLinkToDate(data, date, "sensor", sensorType));
 				}
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -153,14 +162,17 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					DataLinkToDate row = new DataLinkToDate(data, date, "sensor", type);
 					list.add(row);
 				}
+				rs.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
 	}
+
 	public static ArrayList<DataLinkToDate> getLastIndicatorsValues() {
 		ArrayList<DataLinkToDate> list = new ArrayList();
 		Connection connection = ConnectionManager.getConnection();
@@ -179,9 +191,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					DataLinkToDate row = new DataLinkToDate(data, date, "indicator", type);
 					list.add(row);
 				}
+				rs.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -208,9 +222,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					data = rs.getDouble("indicator_value");
 					result = new DataLinkToDate(data, date, "indicator", indicator.getType());
 				}
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -239,9 +255,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					data = rs.getDouble("indicator_value");
 					list.add(new DataLinkToDate(data, date, "indicator", type));
 				}
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -254,18 +272,20 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"FROM indicators_type " +
 				"WHERE indicators_type.id = ?";
 		Connection connection = ConnectionManager.getConnection();
-		try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
-			try(ResultSet rs = preparedStatement.executeQuery()) {
-				while(rs.next()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
 					comfortValues.add(rs.getDouble("min_comfort_value"));
 					comfortValues.add(rs.getDouble("max_comfort_value"));
 					comfortValues.add(rs.getDouble("min_value"));
 					comfortValues.add(rs.getDouble("max_value"));
 				}
-			}catch (SQLException e) {
+				rs.close();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -280,9 +300,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			preparedStatement.setString(1, userId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				list = formatData(rs, 1);
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -293,13 +315,19 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<HashMap> list = new ArrayList(1);
 		String sql = "SELECT * FROM sessions WHERE userid=?";
+		System.out.println("start of getUserSession query");
+		long startTime = System.currentTimeMillis();
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, userId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
+				long endTime = System.currentTimeMillis();
+				System.out.println("getUserSession took " + (endTime - startTime) + " milliseconds");
 				list = formatData(rs, 1);
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -315,7 +343,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		//Values attribution and query execution
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, userId);
-			try(ResultSet rs = preparedStatement.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				listSettings.set(0, rs.getString("settemp"));
 				listSettings.set(1, rs.getString("setco2min"));
 				listSettings.set(2, rs.getString("setco2max"));
@@ -336,9 +364,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				listSettings.set(14, rs.getString("conschart"));
 				listSettings.set(16, rs.getString("prodchart"));
 				listSettings.set(17, rs.getString("perdata"));
+				rs.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

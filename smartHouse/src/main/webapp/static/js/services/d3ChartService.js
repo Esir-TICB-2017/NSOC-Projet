@@ -85,9 +85,12 @@ angular.module('nsoc').factory('d3ChartService', () => {
             const line = svg.selectAll('path.line').data([data]);
             const area = svg.selectAll('path.area').data([data]);
 
-            const test = line.enter().append('path')
+            line.enter().append('path')
                 .attr("class", "line")
-                .attr("d", lineGen);
+                .attr("d", lineGen)
+                .on('mouseover', () => {
+                    console.log('ici');
+                });
             area.enter().append("path")
                 .attr("class", "area")
                 .style('opacity', 0)
@@ -142,8 +145,8 @@ angular.module('nsoc').factory('d3ChartService', () => {
             const rect = focus.append("rect")
                 .attr('width', 40)
                 .attr('height', 30)
-                .attr('y', -40)
-                .attr('x', -20)
+                .attr('y', 40)
+                .attr('x', 20)
                 .attr('rx', 5)
                 .attr('ry', 5)
                 .style("fill", "white");
