@@ -28,6 +28,15 @@
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</head>
 	<body ng-app="nsoc" ng-controller="mainController">
+		<!-- <div ng-if="$root.loading" class="loader">
+			<p class="texte">Loading</p>
+			<div class="rotate" id="rotate_1"></div>
+			<div class="rotate" id="rotate_2"></div>
+			<div class="rotate" id="rotate_3"></div>
+			<div class="rotate" id="rotate_4"></div>
+			<div class="rotate" id="rotate_5"></div>
+			<div class="rotate" id="rotate_6"></div>
+		</div> -->
 		<div ng-if="$root.loading" class="loader"></div>
 		<div class="view" ng-view></div>
 	</body>
