@@ -28,12 +28,8 @@ public class GetIndicatorsOnPeriodServlet extends HttpServlet {
 
         ArrayList<DataLinkToDate> result;
         Indicator indicator = Indicators.getInstance().getIndicatorByString(request.getParameter("indicator"));
-        System.out.println(request.getParameter("indicator"));
-        System.out.println(indicator.getType());
         result = ReadInDatabase.getIndicatorsOnPeriod(indicator, startDate, endDate);
-
-        if(result != null) {
-            JSONObject obj = new JSONObject(result);
+       if(result != null) {
             Gson gson = new Gson();
             String json = gson.toJson(result);
 

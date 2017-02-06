@@ -32,6 +32,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setTimestamp(2, getCurrentTimeStamp());
 			preparedStatement.setInt(3, sensor.getId());
 			preparedStatement.executeUpdate();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -50,6 +51,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setTimestamp(2, getCurrentTimeStamp());
 			preparedStatement.setInt(3, indicator.getId());
 			preparedStatement.executeUpdate();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -64,8 +66,9 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, userId);
 			preparedStatement.executeUpdate();
+			preparedStatement.close();
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -80,6 +83,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setString(4, email);
 			preparedStatement.setString(4, age);
 			preparedStatement.executeQuery();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -96,6 +100,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setString(4, age);
 			preparedStatement.setString(5, userId);
 			preparedStatement.executeQuery();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -108,6 +113,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, userId);
 			preparedStatement.executeQuery();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -127,16 +133,21 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 					preparedStatement.setTimestamp(3, expirationDate);
 					preparedStatement.setString(4, userId);
 					preparedStatement.executeUpdate();
+					preparedStatement.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			} else {
 				try {
+
+
 					PreparedStatement preparedStatement = connection.prepareStatement(sql);
 					preparedStatement.setString(1, userId);
 					preparedStatement.setString(2, token);
 					preparedStatement.setTimestamp(3, expirationDate);
 					preparedStatement.executeUpdate();
+					preparedStatement.close();
+
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -144,6 +155,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		long endTime = System.currentTimeMillis();
 	}
 
 

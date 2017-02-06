@@ -57,13 +57,10 @@ public class main {
 					}
 					Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
 					indicator.calculateIndicator();
-
-
 				}
 			}
 		};
 		thread.start();
-
 
 		// Get webapp directory
 		String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";

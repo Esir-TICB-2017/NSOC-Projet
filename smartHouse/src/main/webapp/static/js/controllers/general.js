@@ -4,9 +4,9 @@
 angular.module('nsoc')
 .controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http) => {
 	$scope.selectors = [
+        {name: 'Daily', value: 'day'},
 		{name: 'Monthly', value: 'month'},
-		{name: 'Weekly', value: 'week'},
-		{name: 'Daily', value: 'day'}
+		{name: 'Weekly', value: 'week'}
 	];
 	$scope.userInfo = {
 		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),

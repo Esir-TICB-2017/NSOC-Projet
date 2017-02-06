@@ -52,7 +52,7 @@ public class Sensor {
 
 	public void setNewValue(double newValue) {
 		if (newValue != currentValue) {
-			WriteInDatabase.writeSensorValue(this, newValue);
+//			WriteInDatabase.writeSensorValue(this, newValue);
 			this.setCurrentValue(newValue);
 		}
 	}
