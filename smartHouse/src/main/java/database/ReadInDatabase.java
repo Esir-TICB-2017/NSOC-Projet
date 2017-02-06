@@ -18,7 +18,6 @@ import java.util.Map;
  */
 public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 
-
 	public static DataLinkToDate getLastValue(Sensor sensor) {
 		double data;
 		Timestamp date;

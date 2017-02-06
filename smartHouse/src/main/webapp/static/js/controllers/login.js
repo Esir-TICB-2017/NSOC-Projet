@@ -33,8 +33,13 @@ angular.module('nsoc')
 				},
 				function onMessage(evt) {
 					var obj = JSON.parse(evt.data);
-                    if (obj.globalIndicator && obj.lastValues) {
+					console.log(obj);
+					if (obj.globalIndicator && obj.lastValues) {
 						$rootScope.$broadcast('firstData', obj);
+					} else if (obj.key && obj.value) {
+						$rootScope.$broadcast('newSensorValue', obj);
+					} else if (obj.global) {
+						$rootScope.$broadcast('newGlobalIndicatorValue', obj);
 					}
 				});
 			}, function error(err) {
