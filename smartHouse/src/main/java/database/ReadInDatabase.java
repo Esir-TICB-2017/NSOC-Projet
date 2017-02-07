@@ -1,5 +1,6 @@
 package database;
 
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import database.data.DataLinkToDate;
 import database.databaseInterface.InterfaceReadDatabase;
 import indicators.Indicator;
@@ -215,7 +216,6 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"WHERE indicators_type.type_name = ? " +
 				"ORDER BY indicators.submission_date DESC LIMIT 1";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			System.out.println(indicator.getId());
 			preparedStatement.setString(1, indicator.getType());
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {

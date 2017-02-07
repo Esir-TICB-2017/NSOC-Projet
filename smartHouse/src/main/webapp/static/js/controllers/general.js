@@ -16,6 +16,7 @@ angular.module('nsoc')
 
 	$scope.$on('firstData', (event, data) => {
 		$scope.$apply(() => {
+            console.log(data);
             if (data.globalIndicator.key === 'global') {
 					$rootScope.houseIndicator = data.globalIndicator.value;
 					getHouseHealth();
@@ -38,7 +39,7 @@ angular.module('nsoc')
 		});
 	};
 
-	$scope.getData($scope.selectors[0]);
+	// $scope.getData($scope.selectors[0]);
 
 	function getHouseHealth() {
 		if ($rootScope.houseIndicator <= 33) {
