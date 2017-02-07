@@ -37,8 +37,16 @@ angular.module('nsoc')
 	});
 
 	function displayHouseInfo(obj) {
+
 		$scope.$apply(() => {
-			obj.data = Math.round(obj.data * 10) / 10;
+			if (obj.date) {
+				obj.date = moment(obj.date);
+				obj.day = obj.date.format('YYYY-MM-DD');
+				obj.hour = obj.date.format('HH:mm:ss');
+			}
+			if (obj.data) {
+				obj.data = Math.round(obj.data * 10) / 10;
+			}
 			if (obj.type === 'indicator') {
 				if (obj.name === 'global') {
 					$rootScope.globalIndicator = obj;
@@ -69,6 +77,22 @@ angular.module('nsoc')
 			$rootScope.houseHealth = 'ok';
 		} else {
 			$rootScope.houseHealth = 'great';
+		}
+	}
+
+	$scope.displayDate = function(round) {
+		if (round) {
+			round.showDate = true;
+		} else {
+			this.showDate = true;
+		}
+	}
+
+	$scope.hideDate = function(round) {
+		if (round) {
+			round.showDate = false;
+		} else {
+			this.showDate = false;
 		}
 	}
 });

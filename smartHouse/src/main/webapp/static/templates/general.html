@@ -5,13 +5,21 @@
 	</div>
 	<div class="mainInfo">
 		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
-		<div class='houseIndicator round'>
-			<div class='value'>{{$root.globalIndicator.data}}%</div>
+		<div class='houseIndicator round' ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)'>
+			<div ng-show='!$root.globalIndicator.showDate' class='value'>{{$root.globalIndicator.data}}%</div>
+			<div ng-show='$root.globalIndicator.showDate' class='date'>
+				<div class='day'>{{$root.globalIndicator.day}}</div>
+				<div class='hour'>{{$root.globalIndicator.hour}}</div>
+			</div>
 		</div>
 		<div class='sensors'>
 			<div class='sensor' ng-repeat="sensor in sensors">
-				<div class='round'>
-					<div class='value'>{{sensor.data}}</div>
+				<div class='round' ng-mouseenter='displayDate()' ng-mouseleave='hideDate()'>
+					<div ng-show='!showDate' class='value'>{{sensor.data}}</div>
+					<div ng-show='showDate' class='date'>
+						<div class='day'>{{sensor.day}}</div>
+						<div class='hour'>{{sensor.hour}}</div>
+					</div>
 				</div>
 				<div class='name'>{{sensor.name}}</div>
 			</div>
