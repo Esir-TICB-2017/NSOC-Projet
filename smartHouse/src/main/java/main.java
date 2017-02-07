@@ -1,4 +1,5 @@
 import bacnet.BacNetToJava;
+import com.google.gson.JsonObject;
 import database.ReadInDatabase;
 import indicators.Indicator;
 import indicators.Indicators;
@@ -10,6 +11,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 import webserver.*;
@@ -29,11 +31,9 @@ public class main {
 
 
 		Sensors sensors = Sensors.getInstance();
-		Map<String, Integer> sensorsList = ReadInDatabase.getAllSensorsName();
-		Iterator its = sensorsList.entrySet().iterator();
-		while (its.hasNext()) {
-			Map.Entry pair = (Map.Entry) its.next();
-			Sensor sensor = new Sensor((String) pair.getKey(), (Integer) pair.getValue());
+		ArrayList<JSONObject> sensorsList = ReadInDatabase.getAllSensors();
+		for(JSONObject sensorAttributes : sensorsList) {
+			Sensor sensor = new Sensor(sensorAttributes.getString("name"), sensorAttributes.getInt("id"), sensorAttributes.getString("unit"));
 			sensors.addSensor(sensor);
 		}
 		Indicators indicators = Indicators.getInstance();

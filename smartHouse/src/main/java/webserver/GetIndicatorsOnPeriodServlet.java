@@ -1,9 +1,11 @@
 package webserver;
 
+import com.google.gson.Gson;
 import database.data.DataRecord;
 import indicators.Indicator;
 import indicators.Indicators;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,10 +29,12 @@ public class GetIndicatorsOnPeriodServlet extends HttpServlet {
 		Indicator indicator = Indicators.getInstance().getIndicatorByString(indicatorType);
 		ArrayList<DataRecord> results = indicator.getRecordsOnPeriod(startDate, endDate);
 
-		JSONArray responseData = new JSONArray(results);
-		response.setContentType("application/json");
+		Gson gson = new Gson();
+		String responseData = gson.toJson(results);
+		response.setContentType("text/html");
 		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter().println(responseData);
+		response.getWriter().print(responseData);
+		response.getWriter().flush();
 
 	}
 }

@@ -67,6 +67,7 @@ public class Indicator {
 	public Double getLastValue() {
 		return getLastRecord().getData();
 	}
+
 	public ArrayList<DataRecord> getRecordsOnPeriod(Timestamp startDate, Timestamp endDate) {
 		return ReadInDatabase.getIndicatorsOnPeriod(getId(), startDate, endDate);
 	}

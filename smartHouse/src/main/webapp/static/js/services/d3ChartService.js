@@ -19,6 +19,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
                     ticks = d3.timeMonth;
             }
 
+            console.log(data)
             const svg = d3.select(`svg#${svgId}`);
             console.log(d3.min(data, (d) => d.date), d3.max(data, (d) => d.date))
 
@@ -154,7 +155,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
             focus.append("text")
                 .attr("x", 9)
                 .attr("dy", ".35em");
-
+            /*
             svg.append("rect")
                 .attr('class', 'overlay')
                 .attr("width", width)
@@ -178,7 +179,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d.data) + ")");
                 focus.select("text").text(parseInt(d.data));
             }
-
+*/
 
         }
     }

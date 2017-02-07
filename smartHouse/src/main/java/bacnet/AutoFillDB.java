@@ -4,6 +4,7 @@ import com.google.api.client.util.Sleeper;
 import database.ReadInDatabase;
 import indicators.Indicator;
 import indicators.Indicators;
+import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 
@@ -17,11 +18,9 @@ public class AutoFillDB {
 		double value = 0;
 		Random r = new Random();
 		List<Sensor> sensors = new ArrayList();
-		Map<String, Integer> sensorsList = ReadInDatabase.getAllSensorsName();
-		Iterator its = sensorsList.entrySet().iterator();
-		while (its.hasNext()) {
-			Map.Entry pair = (Map.Entry) its.next();
-			Sensor sensor = new Sensor((String) pair.getKey(), (Integer) pair.getValue());
+		ArrayList<JSONObject> sensorsList = ReadInDatabase.getAllSensors();
+		for(JSONObject sensorAttributes : sensorsList) {
+			Sensor sensor = new Sensor(sensorAttributes.getString("name"), sensorAttributes.getInt("id"), sensorAttributes.getString("unit"));
 			sensors.add(sensor);
 		}
 		//                 connection();

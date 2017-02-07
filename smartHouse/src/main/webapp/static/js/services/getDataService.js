@@ -16,7 +16,7 @@ angular.module('nsoc').factory('getDataService', ($http) => {
                     "indicator": "global"
                 }
             }).then(function success(res) {
-                callback(res.data);
+                console.log(res.data);
             }, function error(err) {
                 console.log(err);
             });

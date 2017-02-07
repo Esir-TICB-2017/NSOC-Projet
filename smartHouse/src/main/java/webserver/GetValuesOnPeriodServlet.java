@@ -2,7 +2,6 @@ package webserver;
 
 import com.google.gson.Gson;
 import database.data.DataRecord;
-import org.json.JSONArray;
 import sensor.sensorClass.*;
 
 import javax.servlet.ServletException;
@@ -24,8 +23,10 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         Sensor sensor = Sensors.getInstance().getSensorByString(sensorName);
         ArrayList<DataRecord> results = sensor.getRecordsOnPeriod(startDate, endDate);
 
-		JSONArray responseData = new JSONArray(results);
-		response.setContentType("application/json");
+
+		Gson gson = new Gson();
+		String responseData = gson.toJson(results);
+		response.setContentType("text/html");
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().println(responseData);
 
