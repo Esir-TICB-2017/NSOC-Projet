@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Sensor {
 	private Double currentValue;
 	private String type;
+	private String unit;
 	private Integer id;
 
 	public int getId() {
@@ -21,9 +22,10 @@ public class Sensor {
 	}
 
 
-	public Sensor(String type, Integer id) {
+	public Sensor(String type, Integer id, String unit) {
 		this.type = type;
 		this.id = id;
+		this.unit = unit;
 	}
 
 	public void setType(String type) {
@@ -32,6 +34,10 @@ public class Sensor {
 
 	public String getType() {
 		return type;
+	}
+
+	public String getUnit() {
+		return unit;
 	}
 
 	public DataRecord getLastRecord() {

@@ -1,8 +1,11 @@
 package database;
 
+import com.google.gson.JsonObject;
+import com.serotonin.util.Tuple;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceReadDatabase;
 import indicators.Indicator;
+import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 
 import java.sql.*;
@@ -48,17 +51,18 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
-	public static Map<String, Integer> getAllSensorsName() {
+	public static ArrayList<JSONObject> getAllSensors() {
 		Connection connection = ConnectionManager.getConnection();
-		Map<String, Integer> Sensorslist = new HashMap<String, Integer>(1);
-		String sql = "SELECT type_name, id FROM sensor_type";
+		String sql = "SELECT type_name, id, unit FROM sensor_type";
+		ArrayList<JSONObject> sensorsList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					String name = rs.getString("type_name");
-					Integer id = rs.getInt("id");
-					Sensorslist.put(name, id);
-
+					JSONObject sensor = new JSONObject();
+					sensor.put("name", rs.getString("type_name"));
+					sensor.put("id", rs.getInt("id"));
+					sensor.put("unit", rs.getString("unit"));
+					sensorsList.add(sensor);
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -68,7 +72,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		return Sensorslist;
+		return sensorsList;
 	}
 
 	public static Map<String, Integer> getAllIndicatorsName() {
@@ -227,12 +231,10 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	public static ArrayList<DataRecord> getIndicatorsOnPeriod(Integer indicatorId, Timestamp startDate, Timestamp endDate) {
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<DataRecord> list = new ArrayList(1);
-		String sql = "SELECT indicators.submission_date, indicators.indicator_value " +
+		String sql = "SELECT submission_date, indicator_value " +
 				" FROM indicators " +
-				"INNER JOIN indicators_type " +
-				"ON indicators.indicator_type_id = indicators_type.id " +
-				"WHERE indicators_type.id = ? " +
-				"AND indicators.submission_date BETWEEN ? AND ?";
+				"WHERE indicator_type_id = ? " +
+				"AND submission_date BETWEEN ? AND ?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setInt(1, indicatorId);
 			preparedStatement.setTimestamp(2, startDate);
