@@ -34,11 +34,8 @@ public class Sensors {
 		return sensorResult;
 	}
 
-	public JsonElement getLastValues() {
-		ArrayList<DataRecord> result = ReadInDatabase.getLastSensorsValues();
-		Gson gson = new Gson();
-		JsonElement resultsToJson = gson.toJsonTree(result);
-		return resultsToJson;
+	public ArrayList<DataRecord> getLastValues() {
+		return ReadInDatabase.getLastSensorsValues();
 	}
 
 	public void addSensor(Sensor sensor) {

@@ -58,7 +58,10 @@ public class Indicator {
 		}
 	}
 	public DataRecord getLastRecord() {
-		return ReadInDatabase.getLastIndicator(getId());
+		DataRecord record = ReadInDatabase.getLastIndicator(getId());
+		record.setType("indicator");
+		record.setName(this.getType());
+		return record;
 	}
 
 	public Double getLastValue() {

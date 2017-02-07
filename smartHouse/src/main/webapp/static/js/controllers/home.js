@@ -1,6 +1,6 @@
 angular.module('nsoc')
 .controller('homeController', ($scope, $rootScope, $http, $location, _, websocketService) => {
-	$scope.tabs = ['general', 'data', 'settings'];
+	$scope.tabs = ['general', 'settings'];
 	$scope.actualTab = $scope.tabs[0];
 	$scope.sensors = [];
 

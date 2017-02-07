@@ -25,6 +25,7 @@ angular.module('nsoc')
 				$location.path('/home');
 				// start web socket service
 				websocketService.start('ws://127.0.0.1:8080/',
+				//	TODO : delete
 				function onOpen(websocket) {
 					websocket.send(JSON.stringify({userId}));
 				},
@@ -32,7 +33,8 @@ angular.module('nsoc')
 					$rootScope.$broadcast('signOut');
 				},
 				function onMessage(evt) {
-					var obj = JSON.parse(evt.data);
+                    console.log(evt);
+                    var obj = JSON.parse(evt.data);
 					if (obj.globalIndicator && obj.lastValues) {
 						$rootScope.$broadcast('firstData', obj);
 					} else {
