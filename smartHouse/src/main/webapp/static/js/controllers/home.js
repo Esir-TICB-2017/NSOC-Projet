@@ -3,9 +3,9 @@ angular.module('nsoc')
 	$scope.tabs = ['general', 'settings'];
 	$scope.actualTab = $scope.tabs[0];
 	$rootScope.loading = true;
+	$rootScope.globalIndicator = {data: 0};
 	$scope.sensors = [];
 	$scope.indicators = [];
-	$scope.globalIndicator = [];
 
 	$scope.changeTab = (newTab) => {
 		$scope.actualTab = newTab;
