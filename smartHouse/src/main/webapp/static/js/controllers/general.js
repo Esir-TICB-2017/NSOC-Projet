@@ -2,7 +2,7 @@
 * Created by loulou on 30/01/2017.
 */
 angular.module('nsoc')
-.controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http) => {
+.controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _) => {
 	$scope.selectors = [
 		{name: 'Daily', value: 'day'},
 		{name: 'Monthly', value: 'month'},
@@ -18,37 +18,37 @@ $scope.getData = function (selector) {
 		$scope.actualSelector = selector.name;
 		const startDate = moment().startOf(selector.value).format('X');
 		const endDate = moment().format('X');
-		// getDataService.get(startDate, endDate, (data) => {
-		// 	d3ChartService.draw(data, selector.value, 'homeChart');
-		// });
+		getDataService.get(startDate, endDate, (data) => {
+			d3ChartService.draw(data, selector.value, 'homeChart');
+		});
 	};
 
 	// $scope.getData($scope.selectors[0]);
 
-	$scope.$on('firstData', (event, data) => {
+	$scope.$on('firstData', (event, obj) => {
 		$scope.$apply(() => {
-			if (data.globalIndicator.key === 'global') {
-				$rootScope.houseIndicator = Math.round(data.globalIndicator.value);
-				getHouseHealth();
-			}
-			data.lastValues.forEach((sensor) => {
+			$rootScope.houseIndicator = Math.round(obj.globalIndicator.value);
+			getHouseHealth();
+			obj.lastValues.forEach((sensor) => {
 				sensor.data = Math.round(sensor.data*10)/10;
 			});
-			$scope.sensors = data.lastValues;
+			$scope.sensors = obj.lastValues;
 		});
 		$rootScope.loading = false;
 	});
 
-	$scope.$on('newValue', (event, data) => {
+	$scope.$on('newValue', (event, obj) => {
 		$scope.$apply(() => {
-			const key = Object.keys(data)[0];
-			if (key === 'global') {
-				$rootScope.houseIndicator = Math.round(data[key]);
-				getHouseHealth();
-			} else {
-				$scope.sensors.forEach((sensor, index) => {
-					if (sensor.name === key) {
-						sensor.data = Math.round(data[key]*10)/10;
+			if (obj.type === 'indicator') {
+				if (obj.name === 'global') {
+					$rootScope.houseIndicator = Math.round(obj.value);
+					getHouseHealth();
+				}
+			} else if (obj.type === 'sensor'){
+				$scope.sensors.some((sensor, index) => {
+					if (sensor.name === obj.name) {
+						$scope.sensors[index] = obj;
+						return true;
 					}
 				});
 			}

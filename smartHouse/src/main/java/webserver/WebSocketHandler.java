@@ -32,6 +32,7 @@ public class WebSocketHandler {
         this.session = session;
         // this unique ID
         try {
+            // Checker si le user est authentifié
             JsonElement lastValues = Sensors.getInstance().getLastValues();
             Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
             DataRecord lastRecord = indicator.getLastRecord();
@@ -41,6 +42,7 @@ public class WebSocketHandler {
             toSend.add("lastValues", lastValues);
             String toSendString = toSend.toString();
             session.getRemote().sendString(toSendString);
+            // Aller chercher session date d'expiration et calculer le temps restant
             // session.setIdleTimeout(5 * 60 * 1000);
 
         } catch (IOException e) {
