@@ -41,8 +41,7 @@ angular.module('nsoc')
 		$scope.$apply(() => {
 			if (obj.date) {
 				obj.date = moment(obj.date);
-				obj.day = obj.date.format('YYYY-MM-DD');
-				obj.hour = obj.date.format('HH:mm:ss');
+				obj.lastUpdate = obj.date.fromNow();
 			}
 			if (obj.data) {
 				obj.data = Math.round(obj.data * 10) / 10;

@@ -8,8 +8,7 @@
 		<div class='houseIndicator round' ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)'>
 			<div ng-show='!$root.globalIndicator.showDate' class='value'>{{$root.globalIndicator.data}}%</div>
 			<div ng-show='$root.globalIndicator.showDate' class='date'>
-				<div class='day'>{{$root.globalIndicator.day}}</div>
-				<div class='hour'>{{$root.globalIndicator.hour}}</div>
+				Updated {{$root.globalIndicator.lastUpdate}}
 			</div>
 		</div>
 		<div class='sensors'>
@@ -17,8 +16,7 @@
 				<div class='round' ng-mouseenter='displayDate()' ng-mouseleave='hideDate()'>
 					<div ng-show='!showDate' class='value'>{{sensor.data}}</div>
 					<div ng-show='showDate' class='date'>
-						<div class='day'>{{sensor.day}}</div>
-						<div class='hour'>{{sensor.hour}}</div>
+						Updated {{sensor.lastUpdate}}
 					</div>
 				</div>
 				<div class='name'>{{sensor.name}}</div>

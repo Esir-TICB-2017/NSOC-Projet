@@ -1,10 +1,7 @@
 package database;
 
-import com.google.gson.JsonObject;
-import com.serotonin.util.Tuple;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceReadDatabase;
-import indicators.Indicator;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 
