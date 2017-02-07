@@ -30,15 +30,7 @@ public class WebSocketHandler {
         // unique ID from this class' hash code
         return Integer.toHexString(this.hashCode());
     }
-
-    @ServerEndpoint(value = "/tokenid/{tokenid}")
-    public class Service {
-        private volatile String clientId;
-        @OnOpen
-        public void init(@PathParam("tokenid") String tokenId, Session session) throws IOException {
-            this.clientId = clientId;
-        }
-    }
+    
     @OnWebSocketConnect
     public void onConnect(Session session) {
         this.session = session;

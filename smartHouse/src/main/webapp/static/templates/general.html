@@ -6,12 +6,12 @@
 	<div class="mainInfo">
 		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
 		<div class='houseIndicator round'>
-			<div class='value'>{{globalIndicator.value}}%</div>
+			<div class='value'>{{globalIndicator.data}}%</div>
 		</div>
 		<div class='sensors'>
 			<div class='sensor' ng-repeat="sensor in sensors">
 				<div class='round'>
-					<div class='value'>{{sensor.value}}</div>
+					<div class='value'>{{sensor.data}}</div>
 				</div>
 				<div class='name'>{{sensor.name}}</div>
 			</div>

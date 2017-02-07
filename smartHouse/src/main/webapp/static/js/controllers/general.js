@@ -26,7 +26,6 @@ angular.module('nsoc')
 	// $scope.getData($scope.selectors[0]);
 
 	$scope.$on('data', (event, data) => {
-		console.log(data);
 		if (_.isArray(data)) {
 			data.forEach((obj) => {
 				displayHouseInfo(obj);
@@ -39,7 +38,7 @@ angular.module('nsoc')
 
 	function displayHouseInfo(obj) {
 		$scope.$apply(() => {
-			obj.value = Math.round(obj.value * 10) / 10;
+			obj.data = Math.round(obj.data * 10) / 10;
 			if (obj.type === 'indicator') {
 				if (obj.name === 'global') {
 					$scope.globalIndicator = obj;
@@ -64,12 +63,12 @@ angular.module('nsoc')
 	};
 
 	function getHouseHealth() {
-		if ($scope.globalIndicator.value <= 33) {
-			$scope.houseHealth = 'bad';
-		} else if ($scope.globalIndicator.value > 33 && $scope.globalIndicator.value <66) {
-			$scope.houseHealth = 'ok';
+		if ($scope.globalIndicator.data <= 33) {
+			$rootScope.houseHealth = 'bad';
+		} else if ($scope.globalIndicator.data > 33 && $scope.globalIndicator.data <66) {
+			$rootScope.houseHealth = 'ok';
 		} else {
-			$scope.houseHealth = 'great';
+			$rootScope.houseHealth = 'great';
 		}
 	}
 });

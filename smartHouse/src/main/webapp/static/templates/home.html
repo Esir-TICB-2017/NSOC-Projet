@@ -1,4 +1,4 @@
-<div class='home' ng-class='[houseHealth, {"loaded" : !$root.loading }]'>
+<div class='home' ng-class='[$root.houseHealth, {"loaded" : !$root.loading }]'>
 	<div class="mainMenu">
 		<div class='tabs'>
 			<button ng-repeat='tab in tabs' ng-class="{active: actualTab == tab}" ng-click="changeTab(tab)"	class="mainMenuButton">
