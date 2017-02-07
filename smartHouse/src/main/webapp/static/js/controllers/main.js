@@ -1,6 +1,5 @@
 angular.module('nsoc')
-.controller('mainController', function($scope, $rootScope, $http, $location) {
-	$rootScope.authenticated = false;
+.controller('mainController', function($scope, $rootScope, $http, $location, $cookies) {
 	gapi.load('auth2', function() {
 		gapi.auth2.init(
 			{
@@ -11,7 +10,7 @@ angular.module('nsoc')
 	});
 	$scope.$on('$routeChangeStart', function (e) {
 		if($location.path() == '/home'){
-			if (!$rootScope.authenticated) {
+			if (!$cookies.get('authenticated')) {
 				e.preventDefault();
 				console.log('Please login first');
 				$location.path('/login');

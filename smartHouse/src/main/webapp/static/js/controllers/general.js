@@ -2,11 +2,11 @@
 * Created by loulou on 30/01/2017.
 */
 angular.module('nsoc')
-.controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http) => {
+.controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _) => {
 	$scope.selectors = [
 		{name: 'Monthly', value: 'month'},
 		{name: 'Weekly', value: 'week'},
-        {name: 'Daily', value: 'day'},
+		{name: 'Daily', value: 'day'},
 	];
 	$scope.userInfo = {
 		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
@@ -14,7 +14,7 @@ angular.module('nsoc')
 	};
 	$scope.actualSelector;
 
-$scope.getData = function (selector) {
+	$scope.getData = function (selector) {
 		$scope.actualSelector = selector.name;
 		const startDate = moment().startOf(selector.value).format('X');
 		const endDate = moment().format('X');
@@ -23,42 +23,49 @@ $scope.getData = function (selector) {
 		});
 	};
 
-	$scope.getData($scope.selectors[0]);
+	// $scope.getData($scope.selectors[0]);
 
-	$scope.$on('firstData', (event, data) => {
-		$scope.$apply(() => {
-			if (data.globalIndicator.key === 'global') {
-				$rootScope.houseIndicator = Math.round(data.globalIndicator.value);
-				getHouseHealth();
-			}
-			data.lastValues.forEach((sensor) => {
-				sensor.data = Math.round(sensor.data*10)/10;
+	$scope.$on('data', (event, data) => {
+		if (_.isArray(data)) {
+			data.forEach((obj) => {
+				displayHouseInfo(obj);
+				$rootScope.loading = false;
 			});
-			$scope.sensors = data.lastValues;
-		});
-		$rootScope.loading = false;
+		} else {
+			displayHouseInfo(data);
+		}
 	});
 
-	$scope.$on('newValue', (event, data) => {
+	function displayHouseInfo(obj) {
 		$scope.$apply(() => {
-			const key = Object.keys(data)[0];
-			if (key === 'global') {
-				$rootScope.houseIndicator = Math.round(data[key]);
-				getHouseHealth();
-			} else {
-				$scope.sensors.forEach((sensor, index) => {
-					if (sensor.name === key) {
-						sensor.data = Math.round(data[key]*10)/10;
+			obj.data = Math.round(obj.data * 10) / 10;
+			if (obj.type === 'indicator') {
+				if (obj.name === 'global') {
+					$rootScope.globalIndicator = obj;
+					getHouseHealth();
+				} else {
+					const indicatorIndex = _.findIndex($scope.indicators, indicator => indicator.name === obj.name);
+					if (indicatorIndex !== -1) {
+						$scope.indicators[indicatorIndex] = obj;
+					} else {
+						$scope.indicators.push(obj);
 					}
-				});
+				}
+			} else if (obj.type === 'sensor'){
+				const sensorIndex = _.findIndex($scope.sensors, sensor => sensor.name === obj.name);
+				if (sensorIndex !== -1) {
+					$scope.sensors[sensorIndex] = obj;
+				} else {
+					$scope.sensors.push(obj);
+				}
 			}
 		});
-	});
+	};
 
 	function getHouseHealth() {
-		if ($rootScope.houseIndicator <= 33) {
+		if ($rootScope.globalIndicator.data <= 33) {
 			$rootScope.houseHealth = 'bad';
-		} else if ($rootScope.houseIndicator > 33 && $rootScope.houseIndicator <66) {
+		} else if ($rootScope.globalIndicator.data > 33 && $rootScope.globalIndicator.data <66) {
 			$rootScope.houseHealth = 'ok';
 		} else {
 			$rootScope.houseHealth = 'great';
