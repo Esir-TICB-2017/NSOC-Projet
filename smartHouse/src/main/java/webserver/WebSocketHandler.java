@@ -40,7 +40,6 @@ public class WebSocketHandler {
             toSend.add("globalIndicator", lastRecord.toJsonElement());
             toSend.add("lastValues", lastValues);
             String toSendString = toSend.toString();
-            System.out.println(toSendString);
             session.getRemote().sendString(toSendString);
             // session.setIdleTimeout(5 * 60 * 1000);
 

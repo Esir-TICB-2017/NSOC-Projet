@@ -1,5 +1,6 @@
 package database;
 
+import database.data.DataRecord;
 import database.databaseInterface.InterfaceWriteDatabase;
 import indicators.Indicator;
 import javafx.beans.binding.BooleanBinding;
@@ -19,43 +20,45 @@ import java.util.HashMap;
  */
 public class WriteInDatabase extends Database implements InterfaceWriteDatabase {
 
-	public static void writeSensorValue(Sensor sensor, double value) {
+	public static void writeSensorValue(Sensor sensor, Double value) {
 
 		Connection connection = ConnectionManager.getConnection();
-		String className = sensor.getType();
+		Timestamp currentDate = getCurrentTimeStamp();
 		String sql = "INSERT INTO sensors_data "
 				+ "(sensor_value, submission_date, sensor_type_id) VALUES"
 				+ "(?, ?, ?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setDouble(1, value);
-			preparedStatement.setTimestamp(2, getCurrentTimeStamp());
+			preparedStatement.setTimestamp(2, currentDate);
+
 			preparedStatement.setInt(3, sensor.getId());
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		DatabaseEventsHandler.broadcastSensorValue(sensor, value);
+		DatabaseEventsHandler.broadcastValue(new DataRecord(value, currentDate, "sensor", sensor.getType()));
 
 	}
 
 	public static void writeIndicatorValue(Indicator indicator, Double value) {
 		Connection connection = ConnectionManager.getConnection();
+		Timestamp currentDate = getCurrentTimeStamp();
 		String sql = "INSERT INTO indicators "
 				+ "(indicator_value, submission_date, indicator_type_id) VALUES"
 				+ "(?, ?, ?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setDouble(1, value);
-			preparedStatement.setTimestamp(2, getCurrentTimeStamp());
+			preparedStatement.setTimestamp(2, currentDate);
 			preparedStatement.setInt(3, indicator.getId());
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		DatabaseEventsHandler.broadcastIndicatorValue(indicator, value);
+		DatabaseEventsHandler.broadcastValue(new DataRecord(value, currentDate, "indicator", indicator.getType()));
 	}
 
 	public static void deleteUserSession(String userId) {
