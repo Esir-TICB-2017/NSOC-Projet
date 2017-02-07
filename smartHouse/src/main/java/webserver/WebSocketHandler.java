@@ -1,7 +1,10 @@
 package webserver;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import database.ReadInDatabase;
@@ -14,6 +17,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.json.JSONArray;
 import sensor.sensorClass.Sensors;
 
 @WebSocket
@@ -27,20 +31,26 @@ public class WebSocketHandler {
         return Integer.toHexString(this.hashCode());
     }
 
+    @ServerEndpoint(value = "/tokenid/{tokenid}")
+    public class Service {
+        private volatile String clientId;
+        @OnOpen
+        public void init(@PathParam("tokenid") String tokenId, Session session) throws IOException {
+            this.clientId = clientId;
+        }
+    }
     @OnWebSocketConnect
     public void onConnect(Session session) {
         this.session = session;
         // this unique ID
         try {
-            // Checker si le user est authentifié
-            JsonElement lastValues = Sensors.getInstance().getLastValues();
+            ArrayList<DataRecord> lastValues = Sensors.getInstance().getLastValues();
             Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
             DataRecord lastRecord = indicator.getLastRecord();
+            lastValues.add(lastRecord);
 
-            JsonObject toSend = new JsonObject();
-            toSend.add("globalIndicator", lastRecord.toJsonElement());
-            toSend.add("lastValues", lastValues);
-            String toSendString = toSend.toString();
+            JSONArray responseData = new JSONArray(lastValues);
+            String toSendString = responseData.toString();
             session.getRemote().sendString(toSendString);
             // Aller chercher session date d'expiration et calculer le temps restant
             // session.setIdleTimeout(5 * 60 * 1000);

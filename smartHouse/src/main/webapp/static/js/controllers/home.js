@@ -1,9 +1,11 @@
 angular.module('nsoc')
-.controller('homeController', ($scope, $rootScope, $cookies, $http, $location, _, websocketService) => {
-	$scope.tabs = ['general', 'data', 'settings'];
+.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService) => {
+	$scope.tabs = ['general', 'settings'];
 	$scope.actualTab = $scope.tabs[0];
 	$rootScope.loading = true;
 	$scope.sensors = [];
+	$scope.indicators = [];
+	$scope.globalIndicator = [];
 
 	$scope.changeTab = (newTab) => {
 		$scope.actualTab = newTab;
@@ -35,12 +37,7 @@ angular.module('nsoc')
 				$scope.signOut();
 			},
 			function onMessage(evt) {
-				var obj = JSON.parse(evt.data);
-				if (obj.globalIndicator && obj.lastValues) {
-					$scope.$broadcast('firstData', obj);
-				} else {
-					$scope.$broadcast('newValue', obj);
-				}
+				$scope.$broadcast('data', JSON.parse(evt.data));
 			});
 		}
 		// Rediriger vers login si on reçoit un forbidden (refresh de la page mais plus authentifié, le serveur renvoie 403)

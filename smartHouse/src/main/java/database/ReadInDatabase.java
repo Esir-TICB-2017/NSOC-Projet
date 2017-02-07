@@ -201,12 +201,10 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		double data;
 		Timestamp date;
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT indicators.submission_date, indicators.indicator_value " +
+		String sql = "SELECT submission_date, indicator_value " +
 				"FROM indicators " +
-				"INNER JOIN indicators_type " +
-				"ON indicators.indicator_type_id = indicators_type.id " +
-				"WHERE indicators_type.id = ? " +
-				"ORDER BY indicators.submission_date DESC LIMIT 1";
+				"WHERE indicator_type_id = ? " +
+				"ORDER BY submission_date DESC LIMIT 1";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setInt(1, indicatorId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
