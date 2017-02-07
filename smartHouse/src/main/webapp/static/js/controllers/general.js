@@ -8,7 +8,9 @@ angular.module('nsoc')
 		{name: 'Weekly', value: 'week'},
 		{name: 'Daily', value: 'day'},
 	];
-	$scope.actualSelector;
+	$scope.graphs = ['global', 'co2', 'temperature', 'consumption', 'humidity', 'production'];
+	$scope.actualGraph = 'global';
+	$scope.mode = 'indicator';
 
 	$scope.getData = function (selector) {
 		$scope.actualSelector = selector.name;

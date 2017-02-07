@@ -1,7 +1,7 @@
 <div class='general' ng-controller='generalController'>
 	<div class="mainInfo">
 		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
-		<div class='houseIndicator round' ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)'>
+		<div class='houseIndicator round' ng-class="{active: actualGraph === 'global' && mode === 'indicator'}" ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)'>
 			<div ng-show='!$root.globalIndicator.showDate' class='value'>{{$root.globalIndicator.data}}%</div>
 			<div ng-show='$root.globalIndicator.showDate' class='date'>
 				Updated {{$root.globalIndicator.lastUpdate}}

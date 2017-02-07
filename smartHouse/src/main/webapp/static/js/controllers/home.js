@@ -7,7 +7,6 @@ angular.module('nsoc')
 		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
 		pictureUrl: $cookies.get('pictureUrl'),
 	};
-	$rootScope.globalIndicator = {data: 0};
 	$scope.sensors = [];
 	$scope.indicators = [];
 

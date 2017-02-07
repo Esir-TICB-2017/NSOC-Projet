@@ -24,6 +24,11 @@
 			border-radius    : 50%;
 			display          : flex;
 			cursor           : pointer;
+
+			&.active {
+				box-width  : 0;
+				box-shadow : 0 0 7px 5px #ffffff;
+			}
 			&.houseIndicator {
 				margin       : 0 auto 20px auto;
 				width        : 200px;
