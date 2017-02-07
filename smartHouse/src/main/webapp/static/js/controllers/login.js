@@ -34,8 +34,10 @@ angular.module('nsoc')
 				},
 				function onMessage(evt) {
 					var obj = JSON.parse(evt.data);
-                    if (obj.globalIndicator && obj.lastValues) {
+					if (obj.globalIndicator && obj.lastValues) {
 						$rootScope.$broadcast('firstData', obj);
+					} else {
+						$rootScope.$broadcast('newValue', obj);
 					}
 				});
 			}, function error(err) {
