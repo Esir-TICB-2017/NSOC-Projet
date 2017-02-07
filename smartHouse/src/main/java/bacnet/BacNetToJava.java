@@ -117,7 +117,7 @@ public class  BacNetToJava implements InterfaceReadBacnet {
 //                        }
 //                        ts.setNewValue(value);
                         try {
-                            Thread.sleep(10000);
+                            Thread.sleep(1000 * 60 * 10);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

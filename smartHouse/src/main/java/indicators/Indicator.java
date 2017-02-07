@@ -2,6 +2,7 @@ package indicators;
 
 import database.ReadInDatabase;
 import database.WriteInDatabase;
+import database.data.DataLinkToDate;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 
@@ -50,7 +51,18 @@ public class Indicator {
 	}
 
 	public Double getCurrentValue() {
-		return currentValue;
+		if(currentValue != null) {
+			return currentValue;
+		}else {
+			return getLastValue();
+		}
+	}
+	public DataLinkToDate getLastRecord() {
+		return ReadInDatabase.getLastIndicator(this);
+	}
+
+	public Double getLastValue() {
+		return getLastRecord().getData();
 	}
 
 	public void setCurrentValue(Double currentValue) {
@@ -76,7 +88,7 @@ public class Indicator {
 							indicator = 0.0;
 						}
 					} else {
-						indicator = currentValue;
+						indicator = getCurrentValue();
 					}
 				}
 			}

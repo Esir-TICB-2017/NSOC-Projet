@@ -20,8 +20,6 @@ public class SessionManager {
 		HttpSession session = request.getSession(false);
 
 		if (session != null) {
-
-			Long start = Long.parseLong(request.getParameter("startDate"));
 			String userId = (String) session.getAttribute("userId");
 			String userToken = (String) session.getAttribute("userToken");
 			java.util.Date today = new java.util.Date(System.currentTimeMillis());

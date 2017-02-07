@@ -31,7 +31,11 @@ public class WebSocketHandler {
         this.session = session;
         // this unique ID
         try {
+            System.out.println("last indicator query");
+            long startTime = System.currentTimeMillis();
             JsonElement lastValues = Sensors.getInstance().getLastValues();
+            long endTime = System.currentTimeMillis();
+            System.out.println("last indicator took " + (endTime - startTime) + " milliseconds");
             Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
             Double globalIndicator = ReadInDatabase.getLastIndicator(indicator).getData();
             JsonObject indicatorJson = new JsonObject();
@@ -41,6 +45,7 @@ public class WebSocketHandler {
             toSend.add("globalIndicator", indicatorJson);
             toSend.add("lastValues", lastValues);
             String toSendString = toSend.toString();
+            System.out.println("ici envoi");
             session.getRemote().sendString(toSendString);
             // session.setIdleTimeout(5 * 60 * 1000);
 

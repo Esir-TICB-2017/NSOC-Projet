@@ -10,7 +10,6 @@ angular.module('nsoc')
 			$cookies.put('pictureUrl', profile.Paa);
 			// The ID token we need to pass to your backend:
 			var id_token = googleUser.getAuthResponse().id_token;
-			console.log(id_token)
 			$http({
 				method: 'POST',
 				url: '/login',

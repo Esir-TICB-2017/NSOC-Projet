@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by loulou on 21/01/2017.
  */
 public class Sensor {
-	private double currentValue;
+	private Double currentValue;
 	private String type;
 	private Integer id;
 
@@ -26,24 +26,28 @@ public class Sensor {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
-	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	public void setCurrentValue(double currentValue) {
-		this.currentValue = currentValue;
+	public String getType() {
+		return type;
+	}
+
+	public DataLinkToDate getLastRecord() {
+		return ReadInDatabase.getLastValue(this);
+	}
+
+	public Double getLastValue() {
+		return getLastRecord().getData();
 	}
 
 	public double getCurrentValue() {
-		return currentValue;
-	}
-
-	public DataLinkToDate getLastValue() {
-		return ReadInDatabase.getLastValue(this);
+		if (currentValue != null) {
+			return currentValue;
+		} else {
+			return getLastValue();
+		}
 	}
 
 	public ArrayList<DataLinkToDate> getValuesOnPeriod(Timestamp startDate, Timestamp endDate) {
@@ -52,8 +56,14 @@ public class Sensor {
 
 	public void setNewValue(double newValue) {
 		if (newValue != currentValue) {
-//			WriteInDatabase.writeSensorValue(this, newValue);
+			WriteInDatabase.writeSensorValue(this, newValue);
 			this.setCurrentValue(newValue);
 		}
 	}
+
+	public void setCurrentValue(double currentValue) {
+		this.currentValue = currentValue;
+	}
+
+
 }

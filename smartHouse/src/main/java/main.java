@@ -44,10 +44,15 @@ public class main {
 			Indicator indicator = new Indicator((String) pair.getKey(), (Integer) pair.getValue());
 			indicators.addIndicator(indicator);
 		}
-		BacNetToJava.getInstance();
-
+//		BacNetToJava.getInstance();
 		Thread thread = new Thread() {
 			public void run() {
+				for(Sensor sensor : Sensors.getInstance().getSensors()) {
+					Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
+					if(!indicator.getType().equals("global")) {
+						indicator.calculateIndicator();
+					}
+				}
 				while(true) {
 					try {
 						Thread.sleep(10000);

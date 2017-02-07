@@ -315,13 +315,9 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<HashMap> list = new ArrayList(1);
 		String sql = "SELECT * FROM sessions WHERE userid=?";
-		System.out.println("start of getUserSession query");
-		long startTime = System.currentTimeMillis();
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, userId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
-				long endTime = System.currentTimeMillis();
-				System.out.println("getUserSession took " + (endTime - startTime) + " milliseconds");
 				list = formatData(rs, 1);
 				rs.close();
 			} catch (SQLException ex) {
