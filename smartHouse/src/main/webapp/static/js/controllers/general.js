@@ -23,7 +23,7 @@ angular.module('nsoc')
 		});
 	};
 
-	// $scope.getData($scope.selectors[0]);
+	$scope.getData($scope.selectors[0]);
 
 	$scope.$on('data', (event, data) => {
 		if (_.isArray(data)) {
