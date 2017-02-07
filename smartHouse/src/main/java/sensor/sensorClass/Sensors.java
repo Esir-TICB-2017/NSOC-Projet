@@ -3,9 +3,7 @@ package sensor.sensorClass;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import database.ReadInDatabase;
-import database.data.DataLinkToDate;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import database.data.DataRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ public class Sensors {
 	}
 
 	public JsonElement getLastValues() {
-		ArrayList<DataLinkToDate> result = ReadInDatabase.getLastSensorsValues();
+		ArrayList<DataRecord> result = ReadInDatabase.getLastSensorsValues();
 		Gson gson = new Gson();
 		JsonElement resultsToJson = gson.toJsonTree(result);
 		return resultsToJson;

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import database.ReadInDatabase;
+import database.data.DataRecord;
 import indicators.Indicator;
 import indicators.Indicators;
 import org.eclipse.jetty.websocket.api.Session;
@@ -31,21 +32,15 @@ public class WebSocketHandler {
         this.session = session;
         // this unique ID
         try {
-            System.out.println("last indicator query");
-            long startTime = System.currentTimeMillis();
             JsonElement lastValues = Sensors.getInstance().getLastValues();
-            long endTime = System.currentTimeMillis();
-            System.out.println("last indicator took " + (endTime - startTime) + " milliseconds");
             Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
-            Double globalIndicator = ReadInDatabase.getLastIndicator(indicator).getData();
-            JsonObject indicatorJson = new JsonObject();
-            indicatorJson.addProperty("key", indicator.getType());
-            indicatorJson.addProperty("value", globalIndicator);
+            DataRecord lastRecord = indicator.getLastRecord();
+
             JsonObject toSend = new JsonObject();
-            toSend.add("globalIndicator", indicatorJson);
+            toSend.add("globalIndicator", lastRecord.toJsonElement());
             toSend.add("lastValues", lastValues);
             String toSendString = toSend.toString();
-            System.out.println("ici envoi");
+            System.out.println(toSendString);
             session.getRemote().sendString(toSendString);
             // session.setIdleTimeout(5 * 60 * 1000);
 

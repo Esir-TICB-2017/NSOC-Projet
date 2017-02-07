@@ -1,8 +1,8 @@
 package webserver;
 
 import com.google.gson.Gson;
-import database.data.DataLinkToDate;
-import org.json.JSONObject;
+import database.data.DataRecord;
+import org.json.JSONArray;
 import sensor.sensorClass.*;
 
 import javax.servlet.ServletException;
@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 public class GetValuesOnPeriodServlet extends HttpServlet {
 
@@ -23,19 +21,13 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         Timestamp startDate = new Timestamp(start * 1000);
         Timestamp endDate = new Timestamp(end * 1000);
         String sensorName = request.getParameter("sensorName");
-        ArrayList<DataLinkToDate> result = Sensors.getInstance().getSensorByString(sensorName).getValuesOnPeriod(startDate, endDate);
+        Sensor sensor = Sensors.getInstance().getSensorByString(sensorName);
+        ArrayList<DataRecord> results = sensor.getRecordsOnPeriod(startDate, endDate);
 
-
-        if(result != null) {
-            Gson gson = new Gson();
-            String json = gson.toJson(result);
-
-            response.setContentType("text/html");
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println(json);
-        } else {
-            response.sendError(403);
-        }
+		JSONArray responseData = new JSONArray(results);
+		response.setContentType("application/json");
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.getWriter().println(responseData);
 
     }
 }

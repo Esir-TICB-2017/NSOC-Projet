@@ -2,8 +2,6 @@ package webserver;
 
 import com.google.gson.Gson;
 import database.ReadInDatabase;
-import database.WriteInDatabase;
-import database.data.DataLinkToDate;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

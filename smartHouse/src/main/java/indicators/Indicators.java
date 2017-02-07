@@ -3,7 +3,7 @@ package indicators;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import database.ReadInDatabase;
-import database.data.DataLinkToDate;
+import database.data.DataRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class Indicators {
 	}
 
 	public JsonElement getLastValues() {
-		ArrayList<DataLinkToDate> result = ReadInDatabase.getLastIndicatorsValues();
+		ArrayList<DataRecord> result = ReadInDatabase.getLastIndicatorsValues();
 		Gson gson = new Gson();
 		JsonElement resultsToJson = gson.toJsonTree(result);
 		return resultsToJson;

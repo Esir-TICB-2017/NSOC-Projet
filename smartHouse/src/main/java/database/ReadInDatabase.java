@@ -1,28 +1,24 @@
 package database;
 
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-import database.data.DataLinkToDate;
+import database.data.DataRecord;
 import database.databaseInterface.InterfaceReadDatabase;
 import indicators.Indicator;
 import sensor.sensorClass.Sensor;
-import sensor.sensorClass.Sensors;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.StringJoiner;
 import java.util.Map;
 
 /**
  * Created by loulou on 21/01/2017.
  */
 public class ReadInDatabase extends Database implements InterfaceReadDatabase {
-
-	public static DataLinkToDate getLastValue(Sensor sensor) {
+	// TODO : refactor function with Sensor in input
+	public static DataRecord getLastValue(Sensor sensor) {
 		double data;
 		Timestamp date;
-		DataLinkToDate result = null;
+		DataRecord result = null;
 		String sensorType = sensor.getType();
 		Connection connection = ConnectionManager.getConnection();
 		String sql =
@@ -39,7 +35,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				while (rs.next()) {
 					date = rs.getTimestamp("submission_date");
 					data = rs.getDouble("sensor_value");
-					result = new DataLinkToDate(data, date, "sensor", sensorType);
+					result = new DataRecord(data, date);
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -98,28 +94,25 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return Indicatorslist;
 	}
 
-
-	public static ArrayList<DataLinkToDate> getValuesOnPeriod(Sensor sensor, Timestamp startDate, Timestamp endDate) {
-		double data;
-		Timestamp date;
+	public static ArrayList<DataRecord> getValuesOnPeriod(Integer sensorId, Timestamp startDate, Timestamp endDate) {
 		Connection connection = ConnectionManager.getConnection();
-		String sensorType = sensor.getType();
-		ArrayList<DataLinkToDate> list = new ArrayList(1);
+		ArrayList<DataRecord> list = new ArrayList(1);
 		String sql = "SELECT sensors_data.submission_date, sensors_data.sensor_value, sensor_type.type_name " +
 				"FROM sensors_data INNER JOIN sensor_type " +
 				"ON sensors_data.sensor_type_id=sensor_type.id " +
-				"AND sensor_type.type_name = ? " +
+				"AND sensor_type.id = ? " +
 				" WHERE sensors_data.submission_date BETWEEN ? AND ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setString(1, sensorType);
+			preparedStatement.setInt(1, sensorId);
 			preparedStatement.setTimestamp(2, startDate);
 			preparedStatement.setTimestamp(3, endDate);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					date = rs.getTimestamp("submission_date");
-					data = rs.getDouble("value");
-					list.add(new DataLinkToDate(data, date, "sensor", sensorType));
+					Timestamp date = rs.getTimestamp("submission_date");
+					Double data = rs.getDouble("value");
+					String name = rs.getString("type_name");
+					list.add(new DataRecord(data, date, "sensor", name));
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -133,9 +126,9 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	}
 
 /*
-	public static ArrayList<DataLinkToDate> getAllLastIndicators() {
+	public static ArrayList<DataRecord> getAllLastIndicators() {
 
-		ArrayList<DataLinkToDate> list = new ArrayList(Indicators.ALL_INDICATORS.length);
+		ArrayList<DataRecord> list = new ArrayList(Indicators.ALL_INDICATORS.length);
 
 		for (String indicator : Indicators.ALL_INDICATORS) {
 			list.add(getLastIndicator(indicator));
@@ -145,8 +138,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	}
 	*/
 
-	public static ArrayList<DataLinkToDate> getLastSensorsValues() {
-		ArrayList<DataLinkToDate> list = new ArrayList();
+	public static ArrayList<DataRecord> getLastSensorsValues() {
+		ArrayList<DataRecord> list = new ArrayList();
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "SELECT sensors_data.submission_date, sensors_data.sensor_value, sensor_type.type_name " +
 				"FROM sensors_data LEFT JOIN sensor_type " +
@@ -159,8 +152,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				while (rs.next()) {
 					Timestamp date = rs.getTimestamp("submission_date");
 					Double data = rs.getDouble("sensor_value");
-					String type = rs.getString("type_name");
-					DataLinkToDate row = new DataLinkToDate(data, date, "sensor", type);
+					String name = rs.getString("type_name");
+					DataRecord row = new DataRecord(data, date, "sensor", name);
 					list.add(row);
 				}
 				rs.close();
@@ -174,8 +167,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return list;
 	}
 
-	public static ArrayList<DataLinkToDate> getLastIndicatorsValues() {
-		ArrayList<DataLinkToDate> list = new ArrayList();
+	public static ArrayList<DataRecord> getLastIndicatorsValues() {
+		ArrayList<DataRecord> list = new ArrayList();
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "SELECT indicators.submission_date, indicators.sensor_value, indicators_type.type_name " +
 				"FROM indicators LEFT JOIN indicators_type " +
@@ -188,8 +181,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				while (rs.next()) {
 					Timestamp date = rs.getTimestamp("submission_date");
 					Double data = rs.getDouble("indicator_value");
-					String type = rs.getString("type_name");
-					DataLinkToDate row = new DataLinkToDate(data, date, "indicator", type);
+					String name = rs.getString("type_name");
+					DataRecord row = new DataRecord(data, date, "indicator", name);
 					list.add(row);
 				}
 				rs.close();
@@ -203,8 +196,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return list;
 	}
 
-	public static DataLinkToDate getLastIndicator(Indicator indicator) {
-		DataLinkToDate result = null;
+	public static DataRecord getLastIndicator(Integer indicatorId) {
+		DataRecord result = null;
 		double data;
 		Timestamp date;
 		Connection connection = ConnectionManager.getConnection();
@@ -212,15 +205,15 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"FROM indicators " +
 				"INNER JOIN indicators_type " +
 				"ON indicators.indicator_type_id = indicators_type.id " +
-				"WHERE indicators_type.type_name = ? " +
+				"WHERE indicators_type.id = ? " +
 				"ORDER BY indicators.submission_date DESC LIMIT 1";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setString(1, indicator.getType());
+			preparedStatement.setInt(1, indicatorId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					date = rs.getTimestamp("submission_date");
 					data = rs.getDouble("indicator_value");
-					result = new DataLinkToDate(data, date, "indicator", indicator.getType());
+					result = new DataRecord(data, date);
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -233,27 +226,24 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
-	public static ArrayList<DataLinkToDate> getIndicatorsOnPeriod(Indicator indicator, Timestamp startDate, Timestamp endDate) {
-		double data;
-		Timestamp date;
-		String type = indicator.getType();
+	public static ArrayList<DataRecord> getIndicatorsOnPeriod(Integer indicatorId, Timestamp startDate, Timestamp endDate) {
 		Connection connection = ConnectionManager.getConnection();
-		ArrayList<DataLinkToDate> list = new ArrayList(1);
+		ArrayList<DataRecord> list = new ArrayList(1);
 		String sql = "SELECT indicators.submission_date, indicators.indicator_value " +
 				" FROM indicators " +
 				"INNER JOIN indicators_type " +
 				"ON indicators.indicator_type_id = indicators_type.id " +
-				"WHERE indicators_type.type_name = ? " +
+				"WHERE indicators_type.id = ? " +
 				"AND indicators.submission_date BETWEEN ? AND ?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setString(1, type);
+			preparedStatement.setInt(1, indicatorId);
 			preparedStatement.setTimestamp(2, startDate);
 			preparedStatement.setTimestamp(3, endDate);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					date = rs.getTimestamp("submission_date");
-					data = rs.getDouble("indicator_value");
-					list.add(new DataLinkToDate(data, date, "indicator", type));
+					Double data = rs.getDouble("indicator_value");
+					Timestamp date = rs.getTimestamp("submission_date");
+					list.add(new DataRecord(data, date));
 				}
 				rs.close();
 			} catch (SQLException ex) {

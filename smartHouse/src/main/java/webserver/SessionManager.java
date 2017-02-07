@@ -55,7 +55,7 @@ public class SessionManager {
 	}
 
 	public static void deleteSession(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		WriteInDatabase.deleteUserSession((String) session.getAttribute("userId"));
 		session.invalidate();
 	}

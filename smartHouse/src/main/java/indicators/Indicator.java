@@ -2,11 +2,11 @@ package indicators;
 
 import database.ReadInDatabase;
 import database.WriteInDatabase;
-import database.data.DataLinkToDate;
+import database.data.DataRecord;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 
-import java.lang.reflect.Array;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,12 +57,15 @@ public class Indicator {
 			return getLastValue();
 		}
 	}
-	public DataLinkToDate getLastRecord() {
-		return ReadInDatabase.getLastIndicator(this);
+	public DataRecord getLastRecord() {
+		return ReadInDatabase.getLastIndicator(getId());
 	}
 
 	public Double getLastValue() {
 		return getLastRecord().getData();
+	}
+	public ArrayList<DataRecord> getRecordsOnPeriod(Timestamp startDate, Timestamp endDate) {
+		return ReadInDatabase.getIndicatorsOnPeriod(getId(), startDate, endDate);
 	}
 
 	public void setCurrentValue(Double currentValue) {

@@ -2,7 +2,7 @@ package sensor.sensorClass;
 
 import database.ReadInDatabase;
 import database.WriteInDatabase;
-import database.data.DataLinkToDate;
+import database.data.DataRecord;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class Sensor {
 		return type;
 	}
 
-	public DataLinkToDate getLastRecord() {
+	public DataRecord getLastRecord() {
 		return ReadInDatabase.getLastValue(this);
 	}
 
@@ -50,12 +50,12 @@ public class Sensor {
 		}
 	}
 
-	public ArrayList<DataLinkToDate> getValuesOnPeriod(Timestamp startDate, Timestamp endDate) {
-		return ReadInDatabase.getValuesOnPeriod(this, startDate, endDate);
+	public ArrayList<DataRecord> getRecordsOnPeriod(Timestamp startDate, Timestamp endDate) {
+		return ReadInDatabase.getValuesOnPeriod(getId(), startDate, endDate);
 	}
 
-	public void setNewValue(double newValue) {
-		if (newValue != currentValue) {
+	public void setNewValue(Double newValue) {
+		if (newValue != this.currentValue) {
 			WriteInDatabase.writeSensorValue(this, newValue);
 			this.setCurrentValue(newValue);
 		}
