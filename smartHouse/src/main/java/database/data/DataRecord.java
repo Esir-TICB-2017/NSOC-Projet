@@ -60,7 +60,7 @@ public class DataRecord {
 
 	public JsonElement toJsonElement() {
 		JsonObject jsonElement = new JsonObject();
-		jsonElement.addProperty("value", this.data);
+		jsonElement.addProperty("data", this.data);
 		jsonElement.addProperty("date", this.date.toString());
 		if(type != null) {
 			jsonElement.addProperty("type", this.type);
