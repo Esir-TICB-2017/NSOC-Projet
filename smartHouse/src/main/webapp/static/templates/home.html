@@ -1,5 +1,9 @@
 <div class='home' ng-class='[$root.houseHealth, {"loaded" : !$root.loading }]'>
 	<div class="mainMenu">
+		<div class='userInfo'>
+			<img class='picture' ng-src="{{userInfo.pictureUrl}}"></img>
+			<div class='name'>Hi {{userInfo.givenName}}!</div>
+		</div>
 		<div class='tabs'>
 			<button ng-repeat='tab in tabs' ng-class="{active: actualTab == tab}" ng-click="changeTab(tab)"	class="mainMenuButton">
 				{{tab}}

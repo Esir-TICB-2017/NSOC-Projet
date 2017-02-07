@@ -8,10 +8,6 @@ angular.module('nsoc')
 		{name: 'Weekly', value: 'week'},
 		{name: 'Daily', value: 'day'},
 	];
-	$scope.userInfo = {
-		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
-		pictureUrl: $cookies.get('pictureUrl'),
-	};
 	$scope.actualSelector;
 
 	$scope.getData = function (selector) {

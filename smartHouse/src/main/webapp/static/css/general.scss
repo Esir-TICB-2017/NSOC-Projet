@@ -4,24 +4,6 @@
 	display : flex;
 	flex-direction: column;
 
-	&>.picture {
-		position: absolute;
-		border-radius: 50%;
-		border: 3px white solid;
-		left: 5%;
-		top: 2%;
-		width: 75px;
-		height: 75px;
-	}
-
-	&>.userInfo {
-		margin: 20px auto 0 auto;
-		&>.name {
-			display: inline-block;
-			font-size: 22px;
-		}
-	}
-
 	& >.mainInfo {
 		position       : relative;
 		display        : flex;

@@ -1,8 +1,4 @@
 <div class='general' ng-controller='generalController'>
-	<img class='picture' ng-src="{{userInfo.pictureUrl}}"></img>
-	<div class='userInfo'>
-		<div class='name'>Hi {{userInfo.givenName}}!</div>
-	</div>
 	<div class="mainInfo">
 		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
 		<div class='houseIndicator round' ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)'>
