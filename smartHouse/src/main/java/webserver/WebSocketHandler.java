@@ -20,7 +20,7 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.json.JSONArray;
 import sensor.sensorClass.Sensors;
 
-@WebSocket
+@WebSocket(value = "/tokenid/{tokenid}")
 public class WebSocketHandler {
     private final static HashMap<String, WebSocketHandler> sockets = new HashMap<>();
     public Session session;
@@ -30,9 +30,9 @@ public class WebSocketHandler {
         // unique ID from this class' hash code
         return Integer.toHexString(this.hashCode());
     }
-    
+
     @OnWebSocketConnect
-    public void onConnect(Session session) {
+    public void onConnect(@PathParam("tokenid") String tokenId, Session session) {
         this.session = session;
         // this unique ID
         try {
