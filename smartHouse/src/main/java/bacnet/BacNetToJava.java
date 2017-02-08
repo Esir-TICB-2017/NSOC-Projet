@@ -107,7 +107,6 @@ public class BacNetToJava implements InterfaceReadBacnet {
 					try {
 						Thread.sleep(1000 * 60 * 10);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -116,7 +115,6 @@ public class BacNetToJava implements InterfaceReadBacnet {
 		thread.start();
 
             /*} catch (BACnetException e) {
-				// TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("Problème de récupération de la valeur !");
             }*/
@@ -163,7 +161,6 @@ public class BacNetToJava implements InterfaceReadBacnet {
 			r = localDevice.findRemoteDevice(new Address("148.60.19.201", 47808), null, 203);
 			System.out.print(r.getObjects());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Probleme de connexion!");
 			disconnection();
@@ -179,7 +176,6 @@ public class BacNetToJava implements InterfaceReadBacnet {
 			System.out.println(result);
 			return (java.lang.Double.parseDouble(result));
 		} catch (BACnetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			disconnection();
 			return -1;
