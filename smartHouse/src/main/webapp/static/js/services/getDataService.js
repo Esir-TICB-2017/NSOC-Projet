@@ -3,17 +3,28 @@
  */
 angular.module('nsoc').factory('getDataService', ($http) => {
     return {
-        get: function (startDateTimestamp, endDateTimestamp, callback) {
+        get: function (startDateTimestamp, endDateTimestamp, objectType, objectName, callback) {
+            let url;
+            switch (objectType) {
+                case 'sensor':
+                     url = '/getValuesOverPeriod';
+                    break;
+                case 'indicator':
+                     url = '/getIndicatorsOverPeriod';
+                    break;
+                default:
+                     url = '/getIndicatorsOverPeriod';
+            }
             $http({
                 method: 'GET',
-                url: '/getIndicatorsOverPeriod',
+                url: url,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 params: {
                     "startDate": startDateTimestamp,
                     "endDate": endDateTimestamp,
-                    "indicator": "global"
+                    "objectName": objectName,
                 }
             }).then(function success(res) {
                 callback(res.data);
