@@ -41,6 +41,7 @@ public class Sensor {
 	}
 
 	public void setStatus(Boolean status) {
+		WriteInDatabase.setSensorStatus(getId(), status);
 		this.status = status;
 	}
 
