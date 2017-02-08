@@ -25,7 +25,7 @@ public class GetIndicatorsOnPeriodServlet extends HttpServlet {
 		Long end = Long.parseLong(request.getParameter("endDate"));
 		Timestamp startDate = new Timestamp(start * 1000);
 		Timestamp endDate = new Timestamp(end * 1000);
-		String indicatorType = request.getParameter("indicator");
+		String indicatorType = request.getParameter("objectName");
 		Indicator indicator = Indicators.getInstance().getIndicatorByString(indicatorType);
 		ArrayList<DataRecord> results = indicator.getRecordsOnPeriod(startDate, endDate);
 

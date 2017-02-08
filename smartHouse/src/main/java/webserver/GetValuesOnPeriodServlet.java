@@ -19,9 +19,11 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         Long end = Long.parseLong(request.getParameter("endDate"));
         Timestamp startDate = new Timestamp(start * 1000);
         Timestamp endDate = new Timestamp(end * 1000);
-        String sensorName = request.getParameter("sensorName");
+        String sensorName = request.getParameter("objectName");
         Sensor sensor = Sensors.getInstance().getSensorByString(sensorName);
-        ArrayList<DataRecord> results = sensor.getRecordsOnPeriod(startDate, endDate);
+		System.out.println(startDate.toString());
+		System.out.println(endDate.toString());
+		ArrayList<DataRecord> results = sensor.getRecordsOnPeriod(startDate, endDate);
 
 
 		Gson gson = new Gson();

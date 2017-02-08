@@ -10,7 +10,7 @@
 		<switch ng-model="sensorMode" ng-change="changeMode" on='Sensors' off='Indicators'></switch>
 		<div class='sensors'>
 			<div class='sensor' ng-repeat="sensor in sensors">
-				<div class='round' ng-mouseenter='displayDate()' ng-mouseleave='hideDate()'>
+				<div class='round' ng-mouseenter='displayDate()' ng-mouseleave='hideDate()' ng-click='drawChart()'>
 					<div ng-show='!showDate' class='value'>{{sensor.data}}</div>
 					<div ng-show='showDate' class='date'>
 						Updated {{sensor.lastUpdate}}

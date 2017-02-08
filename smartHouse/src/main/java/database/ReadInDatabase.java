@@ -111,7 +111,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					Timestamp date = rs.getTimestamp("submission_date");
-					Double data = rs.getDouble("value");
+					Double data = rs.getDouble("sensor_value");
 					String name = rs.getString("type_name");
 					list.add(new DataRecord(data, date, "sensor", name));
 				}
