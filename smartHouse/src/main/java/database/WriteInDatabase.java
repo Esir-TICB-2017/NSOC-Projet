@@ -61,6 +61,20 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		DatabaseEventsHandler.broadcastValue(new DataRecord(value, currentDate, "indicator", indicator.getType()));
 	}
 
+	public static void setSensorStatus(Integer id, Boolean status) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "UPDATE sensor_type SET status = ? WHERE id = ?";
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, id);
+			preparedStatement.setBoolean(2, status);
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void deleteUserSession(String userId) {
 
 		Connection connection = ConnectionManager.getConnection();
