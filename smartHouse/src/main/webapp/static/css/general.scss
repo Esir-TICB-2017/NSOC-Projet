@@ -33,8 +33,8 @@
 			cursor           : pointer;
 
 			&.active {
-				box-width  : 0;
-				box-shadow : 0 0 7px 5px #ffffff;
+				border-width : 0 !important;
+				box-shadow   : 0 0 9px 8px #ffffff;
 			}
 			&.houseIndicator {
 				margin       : 0 auto 20px auto;
