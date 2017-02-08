@@ -32,7 +32,8 @@ public class main {
 		Sensors.getInstance().initSensors();
 		Indicators.getInstance().initIndicators();
 
-		BacNetToJava.getInstance();
+// TODO uncomment for real test
+	//	BacNetToJava.getInstance();
 		Thread thread = new Thread() {
 			public void run() {
 				for (Sensor sensor : Sensors.getInstance().getSensors()) {
