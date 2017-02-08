@@ -2,32 +2,33 @@
  * Created by loulou on 30/01/2017.
  */
 angular.module('nsoc')
-    .controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _) => {
-        $scope.selectors = [
-            {name: 'Monthly', value: 'month'},
-            {name: 'Weekly', value: 'week'},
-            {name: 'Daily', value: 'day'},
-        ];
-        $scope.userInfo = {
-            givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
-            pictureUrl: $cookies.get('pictureUrl'),
-        };
-        $scope.actualSelector;
+.controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _) => {
+	$scope.selectors = [
+		{name: 'Monthly', value: 'month'},
+		{name: 'Weekly', value: 'week'},
+		{name: 'Daily', value: 'day'},
+	];
+	$scope.graphs = ['global', 'co2', 'temperature', 'consumption', 'humidity', 'production'];
+	$scope.actualGraph = 'global';
+	$scope.mode = 'indicator';
 
         $scope.getData = function (selector) {
             $scope.actualSelector = selector.name;
-            drawChart("indicator", "global", 'day');
+            $scope.actualSelectorValue = selector.value;
+            drawChart();
         };
 
         $scope.drawChart = function() {
-            drawChart(this.sensor.type, this.sensor.name, 'day');
+            $scope.actualGraph = this.sensor.name;
+            $scope.mode = this.sensor.mode;
+            drawChart();
 
         };
 
-        function drawChart(objectType, objectName, period) {
-            const startDate = moment().startOf(period).format('X');
+        function drawChart() {
+            const startDate = moment().startOf($scope.actualSelectorValue).format('X');
             const endDate = moment().format('X');
-            getDataService.get(startDate, endDate, objectType, objectName, (data) => {
+            getDataService.get(startDate, endDate, $scope.mode, $scope.actualGraph, (data) => {
                 d3ChartService.draw(data, 'month', 'homeChart');
             });
         }

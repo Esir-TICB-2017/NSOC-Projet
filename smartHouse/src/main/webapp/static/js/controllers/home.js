@@ -3,7 +3,10 @@ angular.module('nsoc')
 	$scope.tabs = ['general', 'settings'];
 	$scope.actualTab = $scope.tabs[0];
 	$rootScope.loading = true;
-	$rootScope.globalIndicator = {data: 0};
+	$scope.userInfo = {
+		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
+		pictureUrl: $cookies.get('pictureUrl'),
+	};
 	$scope.sensors = [];
 	$scope.indicators = [];
 

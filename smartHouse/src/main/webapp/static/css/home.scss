@@ -24,12 +24,30 @@
 	}
 
 	& > .mainMenu {
-		position: relative;
-		width: 100%;
-		display: flex;
+		margin      : 10px 10px 30px 10px;
+		position    : relative;
+		display     : flex;
+		align-items : center;
+
+			&>.userInfo {
+				display     : flex;
+				align-items : center;
+				&>.picture {
+					border-radius : 50%;
+					border        : 3px white solid;
+					left          : 5%;
+					top           : 2%;
+					width         : 75px;
+					height        : 75px;
+				}
+				&>.name {
+					margin-left : 10px;
+					font-size   : 19px;
+				}
+			}
 
 		&>.tabs {
-			margin: auto;
+			margin : auto;
 
 			&>button.mainMenuButton {
 				text-transform   : uppercase;
@@ -37,22 +55,21 @@
 				cursor           : pointer;
 				color            : $button-color;
 				transition       : background-color .2s ease-out;
-				margin-top       : 20px;
 				margin-left      : 1px;
 				width            : $button-width;
 				height           : $button-height;
 				background-color : rgba(255, 255, 255, 0.3);
 				border           : $button-border-width solid rgba(255, 255, 255, 0);
 				&:first-child{
-					border-right-style: none;
-					border-top-left-radius: 25px;
-					border-bottom-left-radius: 25px;
+					border-right-style        : none;
+					border-top-left-radius    : 25px;
+					border-bottom-left-radius : 25px;
 				}
 
 				&:last-child {
-					border-left-style: none;
-					border-top-right-radius: 25px;
-					border-bottom-right-radius: 25px;
+					border-left-style          : none;
+					border-top-right-radius    : 25px;
+					border-bottom-right-radius : 25px;
 				}
 
 				&:hover {
@@ -66,9 +83,6 @@
 
 		&>.signOut {
 			cursor           : pointer;
-			position         : absolute;
-			right            : 0;
-			margin           : 10px 10px 0 0;
 			height           : 40px;
 			width            : 120px;
 			background-color : white;
