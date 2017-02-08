@@ -33,27 +33,6 @@ public class main {
 		Indicators.getInstance().initIndicators();
 
 		BacNetToJava.getInstance();
-		Thread thread = new Thread() {
-			public void run() {
-				for (Sensor sensor : Sensors.getInstance().getSensors()) {
-					Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
-					if (!indicator.getType().equals("global")) {
-						indicator.calculateIndicator();
-					}
-				}
-				while (true) {
-					try {
-						Thread.sleep(10000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
-					indicator.calculateIndicator();
-				}
-			}
-		};
-		thread.start();
 
 		// Get webapp directory
 		String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";

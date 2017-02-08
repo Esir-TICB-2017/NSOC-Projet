@@ -7,7 +7,6 @@ import database.data.DataRecord;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-
 /**
  * Created by loulou on 21/01/2017.
  */
