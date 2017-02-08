@@ -18,6 +18,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import sensor.sensorClass.Sensors;
 
 @WebSocket
@@ -35,8 +36,11 @@ public class WebSocketHandler {
     public void onConnect(Session session) {
         this.session = session;
         // this unique ID
-        // Prendre le userId et verifier si utilisateur est authentifié
-        // Si il ne l'est pas, il faut que le client soit notifié d'une façon ou d'un autre et redirigé vers login
+        String tokenid = session.getUpgradeRequest().getQueryString();
+        System.out.println(tokenid);
+
+        // Prendre le tokenId et verifier si utilisateur est authentifié
+        // Si il ne l'est pas, session.disconnect()
         try {
             ArrayList<DataRecord> lastValues = Sensors.getInstance().getLastValues();
             Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
