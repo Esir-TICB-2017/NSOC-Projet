@@ -50,7 +50,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 
 	public static ArrayList<JSONObject> getAllSensors() {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT type_name, id, unit FROM sensor_type";
+		String sql = "SELECT type_name, id, unit, bacnet_id FROM sensor_type";
 		ArrayList<JSONObject> sensorsList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -59,6 +59,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					sensor.put("name", rs.getString("type_name"));
 					sensor.put("id", rs.getInt("id"));
 					sensor.put("unit", rs.getString("unit"));
+					sensor.put("bacnetId", rs.getInt("bacnet_id"));
 					sensorsList.add(sensor);
 				}
 				rs.close();

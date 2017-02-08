@@ -16,16 +16,22 @@ public class Sensor {
 	private String type;
 	private String unit;
 	private Integer id;
+	private Integer bacnetId;
 
 	public int getId() {
 		return id;
 	}
 
 
-	public Sensor(String type, Integer id, String unit) {
+	public Sensor(String type, Integer id, String unit, Integer bacnetId) {
 		this.type = type;
 		this.id = id;
 		this.unit = unit;
+		this.bacnetId = bacnetId;
+	}
+
+	public Integer getBacnetId() {
+		return bacnetId;
 	}
 
 	public void setType(String type) {

@@ -33,7 +33,7 @@ public class main {
 		Sensors sensors = Sensors.getInstance();
 		ArrayList<JSONObject> sensorsList = ReadInDatabase.getAllSensors();
 		for(JSONObject sensorAttributes : sensorsList) {
-			Sensor sensor = new Sensor(sensorAttributes.getString("name"), sensorAttributes.getInt("id"), sensorAttributes.getString("unit"));
+			Sensor sensor = new Sensor(sensorAttributes.getString("name"), sensorAttributes.getInt("id"), sensorAttributes.getString("unit"), sensorAttributes.getInt("bacnetId"));
 			sensors.addSensor(sensor);
 		}
 		Indicators indicators = Indicators.getInstance();

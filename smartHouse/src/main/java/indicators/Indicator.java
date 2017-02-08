@@ -1,11 +1,9 @@
 package indicators;
-
 import database.ReadInDatabase;
 import database.WriteInDatabase;
 import database.data.DataRecord;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,6 @@ public class Indicator {
 	private Double maxComfortValue;
 	private Double minValue;
 	private Double maxValue;
-
 
 	public Indicator(String type, Integer id) {
 		this.id = id;
