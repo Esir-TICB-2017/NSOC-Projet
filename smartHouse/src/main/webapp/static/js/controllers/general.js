@@ -8,9 +8,17 @@ angular.module('nsoc')
 		{name: 'Weekly', value: 'week'},
 		{name: 'Daily', value: 'day'},
 	];
-	$scope.graphs = ['global', 'co2', 'temperature', 'consumption', 'humidity', 'production'];
 	$scope.actualGraph = 'global';
-	$scope.mode = 'indicator';
+	$scope.sensorMode = true;
+
+	$scope.changeMode = function() {
+		if ($scope.sensorMode) {
+			$scope.mode = 'sensor';
+		} else {
+			$scope.mode = 'indicator';
+		}
+	}
+	$scope.changeMode();
 
 	$scope.getData = function (selector) {
 		$scope.actualSelector = selector.name;
