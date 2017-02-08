@@ -17,21 +17,31 @@ public class Sensor {
 	private String unit;
 	private Integer id;
 	private Integer bacnetId;
+	private Boolean status;
 
 	public int getId() {
 		return id;
 	}
 
 
-	public Sensor(String type, Integer id, String unit, Integer bacnetId) {
+	public Sensor(String type, Integer id, String unit, Integer bacnetId, Boolean status) {
 		this.type = type;
 		this.id = id;
 		this.unit = unit;
 		this.bacnetId = bacnetId;
+		this.status = status;
 	}
 
 	public Integer getBacnetId() {
 		return bacnetId;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 	public void setType(String type) {

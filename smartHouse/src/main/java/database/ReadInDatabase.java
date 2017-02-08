@@ -1,5 +1,6 @@
 package database;
 
+import com.google.gson.JsonObject;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceReadDatabase;
 import org.json.JSONObject;
@@ -50,7 +51,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 
 	public static ArrayList<JSONObject> getAllSensors() {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT type_name, id, unit, bacnet_id FROM sensor_type";
+		String sql = "SELECT type_name, id, unit, bacnet_id, status FROM sensor_type";
 		ArrayList<JSONObject> sensorsList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -60,6 +61,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					sensor.put("id", rs.getInt("id"));
 					sensor.put("unit", rs.getString("unit"));
 					sensor.put("bacnetId", rs.getInt("bacnet_id"));
+					sensor.put("status", rs.getBoolean("status"));
 					sensorsList.add(sensor);
 				}
 				rs.close();
@@ -73,16 +75,17 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return sensorsList;
 	}
 
-	public static Map<String, Integer> getAllIndicatorsName() {
+	public static ArrayList<JSONObject> getAllIndicators() {
 		Connection connection = ConnectionManager.getConnection();
-		Map<String, Integer> Indicatorslist = new HashMap<String, Integer>(1);
 		String sql = "SELECT type_name, id FROM indicators_type";
+		ArrayList<JSONObject> indicatorsList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					String name = rs.getString("type_name");
-					Integer id = rs.getInt("id");
-					Indicatorslist.put(name, id);
+					JSONObject indicator = new JSONObject();
+					indicator.put("name", rs.getString("type_name"));
+					indicator.put("id", rs.getInt("id"));
+					indicatorsList.add(indicator);
 
 				}
 				rs.close();
@@ -93,7 +96,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		return Indicatorslist;
+		return indicatorsList;
 	}
 
 	public static ArrayList<DataRecord> getValuesOnPeriod(Integer sensorId, Timestamp startDate, Timestamp endDate) {

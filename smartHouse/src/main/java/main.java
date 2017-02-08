@@ -29,31 +29,19 @@ import java.util.Map;
 public class main {
 	public static void main(String[] args) throws Exception {
 
+		Sensors.getInstance().initSensors();
+		Indicators.getInstance().initIndicators();
 
-		Sensors sensors = Sensors.getInstance();
-		ArrayList<JSONObject> sensorsList = ReadInDatabase.getAllSensors();
-		for(JSONObject sensorAttributes : sensorsList) {
-			Sensor sensor = new Sensor(sensorAttributes.getString("name"), sensorAttributes.getInt("id"), sensorAttributes.getString("unit"), sensorAttributes.getInt("bacnetId"));
-			sensors.addSensor(sensor);
-		}
-		Indicators indicators = Indicators.getInstance();
-		Map<String, Integer> indicatorsList = ReadInDatabase.getAllIndicatorsName();
-		Iterator iti = indicatorsList.entrySet().iterator();
-		while (iti.hasNext()) {
-			Map.Entry pair = (Map.Entry) iti.next();
-			Indicator indicator = new Indicator((String) pair.getKey(), (Integer) pair.getValue());
-			indicators.addIndicator(indicator);
-		}
 		BacNetToJava.getInstance();
 		Thread thread = new Thread() {
 			public void run() {
-				for(Sensor sensor : Sensors.getInstance().getSensors()) {
+				for (Sensor sensor : Sensors.getInstance().getSensors()) {
 					Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
-					if(!indicator.getType().equals("global")) {
+					if (!indicator.getType().equals("global")) {
 						indicator.calculateIndicator();
 					}
 				}
-				while(true) {
+				while (true) {
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
@@ -75,7 +63,7 @@ public class main {
 		ServerConnector connector = new ServerConnector(server);
 		connector.setPort(8080);
 		/*
-        HttpConfiguration https = new HttpConfiguration();
+		HttpConfiguration https = new HttpConfiguration();
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
         sslContextFactory.setKeyStorePath(keyPath + "keystore.jks");
