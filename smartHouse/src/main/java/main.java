@@ -32,7 +32,7 @@ public class main {
 		Sensors.getInstance().initSensors();
 		Indicators.getInstance().initIndicators();
 
-		BacNetToJava.getInstance();
+		//BacNetToJava.getInstance();
 
 		// Get webapp directory
 		String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
