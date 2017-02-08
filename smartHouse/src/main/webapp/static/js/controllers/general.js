@@ -2,72 +2,51 @@
 * Created by loulou on 30/01/2017.
 */
 angular.module('nsoc')
-.controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _) => {
+.controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _, $interval) => {
 	$scope.selectors = [
 		{name: 'Monthly', value: 'month'},
 		{name: 'Weekly', value: 'week'},
 		{name: 'Daily', value: 'day'},
 	];
-	$scope.actualGraph = 'global';
-	$scope.sensorMode = true;
+
 
 	$scope.changeMode = function() {
 		if ($scope.sensorMode) {
 			$scope.mode = 'sensor';
-			console.log('load sensors');
 		} else {
 			$scope.mode = 'indicator';
-			console.log('load indicators');
 		}
-	};
-	$scope.changeMode();
-
-	$scope.getData = function (selector, name) {
-	    if(name === "global") {
-	    	$scope.mode = 'indicator';
-		}
-		$scope.actualSelector = selector.name;
-		$scope.actualSelectorValue = selector.value;
 		drawChart();
 	};
 
+	$scope.getData = function (selector) {
+		$scope.actualSelector = selector.name;
+		$scope.actualSelectorValue = selector.value;
+	};
+
 	$scope.drawChart = function(target) {
-        console.log($scope.mode);
-        if (target) {
+		if (target) {
 			$scope.actualGraph = target.name;
 		} else {
-			$scope.actualGraph = this.sensor.name;
-		}
-		if($scope.actualGraph === 'global') {
-			$scope.mode = 'indicator';
+			$scope.actualGraph = this.obj.name;
 		}
 		drawChart();
 	};
 
 	function drawChart() {
+	 	let actualMode = $scope.mode;
+		if ($scope.actualGraph === 'global') {
+			actualMode = 'indicator';
+		}
 		const startDate = moment().startOf($scope.actualSelectorValue).format('X');
 		const endDate = moment().format('X');
-		console.log($scope.actualSelectorValue, $scope.mode, $scope.actualGraph);
-		getDataService.get(startDate, endDate, $scope.mode, $scope.actualGraph, (data) => {
+		console.log($scope.actualSelectorValue, actualMode, $scope.actualGraph);
+		getDataService.get(startDate, endDate, actualMode, $scope.actualGraph, (data) => {
 			d3ChartService.draw(data, 'month', 'homeChart');
 		});
 	}
 
-	$scope.getData($scope.selectors[2], "global");
-
-	$scope.$on('data', (event, data) => {
-		if (_.isArray(data)) {
-			data.forEach((obj) => {
-				displayHouseInfo(obj);
-				$rootScope.loading = false;
-			});
-		} else {
-			displayHouseInfo(data);
-		}
-	});
-
 	function displayHouseInfo(obj) {
-
 		$scope.$apply(() => {
 			if (obj.date) {
 				obj.date = moment(obj.date);
@@ -76,28 +55,21 @@ angular.module('nsoc')
 			if (obj.data) {
 				obj.data = Math.round(obj.data * 10) / 10;
 			}
-			if (obj.type === 'indicator') {
-				if (obj.name === 'global') {
-					$rootScope.globalIndicator = obj;
-					getHouseHealth();
+			if (obj.type === 'indicator' && obj.name === 'global') {
+				$rootScope.globalIndicator = obj;
+				getHouseHealth();
+			} else {
+				const index = _.findIndex($scope.data, (object) => {
+					object.name === obj.name && object.type === obj.type;
+				});
+				if (index !== -1) {
+					$scope.data[index] = obj;
 				} else {
-					const indicatorIndex = _.findIndex($scope.indicators, indicator => indicator.name === obj.name);
-					if (indicatorIndex !== -1) {
-						$scope.indicators[indicatorIndex] = obj;
-					} else {
-						$scope.indicators.push(obj);
-					}
-				}
-			} else if (obj.type === 'sensor') {
-				const sensorIndex = _.findIndex($scope.sensors, sensor => sensor.name === obj.name);
-				if (sensorIndex !== -1) {
-					$scope.sensors[sensorIndex] = obj;
-				} else {
-					$scope.sensors.push(obj);
+					$scope.data.push(obj);
 				}
 			}
 		});
-	}
+	};
 
 	function getHouseHealth() {
 		if ($rootScope.globalIndicator.data <= 33) {
@@ -108,6 +80,26 @@ angular.module('nsoc')
 			$rootScope.houseHealth = 'great';
 		}
 	}
+
+	$scope.$on('data', (event, data) => {
+		if (_.isArray(data)) {
+			data.forEach((obj) => {
+				displayHouseInfo(obj);
+				$rootScope.loading = false;
+			});
+			// ONLY FOR TEST //
+			// FILLING DATA ARRAY WITH INDICATORS //
+			const tab = $scope.data;
+			tab.forEach((obj) => {
+				$scope.data.push({name: obj.name, data: 12, lastUpdate: obj.lastUpdate, type: 'indicator'})
+			});
+			///////////////////
+			$scope.getData($scope.selectors[2]);
+			$scope.drawChart($rootScope.globalIndicator);
+		} else {
+			displayHouseInfo(data);
+		}
+	});
 
 	$scope.displayDate = function (round) {
 		if (round) {
@@ -124,4 +116,11 @@ angular.module('nsoc')
 			this.showDate = false;
 		}
 	}
+
+	$interval(() => {
+		$scope.data.forEach((obj) => {
+			obj.lastUpdate = obj.date.fromNow();
+		});
+		$rootScope.globalIndicator.lastUpdate = $rootScope.globalIndicator.date.fromNow();
+	}, 60000);
 });
