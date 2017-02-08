@@ -35,6 +35,8 @@ public class WebSocketHandler {
     public void onConnect(Session session) {
         this.session = session;
         // this unique ID
+        // Prendre le userId et verifier si utilisateur est authentifié
+        // Si il ne l'est pas, il faut que le client soit notifié d'une façon ou d'un autre et redirigé vers login
         try {
             ArrayList<DataRecord> lastValues = Sensors.getInstance().getLastValues();
             Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
