@@ -14,8 +14,10 @@ angular.module('nsoc')
 	$scope.changeMode = function() {
 		if ($scope.sensorMode) {
 			$scope.mode = 'sensor';
+			console.log('load sensors');
 		} else {
 			$scope.mode = 'indicator';
+			console.log('load indicators');
 		}
 	}
 	$scope.changeMode();
@@ -27,7 +29,7 @@ angular.module('nsoc')
 	};
 
 	$scope.drawChart = function(target) {
-		if (target) {
+		if (!target) {
 			$scope.actualGraph = target.name;
 		} else {
 			$scope.actualGraph = this.sensor.name;
