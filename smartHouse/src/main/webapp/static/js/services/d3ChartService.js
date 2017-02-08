@@ -19,6 +19,8 @@ angular.module('nsoc').factory('d3ChartService', () => {
                     ticks = d3.timeMonth;
             }
 
+            console.log(data);
+
             const svg = d3.select(`svg#${svgId}`);
 
             const width = parseInt(svg.style('width'), 0);
@@ -32,11 +34,12 @@ angular.module('nsoc').factory('d3ChartService', () => {
             const xScale = d3.scaleTime()
                 .domain([new Date(data[0].date), new Date(data[data.length - 1].date)])
                 .rangeRound([-widthMargin, width + widthMargin]);
+
             const xAxis = d3.axisBottom(xScale).ticks(ticks);
             const yScale = d3.scaleLinear()
                 .domain([0, d3.max(data, (d) => d.data)])
                 .rangeRound([height, 0]);
-            const yAxis = d3.axisLeft(yScale).tickValues([25, 50, 75, 100]);
+            const yAxis = d3.axisLeft(yScale);
             const lineGen = d3.line()
                 .x((d) => xScale(d.date))
                 .y((d) => yScale(d.data))
@@ -83,6 +86,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
 
             const line = svg.selectAll('path.line').data([data]);
             const area = svg.selectAll('path.area').data([data]);
+            
 
             line.enter().append('path')
                 .attr("class", "line")
@@ -117,7 +121,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .call(xAxis);
             svg.append("g")
                 .attr('class', 'yAxis')
-                .attr("transform", "translate(30, 0)")
+                .attr("transform", "translate(40, -10)")
                 .call(yAxis);
 
             line.transition()
