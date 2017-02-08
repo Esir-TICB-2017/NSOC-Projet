@@ -44,7 +44,7 @@ public class main {
 			Indicator indicator = new Indicator((String) pair.getKey(), (Integer) pair.getValue());
 			indicators.addIndicator(indicator);
 		}
-//		BacNetToJava.getInstance();
+		BacNetToJava.getInstance();
 		Thread thread = new Thread() {
 			public void run() {
 				for(Sensor sensor : Sensors.getInstance().getSensors()) {

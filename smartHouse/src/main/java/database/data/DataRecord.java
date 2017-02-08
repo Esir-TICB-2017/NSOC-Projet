@@ -15,7 +15,7 @@ public class DataRecord {
 	private Timestamp date;
 	private String type;
 	private String name;
-
+	// TODO : REFACTOR
 	public DataRecord(Double data, Timestamp date) {
 		this.data = data;
 		this.date = date;

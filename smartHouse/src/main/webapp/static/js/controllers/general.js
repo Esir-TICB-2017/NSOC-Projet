@@ -19,20 +19,27 @@ angular.module('nsoc')
 			$scope.mode = 'indicator';
 			console.log('load indicators');
 		}
-	}
+	};
 	$scope.changeMode();
 
-	$scope.getData = function (selector) {
+	$scope.getData = function (selector, name) {
+	    if(name === "global") {
+	    	$scope.mode = 'indicator';
+		}
 		$scope.actualSelector = selector.name;
 		$scope.actualSelectorValue = selector.value;
 		drawChart();
 	};
 
 	$scope.drawChart = function(target) {
-		if (target) {
+        console.log($scope.mode);
+        if (target) {
 			$scope.actualGraph = target.name;
 		} else {
 			$scope.actualGraph = this.sensor.name;
+		}
+		if($scope.actualGraph === 'global') {
+			$scope.mode = 'indicator';
 		}
 		drawChart();
 	};
@@ -46,7 +53,7 @@ angular.module('nsoc')
 		});
 	}
 
-	$scope.getData($scope.selectors[2]);
+	$scope.getData($scope.selectors[2], "global");
 
 	$scope.$on('data', (event, data) => {
 		if (_.isArray(data)) {
@@ -90,7 +97,7 @@ angular.module('nsoc')
 				}
 			}
 		});
-	};
+	}
 
 	function getHouseHealth() {
 		if ($rootScope.globalIndicator.data <= 33) {

@@ -25,7 +25,6 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
 		System.out.println(endDate.toString());
 		ArrayList<DataRecord> results = sensor.getRecordsOnPeriod(startDate, endDate);
 
-
 		Gson gson = new Gson();
 		String responseData = gson.toJson(results);
 		response.setContentType("text/html");
