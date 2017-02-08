@@ -11,6 +11,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import database.ReadInDatabase;
 import database.WriteInDatabase;
+import org.json.JSONObject;
 import utils.SessionIdentifierGenerator;
 
 import javax.servlet.ServletException;
@@ -52,6 +53,7 @@ public class LoginServlet extends HttpServlet {
 
 				SessionManager.createSession(userId, request);
 				response.setStatus(HttpServletResponse.SC_OK);
+
 
 			} else {
 				System.out.println("Invalid ID token.");

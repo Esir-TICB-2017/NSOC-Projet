@@ -52,7 +52,7 @@ public class Indicators {
 	}
 
 	public void initIndicators() {
-		ArrayList<JSONObject> indicatorList = ReadInDatabase.getAllSensors();
+		ArrayList<JSONObject> indicatorList = ReadInDatabase.getAllIndicators();
 		for(JSONObject sensorAttributes : indicatorList) {
 			Indicator indicator = new Indicator(sensorAttributes.getString("name"), sensorAttributes.getInt("id"));
 			addIndicator(indicator);

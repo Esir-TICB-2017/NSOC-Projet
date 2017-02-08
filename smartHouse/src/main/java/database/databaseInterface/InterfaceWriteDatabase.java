@@ -10,8 +10,8 @@ public interface InterfaceWriteDatabase {
      * Permet d'écrire dans la base de donnée une valeur capteur brute du type saisie par "_init()"
      * Construit alors la requete SQL adaptée
      **/
-    static void writeSensorValue(Sensor sensor, double value) {};
-
+//    static void writeSensorValue(Sensor sensor, double value) {};
+//
     /**
      * @param indicatorType = Type d'indicateur dont on veut écrire une nouvelle valeur. ex : Air quality, CO2, temparature, ...
      * @param value = Valeur de l'indicateur

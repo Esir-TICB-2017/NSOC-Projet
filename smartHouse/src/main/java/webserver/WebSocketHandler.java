@@ -23,7 +23,7 @@ import sensor.sensorClass.Sensors;
 
 @WebSocket
 public class WebSocketHandler {
-    private final static HashMap<String, WebSocketHandler> sockets = new HashMap<>();
+    private final static HashMap<String, WebSocketHandler> sockets = new HashMap();
     public Session session;
     private String myUniqueId;
 
@@ -44,6 +44,7 @@ public class WebSocketHandler {
         try {
             ArrayList<DataRecord> lastValues = Sensors.getInstance().getLastValues();
             Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
+            System.out.println(indicator.getId());
             DataRecord lastRecord = indicator.getLastRecord();
             lastValues.add(lastRecord);
 

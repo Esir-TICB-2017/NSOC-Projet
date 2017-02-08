@@ -86,7 +86,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
 
             const line = svg.selectAll('path.line').data([data]);
             const area = svg.selectAll('path.area').data([data]);
-            
+
 
             line.enter().append('path')
                 .attr("class", "line")

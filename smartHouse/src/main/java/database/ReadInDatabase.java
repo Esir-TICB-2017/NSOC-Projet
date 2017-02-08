@@ -3,6 +3,7 @@ package database;
 import com.google.gson.JsonObject;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceReadDatabase;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 
@@ -170,6 +171,72 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public static JSONArray getSettings() {
+		JSONArray settings = new JSONArray();
+		Connection connection = ConnectionManager.getConnection();
+		String sql ="SELECT settings.id, settings.description, settings.name, settings.data_type, settings.min_value, settings.max_value, allowed_setting_value.item_value, allowed_setting_value.caption " +
+		"FROM settings " +
+		"LEFT JOIN allowed_setting_value ON settings.id = allowed_setting_value.setting_id";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					String name = rs.getString("name");
+					String description = rs.getString(("description"));
+					String dataType = rs.getString("data_type");
+					Double minValue = rs.getDouble("min_value");
+					Double maxValue = rs.getDouble("max_value");
+					String itemValue = rs.getString("item_value");
+					String caption = rs.getString("caption");
+					Integer found = findSettingInJson(settings, name);
+					if(found != -1) {
+							JSONObject setting = settings.getJSONObject(found);
+							JSONObject newItemValue = new JSONObject();
+							newItemValue.put("itemValue", itemValue);
+							newItemValue.put("caption", caption);
+							setting.getJSONArray("allowedValues").put(newItemValue);
+					} else {
+						JSONObject setting = new JSONObject();
+						setting.put("name", name);
+						setting.put("description", description);
+						setting.put("minValue", minValue);
+						setting.put("maxValue", maxValue);
+						setting.put("dataType", dataType);
+						JSONArray allowedValues = new JSONArray();
+						JSONObject newItemValue = new JSONObject();
+						newItemValue.put("itemValue", itemValue);
+						newItemValue.put("caption", caption);
+						allowedValues.put(newItemValue);
+						setting.put("allowedValues", allowedValues);
+						settings.put(setting);
+					}
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return settings;
+	}
+
+	public static JSONArray getUserSettings(String userId) {
+	}
+
+	public static Integer findSettingInJson(JSONArray settings, String name) {
+		for(int i = 0; i < settings.length(); ++i) {
+			JSONObject setting = settings.getJSONObject(i);
+			if(setting.get("name").equals(name)) {
+				return i;
+			} else {
+				return -1;
+
+			}
+		}
+		return -1;
 	}
 
 	public static ArrayList<DataRecord> getLastIndicatorsValues() {

@@ -11,6 +11,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
@@ -31,6 +32,8 @@ public class main {
 
 		Sensors.getInstance().initSensors();
 		Indicators.getInstance().initIndicators();
+		JSONArray settings = ReadInDatabase.getSettings();
+		System.out.println(settings.toString());
 
 		//BacNetToJava.getInstance();
 
@@ -85,5 +88,6 @@ public class main {
 		server.start();
 
 		server.join();
+
 	}
 }
