@@ -20,7 +20,7 @@ public class AutoFillDB {
 		List<Sensor> sensors = new ArrayList();
 		ArrayList<JSONObject> sensorsList = ReadInDatabase.getAllSensors();
 		for(JSONObject sensorAttributes : sensorsList) {
-			Sensor sensor = new Sensor(sensorAttributes.getString("name"), sensorAttributes.getInt("id"), sensorAttributes.getString("unit"), sensorAttributes.getInt("bacnetId"));
+			Sensor sensor = new Sensor(sensorAttributes.getString("name"), sensorAttributes.getInt("id"), sensorAttributes.getString("unit"), sensorAttributes.getInt("bacnetId"), sensorAttributes.getBoolean("status"));
 			sensors.add(sensor);
 		}
 		//                 connection();
@@ -81,16 +81,8 @@ public class AutoFillDB {
 			try {
 				Thread.sleep(1000 * 60 * 10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
-            /*} catch (BACnetException e) {
-				// TODO Auto-generated catch block
-                e.printStackTrace();
-                System.out.println("Problème de récupération de la valeur !");
-            }*/
-
 	}
 }

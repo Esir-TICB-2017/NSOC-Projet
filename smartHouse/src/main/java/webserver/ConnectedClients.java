@@ -10,7 +10,7 @@ public class ConnectedClients {
 		return INSTANCE;
 	}
 
-	private List<WebSocketHandler> members = new ArrayList<>();
+	private List<WebSocketHandler> members = new ArrayList();
 
 	public void join(WebSocketHandler socket) {
 		members.add(socket);

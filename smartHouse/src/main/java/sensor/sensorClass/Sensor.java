@@ -7,7 +7,6 @@ import database.data.DataRecord;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-
 /**
  * Created by loulou on 21/01/2017.
  */
@@ -17,21 +16,33 @@ public class Sensor {
 	private String unit;
 	private Integer id;
 	private Integer bacnetId;
+	private Boolean status;
 
 	public int getId() {
 		return id;
 	}
 
 
-	public Sensor(String type, Integer id, String unit, Integer bacnetId) {
+	public Sensor(String type, Integer id, String unit, Integer bacnetId, Boolean status) {
 		this.type = type;
 		this.id = id;
 		this.unit = unit;
 		this.bacnetId = bacnetId;
+		this.status = status;
 	}
 
 	public Integer getBacnetId() {
 		return bacnetId;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		WriteInDatabase.setSensorStatus(getId(), status);
+		//TODO broadcast new value;
+		this.status = status;
 	}
 
 	public void setType(String type) {

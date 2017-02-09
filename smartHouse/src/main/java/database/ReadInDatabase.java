@@ -1,7 +1,9 @@
 package database;
 
+import com.google.gson.JsonObject;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceReadDatabase;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 
@@ -50,7 +52,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 
 	public static ArrayList<JSONObject> getAllSensors() {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT type_name, id, unit, bacnet_id FROM sensor_type";
+		String sql = "SELECT type_name, id, unit, bacnet_id, status FROM sensor_type";
 		ArrayList<JSONObject> sensorsList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -60,6 +62,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					sensor.put("id", rs.getInt("id"));
 					sensor.put("unit", rs.getString("unit"));
 					sensor.put("bacnetId", rs.getInt("bacnet_id"));
+					sensor.put("status", rs.getBoolean("status"));
 					sensorsList.add(sensor);
 				}
 				rs.close();
@@ -73,16 +76,17 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return sensorsList;
 	}
 
-	public static Map<String, Integer> getAllIndicatorsName() {
+	public static ArrayList<JSONObject> getAllIndicators() {
 		Connection connection = ConnectionManager.getConnection();
-		Map<String, Integer> Indicatorslist = new HashMap<String, Integer>(1);
 		String sql = "SELECT type_name, id FROM indicators_type";
+		ArrayList<JSONObject> indicatorsList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					String name = rs.getString("type_name");
-					Integer id = rs.getInt("id");
-					Indicatorslist.put(name, id);
+					JSONObject indicator = new JSONObject();
+					indicator.put("name", rs.getString("type_name"));
+					indicator.put("id", rs.getInt("id"));
+					indicatorsList.add(indicator);
 
 				}
 				rs.close();
@@ -93,7 +97,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		return Indicatorslist;
+		return indicatorsList;
 	}
 
 	public static ArrayList<DataRecord> getValuesOnPeriod(Integer sensorId, Timestamp startDate, Timestamp endDate) {
@@ -167,6 +171,72 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public static JSONArray getSettings() {
+		JSONArray settings = new JSONArray();
+		Connection connection = ConnectionManager.getConnection();
+		String sql ="SELECT settings.id, settings.description, settings.name, settings.data_type, settings.min_value, settings.max_value, allowed_setting_value.item_value, allowed_setting_value.caption " +
+		"FROM settings " +
+		"LEFT JOIN allowed_setting_value ON settings.id = allowed_setting_value.setting_id";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					String name = rs.getString("name");
+					String description = rs.getString(("description"));
+					String dataType = rs.getString("data_type");
+					Double minValue = rs.getDouble("min_value");
+					Double maxValue = rs.getDouble("max_value");
+					String itemValue = rs.getString("item_value");
+					String caption = rs.getString("caption");
+					Integer found = findSettingInJson(settings, name);
+					if(found != -1) {
+							JSONObject setting = settings.getJSONObject(found);
+							JSONObject newItemValue = new JSONObject();
+							newItemValue.put("itemValue", itemValue);
+							newItemValue.put("caption", caption);
+							setting.getJSONArray("allowedValues").put(newItemValue);
+					} else {
+						JSONObject setting = new JSONObject();
+						setting.put("name", name);
+						setting.put("description", description);
+						setting.put("minValue", minValue);
+						setting.put("maxValue", maxValue);
+						setting.put("dataType", dataType);
+						JSONArray allowedValues = new JSONArray();
+						JSONObject newItemValue = new JSONObject();
+						newItemValue.put("itemValue", itemValue);
+						newItemValue.put("caption", caption);
+						allowedValues.put(newItemValue);
+						setting.put("allowedValues", allowedValues);
+						settings.put(setting);
+					}
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return settings;
+	}
+
+	public static JSONArray getUserSettings(String userId) {
+	}
+
+	public static Integer findSettingInJson(JSONArray settings, String name) {
+		for(int i = 0; i < settings.length(); ++i) {
+			JSONObject setting = settings.getJSONObject(i);
+			if(setting.get("name").equals(name)) {
+				return i;
+			} else {
+				return -1;
+
+			}
+		}
+		return -1;
 	}
 
 	public static ArrayList<DataRecord> getLastIndicatorsValues() {

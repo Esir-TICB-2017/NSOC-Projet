@@ -56,50 +56,26 @@ public class BacNetToJava implements InterfaceReadBacnet {
 	private void getSensorValue() {
 
 		Thread thread = new Thread() {
-			double value = 0;
+			Double value = 0.0;
 			Random r = new Random();
 
 			public void run() {
 				connection();
 				while (true) {
 					for (Sensor sensor : Sensors.getInstance().getSensors()) {
-						switch ("1") {
-							case "consumption":
-								value = r.nextGaussian() * 1000 + 2000;
-								sensor.setNewValue(value);
-								break;
-							case "co2":
-								value = r.nextGaussian() * 400 + 600;
-								if (value > 2000) {
-									value = 2000;
-								}
-								if (value < 0) {
-									value = 0;
-								}
-								sensor.setNewValue(value);
 
-								break;
-							case "production":
-								value = r.nextGaussian() * 1000 + 2000;
-								sensor.setNewValue(value);
-								break;
-							case "humidity":
-								value = r.nextGaussian() * 10 + 40;
-								if (value > 100) {
-									value = 100;
-								}
-								if (value < 0) {
-									value = 0;
-								}
-								sensor.setNewValue(value);
-								break;
-							case "temperature":
-								value = r.nextGaussian() * 2 + 20;
-								sensor.setNewValue(value);
-								break;
-							default:
-								break;
+						value = getValue(sensor.getBacnetId());
+						if (value == -1){
+							if(sensor.getStatus()){
+								sensor.setStatus(false);
+							}
 						}
+						else{
+							if(!sensor.getStatus()){
+								sensor.setStatus(true);
+							}
+						}
+						sensor.setNewValue(value);
 
 						Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
 						indicator.calculateIndicator();
@@ -107,7 +83,6 @@ public class BacNetToJava implements InterfaceReadBacnet {
 					try {
 						Thread.sleep(1000 * 60 * 10);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -116,7 +91,6 @@ public class BacNetToJava implements InterfaceReadBacnet {
 		thread.start();
 
             /*} catch (BACnetException e) {
-				// TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("Problème de récupération de la valeur !");
             }*/
@@ -163,15 +137,14 @@ public class BacNetToJava implements InterfaceReadBacnet {
 			r = localDevice.findRemoteDevice(new Address("148.60.19.201", 47808), null, 203);
 			System.out.print(r.getObjects());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Probleme de connexion!");
 			disconnection();
 		}
 	}
 
-	private double getValue() {
-		ObjectIdentifier consoBureau = new ObjectIdentifier(ObjectType.analogValue, 20);
+	private double getValue(int id) {
+		ObjectIdentifier consoBureau = new ObjectIdentifier(ObjectType.analogValue, id);
 
 		String result;
 		try {
@@ -179,9 +152,7 @@ public class BacNetToJava implements InterfaceReadBacnet {
 			System.out.println(result);
 			return (java.lang.Double.parseDouble(result));
 		} catch (BACnetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			disconnection();
 			return -1;
 		}
 

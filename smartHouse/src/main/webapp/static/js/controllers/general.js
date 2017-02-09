@@ -38,7 +38,6 @@ angular.module('nsoc')
 		}
 		const startDate = moment().startOf($scope.actualSelectorValue).format('X');
 		const endDate = moment().format('X');
-		console.log($scope.actualSelectorValue, actualMode, $scope.actualGraph);
 		getDataService.get(startDate, endDate, actualMode, $scope.actualGraph, (data) => {
 			d3ChartService.draw(data, 'month', 'homeChart');
 		});
