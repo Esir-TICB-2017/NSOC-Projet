@@ -31,7 +31,7 @@ angular.module('nsoc')
 
 	initSocket = function () {
 		if ($cookies.get('authenticated')) {
-			websocketService.start('ws://127.0.0.1:8080/token?tokenid='+$cookies.get('idtoken'),
+			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('idtoken'),
 			function onOpen(websocket) {
 			},
 			function onClose() {

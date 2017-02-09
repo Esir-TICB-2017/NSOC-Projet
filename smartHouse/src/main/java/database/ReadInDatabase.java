@@ -223,8 +223,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return settings;
 	}
 
-	public static JSONArray getUserSettings(String userId) {
-	}
+	/*public static JSONArray getUserSettings(String userId) {
+	}*/
 
 	public static Integer findSettingInJson(JSONArray settings, String name) {
 		for(int i = 0; i < settings.length(); ++i) {
@@ -348,25 +348,6 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			e.printStackTrace();
 		}
 		return comfortValues;
-	}
-
-	public static ArrayList<HashMap> getUser(String userId) {
-		Connection connection = ConnectionManager.getConnection();
-		ArrayList<HashMap> list = new ArrayList(1);
-		String sql = "SELECT * FROM users WHERE userid=?";
-		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setString(1, userId);
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				list = formatData(rs, 1);
-				rs.close();
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-			preparedStatement.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-		return list;
 	}
 
 	public static ArrayList<HashMap> getUserSession(String userId) {

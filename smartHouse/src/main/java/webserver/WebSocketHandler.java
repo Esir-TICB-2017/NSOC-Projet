@@ -1,12 +1,18 @@
 package webserver;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.api.client.auth.openidconnect.IdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import database.ReadInDatabase;
 import database.data.DataRecord;
 import indicators.Indicator;
@@ -18,8 +24,9 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import sensor.sensorClass.Sensors;
+
+import static database.Database.getCurrentTimeStamp;
 
 @WebSocket
 public class WebSocketHandler {
@@ -32,32 +39,66 @@ public class WebSocketHandler {
         return Integer.toHexString(this.hashCode());
     }
 
-    @OnWebSocketConnect
-    public void onConnect(Session session) {
-        this.session = session;
-        // this unique ID
-        String tokenid = session.getUpgradeRequest().getQueryString();
-        System.out.println(tokenid);
-
-        // Prendre le tokenId et verifier si utilisateur est authentifié
-        // Si il ne l'est pas, session.disconnect()
+    private void disconnect(Session session) {
         try {
-            ArrayList<DataRecord> lastValues = Sensors.getInstance().getLastValues();
-            Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
-            System.out.println(indicator.getId());
-            DataRecord lastRecord = indicator.getLastRecord();
-            lastValues.add(lastRecord);
-
-            JSONArray responseData = new JSONArray(lastValues);
-            String toSendString = responseData.toString();
-            session.getRemote().sendString(toSendString);
-            // Aller chercher session date d'expiration et calculer le temps restant
-            // session.setIdleTimeout(5 * 60 * 1000);
-
+            session.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ConnectedClients.getInstance().join(this);
+    }
+
+    @OnWebSocketConnect
+    public void onConnect(Session session) {
+        this.session = session;
+        String tokenId = session.getUpgradeRequest().getQueryString();
+        if (tokenId != null) {
+            try {
+                String clientId = "299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com";
+                HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+                JsonFactory jsonFactory = new JacksonFactory();
+                GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                        .setAudience(Collections.singletonList(clientId))
+                        .build();
+
+                GoogleIdToken idToken = null;
+                try {
+                    idToken = verifier.verify(tokenId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (idToken != null) {
+                    IdToken.Payload payload = idToken.getPayload();
+                    String userId = payload.getSubject();
+                    HashMap userSession = ReadInDatabase.getUserSession(userId).get(0);
+                    Timestamp currentDate = getCurrentTimeStamp();
+                    Timestamp expirationDate = (Timestamp) userSession.get("expiration_date");
+                    long remainingTime = expirationDate.getTime() - currentDate.getTime();
+                    if (userSession.isEmpty() || !userSession.containsKey("token") || remainingTime < 0) {
+                        disconnect(session);
+                    } else {
+                        session.setIdleTimeout(remainingTime);
+                        ArrayList<DataRecord> lastValues = Sensors.getInstance().getLastValues();
+                        Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
+                        System.out.println(indicator.getId());
+                        DataRecord lastRecord = indicator.getLastRecord();
+                        lastValues.add(lastRecord);
+
+                        JSONArray responseData = new JSONArray(lastValues);
+                        String toSendString = responseData.toString();
+                        session.getRemote().sendString(toSendString);
+                        ConnectedClients.getInstance().join(this);
+                    }
+                } else {
+                    disconnect(session);
+                }
+            } catch (Exception e) {
+                disconnect(session);
+                e.printStackTrace();
+            }
+        } else {
+            disconnect(session);
+        }
     }
 
     @OnWebSocketClose
