@@ -1,1 +1,6 @@
-SETTINGS
+<div class='settings' ng-controller='settingsController'>
+	<div class='row night-mode'>
+		<div class='text'>Night mode : </div>
+		<switch ng-model="nightMode" ng-change="switchNightMode()"></switch>
+	</div>
+</div>

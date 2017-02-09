@@ -21,14 +21,14 @@ public class GetValuesOnPeriodServlet extends HttpServlet {
         Timestamp endDate = new Timestamp(end * 1000);
         String sensorName = request.getParameter("objectName");
         Sensor sensor = Sensors.getInstance().getSensorByString(sensorName);
-		System.out.println(startDate.toString());
-		System.out.println(endDate.toString());
 		ArrayList<DataRecord> results = sensor.getRecordsOnPeriod(startDate, endDate);
 
 		Gson gson = new Gson();
 		String responseData = gson.toJson(results);
 		response.setContentType("text/html");
 		response.setStatus(HttpServletResponse.SC_OK);
+        System.out.println("sensors");
+        System.out.println(responseData);
 		response.getWriter().println(responseData);
 
     }

@@ -10,12 +10,11 @@ angular.module('nsoc')
 	];
 
 	$scope.getData = function (selector) {
-		$scope.actualSelector = selector.name;
-		$scope.actualSelectorValue = selector.value;
+		$rootScope.actualSelector = selector;
 	};
 
 	$scope.changeMode = function() {
-		if ($scope.indicatorMode) {
+		if ($rootScope.indicatorMode) {
 			$scope.mode = 'indicator';
 		} else {
 			$scope.mode = 'sensor';
@@ -24,21 +23,21 @@ angular.module('nsoc')
 
 	$scope.changeGraph = function(target) {
 		if (target) {
-			$scope.actualGraph = target.name;
+			$rootScope.actualGraph = target.name;
 		} else if (this.obj) {
-			$scope.actualGraph = this.obj.name;
+			$rootScope.actualGraph = this.obj.name;
 		}
 		drawChart();
 	};
 
 	function drawChart() {
 	 	let actualMode = $scope.mode;
-		if ($scope.actualGraph === $rootScope.globalIndicator.name) {
+		if ($rootScope.actualGraph === $rootScope.globalIndicator.name) {
 			actualMode = $rootScope.globalIndicator.type;
 		}
-		const startDate = moment().startOf($scope.actualSelectorValue).format('X');
+		const startDate = moment().startOf($rootScope.actualSelector.value).format('X');
 		const endDate = moment().format('X');
-		getDataService.get(startDate, endDate, actualMode, $scope.actualGraph, (data) => {
+		getDataService.get(startDate, endDate, actualMode, $rootScope.actualGraph, (data) => {
 			d3ChartService.draw(data, 'month', 'homeChart');
 		});
 	}
@@ -83,14 +82,6 @@ angular.module('nsoc')
 				displayHouseInfo(obj);
 				$rootScope.loading = false;
 			});
-			// ONLY FOR TEST //
-			// FILLING DATA ARRAY WITH INDICATORS //
-			let tab = $scope.data;
-			tab.forEach((obj) => {
-				$scope.data.push({name: obj.name, data: 12, lastUpdate: obj.lastUpdate, type: 'indicator', state: 'disconnected'})
-			});
-			///////////////////
-			$scope.changeMode();
 			$scope.getData($scope.selectors[2]);
 			$scope.changeGraph($rootScope.globalIndicator);
 			updateDisplayedDates();
@@ -120,6 +111,15 @@ angular.module('nsoc')
 				obj.lastUpdate =  moment(obj.date).fromNow();
 			});
 			$rootScope.globalIndicator.lastUpdate = moment($rootScope.globalIndicator.date).fromNow();
-		}, 1000);
+		}, 60000);
 	}
+
+	function initialize () {
+		$scope.changeMode();
+		if ($rootScope.globalIndicator) {
+			drawChart();
+		}
+	}
+
+	initialize();
 });

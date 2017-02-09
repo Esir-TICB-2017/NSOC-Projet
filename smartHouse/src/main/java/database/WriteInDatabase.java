@@ -3,11 +3,7 @@ package database;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceWriteDatabase;
 import indicators.Indicator;
-import javafx.beans.binding.BooleanBinding;
 import sensor.sensorClass.Sensor;
-import webserver.ConnectedClients;
-
-import javax.json.Json;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

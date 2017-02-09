@@ -108,7 +108,6 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"ON sensors_data.sensor_type_id=sensor_type.id " +
 				"AND sensor_type.id = ? " +
 				" WHERE sensors_data.submission_date BETWEEN ? AND ?";
-
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setInt(1, sensorId);
 			preparedStatement.setTimestamp(2, startDate);

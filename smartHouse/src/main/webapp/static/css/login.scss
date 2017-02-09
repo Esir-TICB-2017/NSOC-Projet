@@ -8,8 +8,9 @@
 	}
 
 	&>.welcome {
-		font-size: 30px;
-		text-align: center;
+		font-size  : 30px;
+		text-align : center;
+		color      : $grey;
 	}
 
 	&>google-sign-in-button {

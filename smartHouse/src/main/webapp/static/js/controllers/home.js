@@ -7,7 +7,8 @@ angular.module('nsoc')
 		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
 		pictureUrl: $cookies.get('pictureUrl'),
 	};
-	$rootScope.data = [];
+	$scope.data = [];
+	$rootScope.indicatorMode = false;
 
 	$scope.changeTab = (newTab) => {
 		$scope.actualTab = newTab;

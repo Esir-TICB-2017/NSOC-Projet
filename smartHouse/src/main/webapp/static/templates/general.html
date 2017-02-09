@@ -1,7 +1,7 @@
 <div class='general' ng-controller='generalController'>
 	<div class="mainInfo">
 		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
-		<div class='houseIndicator round' ng-class="{active: actualGraph === $root.globalIndicator.name}" ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)' ng-click='changeGraph($root.globalIndicator)'>
+		<div class='houseIndicator round' ng-class="{active: $root.actualGraph === $root.globalIndicator.name}" ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)' ng-click='changeGraph($root.globalIndicator)'>
 			<div ng-show='!$root.globalIndicator.showDate' class='value'>{{$root.globalIndicator.data}}%</div>
 			<div ng-show='$root.globalIndicator.showDate' class='date'>
 				Updated {{$root.globalIndicator.lastUpdate}}
@@ -9,7 +9,7 @@
 		</div>
 		<div class='data'>
 			<div class='sensors-or-indicators' ng-repeat="obj in data | filter : {type : mode} : true">
-				<div class='round' ng-class="[obj.status, {active: actualGraph === obj.name && mode === obj.type}]" ng-mouseenter='displayDate()' ng-mouseleave='hideDate()' ng-click='changeGraph()'>
+				<div class='round' ng-class="[obj.status, {active: $root.actualGraph === obj.name && mode === obj.type}]" ng-mouseenter='displayDate()' ng-mouseleave='hideDate()' ng-click='changeGraph()'>
 					<div ng-show='!showDate' class='value'>
 						<div class='disconnected-message' ng-if='obj.status === "disconnected"'>
 							<span class='status'>Disconnected</span>
@@ -27,11 +27,11 @@
 		<div class='modes'>
 			<div class='switchMode'>
 				<div class='title'>Mode</div>
-				<switch ng-model="indicatorMode" ng-change="changeMode(); changeGraph()"></switch>
+				<switch ng-model="$root.indicatorMode" ng-change="changeMode(); changeGraph()"></switch>
 				<div class='mode'>{{mode}}</div>
 			</div>
 			<div class='aggregationSelectorButtonList'>
-				<button ng-repeat='selector in selectors' ng-class="{active: actualSelector == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
+				<button ng-repeat='selector in selectors' ng-class="{active: $root.actualSelector.name == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
 			</div>
 		</div>
 	</div>
