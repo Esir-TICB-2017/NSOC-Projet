@@ -25,6 +25,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.json.JSONArray;
 import sensor.sensorClass.Sensors;
+import utils.Constants;
 
 import static database.Database.getCurrentTimeStamp;
 
@@ -53,11 +54,10 @@ public class WebSocketHandler {
         String tokenId = session.getUpgradeRequest().getQueryString();
         if (tokenId != null) {
             try {
-                String clientId = "299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com";
                 HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
                 JsonFactory jsonFactory = new JacksonFactory();
                 GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                        .setAudience(Collections.singletonList(clientId))
+                        .setAudience(Collections.singletonList(Constants.CLIENT_ID))
                         .build();
 
                 GoogleIdToken idToken = null;
