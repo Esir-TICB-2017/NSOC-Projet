@@ -11,17 +11,6 @@
 		width          : 100%;
 		height         : 70%;
 
-		&>.switchMode {
-			margin         : auto;
-			font-size      : 13px;
-			display        : flex;
-			flex-direction : column;
-			align-items    : center;
-			&>.mode {
-				text-transform: capitalize;
-			}
-		}
-
 		&>.houseHealth {
 			margin    : auto auto 50px auto;
 			font-size : 22px;
@@ -101,35 +90,60 @@
 				}
 			}
 		}
-		& > .aggregationSelectorButtonList {
-			position       : absolute;
-			bottom         : 0;
-			right          : 0;
-			display        : flex;
-			flex-direction : column;
-			align-items    : flex-end;
-			& > .aggregationSelector {
-				cursor                    : pointer;
-				margin                    : 0 0 5px 0;
-				color                     : white;
-				display                   : block;
-				background-color          : rgba(255, 255, 255, 0);
-				border                    : 1px solid rgba(255, 255, 255, 1);
-				padding                   : 10px 20px;
-				border-right-style        : none;
-				border-top-left-radius    : 25px;
-				border-bottom-left-radius : 25px;
-				transition                : background-color .2s ease-out;
+		&>.modes {
+			background-color : rgba(117,117,117,0.4);
+			position         : absolute;
+			bottom           : 0;
+			right            : 20px;
+			padding          : 30px;
+			border-radius    : 10%;
+			display          : flex;
+			width            : auto;
+			flex-direction   : column;
 
-				&:focus {
-					outline: none;
+			&>.switchMode {
+				font-size      : 13px;
+				color          : white;
+				font-weight    : bold;
+				display        : flex;
+				flex-direction : column;
+				margin-bottom  : 20px;
+				align-items    : center;
+				&>.title {
+					text-decoration: underline;
 				}
-				&:hover {
-					background-color: rgba(255, 255, 255, 0.3);
+				&>.mode {
+					text-transform : capitalize;
 				}
-				&.active {
-					background-color: rgba(255, 255, 255, 0.3);
+				&>.switch {
+					margin-top: 5px;
+				}
+			}
+			& > .aggregationSelectorButtonList {
+				display        : flex;
+				flex-direction : column;
+				align-items    : center;
+				& > .aggregationSelector {
+					cursor             : pointer;
+					margin             : 0 0 5px 0;
+					color              : white;
+					display            : block;
+					background-color   : rgba(255, 255, 255, 0);
+					border             : 1px solid rgba(255, 255, 255, 1);
+					padding            : 10px 25px;
+					border-radius      : 25px;
+					transition         : background-color .2s ease-out;
 
+					&:focus {
+						outline: none;
+					}
+					&:hover {
+						background-color: rgba(255, 255, 255, 0.3);
+					}
+					&.active {
+						background-color: rgba(255, 255, 255, 0.3);
+
+					}
 				}
 			}
 		}

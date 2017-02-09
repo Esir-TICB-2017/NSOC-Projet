@@ -9,45 +9,7 @@ body {
 	height           : 100%;
 
 	.switch {
-		margin : 5px;
-		// $width      : 30px;
-		// display     : flex;
-		// align-items : center;
-		// padding     : 0 10px 0 10px;
-		// margin      : auto;
-		// width       : auto;
-		// &.checked {
-		// 	&>small {
-		// 		left: calc(100% - #{$width});
-		// 	}
-		// }
-		// &>small {
-		// 	z-index            : 2;
-		// 	width              : $width;
-		// 	height             : 100%;
-		// 	position           : absolute;
-		// 	left: 0;
-		// 	transition         : .3s ease-out all;
-		// 	-webkit-transition : .3s ease-out all;
-		// }
-		// &>.switch-text {
-		// 	font-size: 10px;
-		// 	&>* {
-		// 		position : relative;
-		// 		top      : 0;
-		// 		bottom   : 0;
-		// 		left     : 0;
-		// 		right    : 0;
-		// 	}
-		// 	&>.on {
-		// 		z-index      : 0;
-		// 		margin-right : 25px;
-		// 	}
-		// 	&>.off {
-		// 		margin-left : 25px;
-		// 		z-index     : 0;
-		// 	}
-		// }
+		margin : 0;
 	}
 
 	&>.view {

@@ -9,25 +9,23 @@ angular.module('nsoc')
 		{name: 'Daily', value: 'day'},
 	];
 
-
-	$scope.changeMode = function() {
-		if ($scope.sensorMode) {
-			$scope.mode = 'sensor';
-		} else {
-			$scope.mode = 'indicator';
-		}
-		drawChart();
-	};
-
 	$scope.getData = function (selector) {
 		$scope.actualSelector = selector.name;
 		$scope.actualSelectorValue = selector.value;
 	};
 
-	$scope.drawChart = function(target) {
+	$scope.changeMode = function() {
+		if ($scope.indicatorMode) {
+			$scope.mode = 'indicator';
+		} else {
+			$scope.mode = 'sensor';
+		}
+	};
+
+	$scope.changeGraph = function(target) {
 		if (target) {
 			$scope.actualGraph = target.name;
-		} else {
+		} else if (this.obj) {
 			$scope.actualGraph = this.obj.name;
 		}
 		drawChart();
@@ -35,8 +33,8 @@ angular.module('nsoc')
 
 	function drawChart() {
 	 	let actualMode = $scope.mode;
-		if ($scope.actualGraph === 'global') {
-			actualMode = 'indicator';
+		if ($scope.actualGraph === $rootScope.globalIndicator.name) {
+			actualMode = $rootScope.globalIndicator.type;
 		}
 		const startDate = moment().startOf($scope.actualSelectorValue).format('X');
 		const endDate = moment().format('X');
@@ -46,11 +44,20 @@ angular.module('nsoc')
 		});
 	}
 
+	function getHouseHealth() {
+		if ($rootScope.globalIndicator.data <= 33) {
+			$rootScope.houseHealth = 'bad';
+		} else if ($rootScope.globalIndicator.data > 33 && $rootScope.globalIndicator.data < 66) {
+			$rootScope.houseHealth = 'ok';
+		} else {
+			$rootScope.houseHealth = 'great';
+		}
+	}
+
 	function displayHouseInfo(obj) {
 		$scope.$apply(() => {
 			if (obj.date) {
-				obj.date = moment(obj.date);
-				obj.lastUpdate = obj.date.fromNow();
+				obj.lastUpdate = moment(obj.date).fromNow();
 			}
 			if (obj.data) {
 				obj.data = Math.round(obj.data * 10) / 10;
@@ -71,16 +78,6 @@ angular.module('nsoc')
 		});
 	};
 
-	function getHouseHealth() {
-		if ($rootScope.globalIndicator.data <= 33) {
-			$rootScope.houseHealth = 'bad';
-		} else if ($rootScope.globalIndicator.data > 33 && $rootScope.globalIndicator.data < 66) {
-			$rootScope.houseHealth = 'ok';
-		} else {
-			$rootScope.houseHealth = 'great';
-		}
-	}
-
 	$scope.$on('data', (event, data) => {
 		if (_.isArray(data)) {
 			data.forEach((obj) => {
@@ -89,13 +86,15 @@ angular.module('nsoc')
 			});
 			// ONLY FOR TEST //
 			// FILLING DATA ARRAY WITH INDICATORS //
-			const tab = $scope.data;
+			let tab = $scope.data;
 			tab.forEach((obj) => {
-				$scope.data.push({name: obj.name, data: 12, lastUpdate: obj.lastUpdate, type: 'indicator'})
+				$scope.data.push({name: obj.name, data: 12, lastUpdate: obj.lastUpdate, type: 'indicator', state: 'disconnected'})
 			});
 			///////////////////
+			$scope.changeMode();
 			$scope.getData($scope.selectors[2]);
-			$scope.drawChart($rootScope.globalIndicator);
+			$scope.changeGraph($rootScope.globalIndicator);
+			updateDisplayedDates();
 		} else {
 			displayHouseInfo(data);
 		}
@@ -116,11 +115,12 @@ angular.module('nsoc')
 			this.showDate = false;
 		}
 	}
-
-	$interval(() => {
-		$scope.data.forEach((obj) => {
-			obj.lastUpdate = obj.date.fromNow();
-		});
-		$rootScope.globalIndicator.lastUpdate = $rootScope.globalIndicator.date.fromNow();
-	}, 60000);
+	function updateDisplayedDates() {
+		$interval(() => {
+			$scope.data.forEach((obj) => {
+				obj.lastUpdate =  moment(obj.date).fromNow();
+			});
+			$rootScope.globalIndicator.lastUpdate = moment($rootScope.globalIndicator.date).fromNow();
+		}, 1000);
+	}
 });
