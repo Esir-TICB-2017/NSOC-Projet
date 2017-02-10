@@ -225,18 +225,14 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	public static JSONArray getUserSettings(String userId) {
 		JSONArray userSettings = new JSONArray();
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT * FROM settings WHERE userid=?";
+		String sql = "SELECT * FROM users_settings WHERE userid=?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, userId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					String id = rs.getString("id");
-					String userid = rs.getString("userid");
 					String setting_id = rs.getString("setting_id");
 					Double value = rs.getDouble("value");
 					JSONObject userSetting = new JSONObject();
-					userSetting.put("id", id);
-					userSetting.put("userid", userid);
 					userSetting.put("setting_id", setting_id);
 					userSetting.put("value", value);
 					userSettings.put(userSetting);

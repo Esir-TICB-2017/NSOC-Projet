@@ -24,8 +24,8 @@ public class GetUserSettingsServlet extends HttpServlet {
 
             if (userSettings != null) {
                 Gson gson = new Gson();
-                String json = gson.toJson(userSettings);
-                response.setContentType("application/json");
+                String json = gson.toJson(userSettings).toString();
+                response.setContentType("text/HTML");
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(json);
             } else {

@@ -77,6 +77,7 @@ public class main {
 		context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/getValuesOverPeriod");
 		context.addServlet(new ServletHolder(new GetIndicatorsOnPeriodServlet()), "/getIndicatorsOverPeriod");
 		context.addServlet(new ServletHolder(new GetSettingsServlet()), "/getSettings");
+		context.addServlet(new ServletHolder(new GetUserSettingsServlet()), "/getUserSettings");
 		context.addServlet(new ServletHolder(new PostSettingsServlet()), "/postSettings");
 		context.addServlet(new ServletHolder(new GetFirstDataServlet()), "/getFirstData");
 
