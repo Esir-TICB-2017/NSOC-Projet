@@ -1,6 +1,6 @@
 angular.module('nsoc')
 .controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _, $interval) => {
-	$scope.selectors = [
+	$rootScope.selectors = [
 		{name: 'Monthly', value: 'month'},
 		{name: 'Weekly', value: 'week'},
 		{name: 'Daily', value: 'day'},
@@ -101,7 +101,7 @@ angular.module('nsoc')
 				displayHouseInfo(obj);
 				$rootScope.loading = false;
 			});
-			$scope.getData($scope.selectors[2]);
+			$scope.getData($rootScope.selectors[2]);
 			$scope.changeGraph($rootScope.globalIndicator);
 			updateDisplayedDates();
 		} else {

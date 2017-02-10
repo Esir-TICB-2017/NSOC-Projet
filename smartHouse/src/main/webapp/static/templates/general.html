@@ -31,7 +31,7 @@
 				<div class='mode'>{{mode}}</div>
 			</div>
 			<div class='aggregationSelectorButtonList'>
-				<button ng-repeat='selector in selectors' ng-class="{active: $root.actualSelector.name == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
+				<button ng-repeat='selector in $root.selectors' ng-class="{active: $root.actualSelector.name == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
 			</div>
 		</div>
 	</div>

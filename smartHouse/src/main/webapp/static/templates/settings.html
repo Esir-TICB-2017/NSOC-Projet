@@ -1,6 +1,10 @@
 <div class='settings' ng-controller='settingsController'>
 	<div class='row night-mode'>
-		<div class='text'>Night mode : </div>
-		<switch ng-model="nightMode" ng-change="switchNightMode()"></switch>
+		<div class='text'>Default homepage period : </div>
+		<div class='tabs'>
+			<button ng-repeat='selector in $root.selectors' ng-class="{active: $root.actualSelector.name == selector.name}"	class="mainMenuButton">
+				{{selector.name}}
+			</button>
+		</div>
 	</div>
 </div>
