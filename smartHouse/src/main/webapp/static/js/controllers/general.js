@@ -98,7 +98,7 @@ angular.module('nsoc')
 	function transformUnit(unit) {
 		switch(unit) {
 			case 'celsius':
-					return '\°C';
+					return String.fromCharCode(176) + 'C';
 					break;
 			case 'ppm':
 					return 'ppm';
@@ -116,7 +116,6 @@ angular.module('nsoc')
 	}
 
 	$scope.$on('data', (event, data) => {
-		console.log(data);
 		displayHouseInfo(data);
 	});
 
