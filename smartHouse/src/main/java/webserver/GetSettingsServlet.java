@@ -2,6 +2,7 @@ package webserver;
 
 import com.google.gson.Gson;
 import database.ReadInDatabase;
+import org.json.JSONArray;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,15 +18,14 @@ import java.util.ArrayList;
 public class GetSettingsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<String> result;
-        String userid = (String) request.getSession().getAttribute("userId");
+        JSONArray settings;
 
-        result = ReadInDatabase.getSettings(userid);
+        settings = ReadInDatabase.getSettings();
 
-        if (result != null) {
+        if (settings != null) {
             Gson gson = new Gson();
-            String json = gson.toJson(result);
-            response.setContentType("text/html");
+            String json = gson.toJson(settings);
+            response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().println(json);
         } else {

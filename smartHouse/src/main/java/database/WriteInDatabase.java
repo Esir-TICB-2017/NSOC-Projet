@@ -4,6 +4,7 @@ import database.data.DataRecord;
 import database.databaseInterface.InterfaceWriteDatabase;
 import indicators.Indicator;
 import javafx.beans.binding.BooleanBinding;
+import org.json.JSONArray;
 import sensor.sensorClass.Sensor;
 import webserver.ConnectedClients;
 
@@ -194,43 +195,39 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 	}
 
 
-	public static void writeSettings(String userId, ArrayList<String> settings) {
+	public static void writeUserSettings(String userId, JSONArray settings) {
 
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "INSERT INTO settings(userid, settemp, setco2min, setco2max, setconsobj, setprodobj, tempind, humidityind, co2ind, consind, prodind, perhome, globalchart, tempchart, humiditychart, co2chart, conschart, prodchart, perdata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "IF EXISTS (SELECT * FROM users_settings WHERE userid=? AND setting_id=?) \n" +
+				"BEGIN\n" +
+				"   UPDATE users_settings SET (value=?) WHERE userid=? AND setting_id=?" +
+				"END\n" +
+				"ELSE\n" +
+				"BEGIN\n" +
+				"   INSERT INTO users_settings(userid, setting_id, value) VALUES(?, ?, ?)\n" +
+				"END";
 
 		try {
-			//values attribution with type parsing
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setString(1, userId); //set user id
+			for(int i=0; i<(settings.length()-2); i+=4) {
 
-			//step settings
-			preparedStatement.setDouble(2, Double.parseDouble(settings.get(0)));    //setTempStep
-			preparedStatement.setDouble(3, Double.parseDouble(settings.get(1)));    //setCo2MinStep
-			preparedStatement.setDouble(4, Double.parseDouble(settings.get(2)));    //setCo2MaxStep
-			preparedStatement.setDouble(5, Double.parseDouble(settings.get(3)));    //setConsObj
-			preparedStatement.setDouble(6, Double.parseDouble(settings.get(4)));    //setProdObj
+				PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-			//home page settings
-			preparedStatement.setBoolean(7, Boolean.parseBoolean(settings.get(5)));        //displayTemperatureIndOnHome
-			preparedStatement.setBoolean(8, Boolean.parseBoolean(settings.get(6)));        //displayHumidityIndOnHome
-			preparedStatement.setBoolean(9, Boolean.parseBoolean(settings.get(7)));        //displayCo2IndOnHome
-			preparedStatement.setBoolean(10, Boolean.parseBoolean(settings.get(8)));        //displayConsumptionIndOnHome
-			preparedStatement.setBoolean(11, Boolean.parseBoolean(settings.get(9)));        //displayProductionIndOnHome
-			preparedStatement.setInt(12, Integer.parseInt(settings.get(10)));                //periodChartOnHome
+				int setting_id = settings.getInt(i+2);
+				String value = settings.getString(i+3);
 
-			//data page settings
-			preparedStatement.setBoolean(13, Boolean.parseBoolean(settings.get(11)));    //displayGlobalChartOnData
-			preparedStatement.setBoolean(14, Boolean.parseBoolean(settings.get(12)));    //displayTemperatureChartOnData
-			preparedStatement.setBoolean(15, Boolean.parseBoolean(settings.get(13)));    //displayHumidityChartOnData
-			preparedStatement.setBoolean(16, Boolean.parseBoolean(settings.get(14)));    //displayCo2ChartOnData
-			preparedStatement.setBoolean(17, Boolean.parseBoolean(settings.get(15)));    //displayConsumptionChartOnData
-			preparedStatement.setBoolean(18, Boolean.parseBoolean(settings.get(16)));    //displayProductionChartOnData
-			preparedStatement.setInt(19, Integer.parseInt(settings.get(17)));            //periodChartsOnData
+				preparedStatement.setString(1, userId);
+				preparedStatement.setDouble(2, setting_id);
+				preparedStatement.setString(3, value);
+				preparedStatement.setString(4, userId);
+				preparedStatement.setDouble(5, setting_id);
+				preparedStatement.setString(6, userId);
+				preparedStatement.setInt(7, setting_id);
+				preparedStatement.setString(8, value);
 
-			//query execution
-			preparedStatement.executeQuery();
+				//query execution
+				preparedStatement.executeQuery();
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

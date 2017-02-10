@@ -224,6 +224,33 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	}
 
 	public static JSONArray getUserSettings(String userId) {
+		JSONArray userSettings = new JSONArray();
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT * FROM settings WHERE userid=?";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setString(1, userId);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					String id = rs.getString("id");
+					String userid = rs.getString(("userid"));
+					String setting_id = rs.getString("setting_id");
+					Double value = rs.getDouble("value");
+					JSONObject userSetting = new JSONObject();
+					userSetting.put("id", id);
+					userSetting.put("userid", userid);
+					userSetting.put("setting_id", setting_id);
+					userSetting.put("value", value);
+					userSettings.put(userSetting);
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userSettings;
 	}
 
 	public static Integer findSettingInJson(JSONArray settings, String name) {
@@ -388,7 +415,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return list;
 	}
 
-	public static ArrayList<String> getSettings(String userId) {
+/*	public static ArrayList<String> getSettings(String userId) {
 
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<String> listSettings = new ArrayList();
@@ -398,6 +425,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, userId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
+				rs.
 				listSettings.set(0, rs.getString("settemp"));
 				listSettings.set(1, rs.getString("setco2min"));
 				listSettings.set(2, rs.getString("setco2max"));
@@ -428,4 +456,5 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return listSettings;
 	}
+*/
 }
