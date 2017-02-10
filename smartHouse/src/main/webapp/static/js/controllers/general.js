@@ -101,7 +101,7 @@ angular.module('nsoc')
 				displayHouseInfo(obj);
 				$rootScope.loading = false;
 			});
-			$scope.getData($rootScope.selectors[2]);
+			$scope.getData($rootScope.selectors[0]);
 			$scope.changeGraph($rootScope.globalIndicator);
 			updateDisplayedDates();
 		} else {
