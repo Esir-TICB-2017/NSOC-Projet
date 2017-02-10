@@ -231,7 +231,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					String id = rs.getString("id");
-					String userid = rs.getString(("userid"));
+					String userid = rs.getString("userid");
 					String setting_id = rs.getString("setting_id");
 					Double value = rs.getDouble("value");
 					JSONObject userSetting = new JSONObject();
