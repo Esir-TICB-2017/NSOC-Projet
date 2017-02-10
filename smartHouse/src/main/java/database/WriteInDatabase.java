@@ -3,12 +3,12 @@ package database;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceWriteDatabase;
 import indicators.Indicator;
+<<<<<<< HEAD
 import javafx.beans.binding.BooleanBinding;
 import org.json.JSONArray;
+=======
+>>>>>>> c9d98385550b6babf1edfd176230718cc22a16af
 import sensor.sensorClass.Sensor;
-import webserver.ConnectedClients;
-
-import javax.json.Json;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

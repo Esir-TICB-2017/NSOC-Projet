@@ -7,7 +7,8 @@ angular.module('nsoc')
 		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
 		pictureUrl: $cookies.get('pictureUrl'),
 	};
-	$rootScope.data = [];
+	$scope.data = [];
+	$rootScope.indicatorMode = false;
 
 	$scope.changeTab = (newTab) => {
 		$scope.actualTab = newTab;
@@ -19,6 +20,7 @@ angular.module('nsoc')
 				method: 'GET',
 				url: '/logout'
 			}).then(function success(res) {
+				$rootScope.loading = false;
 				console.log('User signed out.');
 				$cookies.put('authenticated', false);
 				$location.path('/login');
@@ -31,11 +33,10 @@ angular.module('nsoc')
 
 	initSocket = function () {
 		if ($cookies.get('authenticated')) {
-			websocketService.start('ws://127.0.0.1:8080/token?tokenid='+$cookies.get('idtoken'),
+			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('idtoken'),
 			function onOpen(websocket) {
 			},
 			function onClose() {
-				// reconnect 1 fois au moins avant de rediriger vers login
 				$scope.signOut();
 			},
 			function onMessage(evt) {

@@ -12,6 +12,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import database.ReadInDatabase;
 import database.WriteInDatabase;
 import org.json.JSONObject;
+import utils.Constants;
 import utils.SessionIdentifierGenerator;
 
 import javax.servlet.ServletException;
@@ -25,9 +26,6 @@ import java.util.*;
  * Created by loulou on 22/01/2017.
  */
 public class LoginServlet extends HttpServlet {
-	//    TODO : hide clientId in a better place
-	String clientId = "299325628592-hqru0vumh16bp0hhhvj9qr35lglm8gqu.apps.googleusercontent.com";
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
@@ -36,7 +34,7 @@ public class LoginServlet extends HttpServlet {
 			String idTokenString = request.getParameter("idtoken");
 
 			GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-					.setAudience(Collections.singletonList(clientId))
+					.setAudience(Collections.singletonList(Constants.CLIENT_ID))
 					.build();
 
 			GoogleIdToken idToken = null;

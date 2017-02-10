@@ -1,21 +1,17 @@
-/**
-* Created by loulou on 30/01/2017.
-*/
 angular.module('nsoc')
 .controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _, $interval) => {
-	$scope.selectors = [
+	$rootScope.selectors = [
 		{name: 'Monthly', value: 'month'},
 		{name: 'Weekly', value: 'week'},
 		{name: 'Daily', value: 'day'},
 	];
 
 	$scope.getData = function (selector) {
-		$scope.actualSelector = selector.name;
-		$scope.actualSelectorValue = selector.value;
+		$rootScope.actualSelector = selector;
 	};
 
 	$scope.changeMode = function() {
-		if ($scope.indicatorMode) {
+		if ($rootScope.indicatorMode) {
 			$scope.mode = 'indicator';
 		} else {
 			$scope.mode = 'sensor';
@@ -24,34 +20,55 @@ angular.module('nsoc')
 
 	$scope.changeGraph = function(target) {
 		if (target) {
-			$scope.actualGraph = target.name;
+			$rootScope.actualGraph = target.name;
 		} else if (this.obj) {
-			$scope.actualGraph = this.obj.name;
+			$rootScope.actualGraph = this.obj.name;
 		}
 		drawChart();
 	};
 
 	function drawChart() {
 	 	let actualMode = $scope.mode;
-		if ($scope.actualGraph === $rootScope.globalIndicator.name) {
+		if ($rootScope.actualGraph === $rootScope.globalIndicator.name) {
 			actualMode = $rootScope.globalIndicator.type;
 		}
-		const startDate = moment().startOf($scope.actualSelectorValue).format('X');
+		const startDate = moment().startOf($rootScope.actualSelector.value).format('X');
 		const endDate = moment().format('X');
-		getDataService.get(startDate, endDate, actualMode, $scope.actualGraph, (data) => {
+		getDataService.get(startDate, endDate, actualMode, $rootScope.actualGraph, (data) => {
 			d3ChartService.draw(data, 'month', 'homeChart');
 		});
 	}
 
-	function getHouseHealth() {
-		if ($rootScope.globalIndicator.data <= 33) {
+	function getHomeBackgroundGradient(value) {
+		let fromValue = value - 10;
+		let toValue = value + 10;
+		if (fromValue < 0) {
+			fromValue = 0;
+		} else if (toValue > 100) {
+			toValue = 100;
+		}
+			$rootScope.backgroundGradient = {'background-image':'linear-gradient(-180deg, '+getColor(fromValue)+' 0%, '+getColor(toValue)+' 100%)'};
+	}
+
+	function getHouseHealth(value) {
+		if (value >= 0 && value < 25) {
+			$rootScope.houseHealth = 'very bad';
+		} else if (value >= 25 && value < 50) {
 			$rootScope.houseHealth = 'bad';
-		} else if ($rootScope.globalIndicator.data > 33 && $rootScope.globalIndicator.data < 66) {
+		} else if (value >= 50 && value < 75) {
 			$rootScope.houseHealth = 'ok';
-		} else {
+		} else if (value >= 75 && value <= 100) {
 			$rootScope.houseHealth = 'great';
+		} else {
+			$rootScope.houseHealth = 'abnormally';
 		}
 	}
+
+	function getColor(value){
+			var hue=(value * 1.75).toString(10);
+			return "hsl("+hue+",50%,50%)";
+	}
+	let monte = true;
 
 	function displayHouseInfo(obj) {
 		$scope.$apply(() => {
@@ -63,7 +80,8 @@ angular.module('nsoc')
 			}
 			if (obj.type === 'indicator' && obj.name === 'global') {
 				$rootScope.globalIndicator = obj;
-				getHouseHealth();
+				getHomeBackgroundGradient(obj.data);
+				getHouseHealth(obj.data);
 			} else {
 				const index = _.findIndex($scope.data, (object) => {
 					object.name === obj.name && object.type === obj.type;
@@ -83,15 +101,7 @@ angular.module('nsoc')
 				displayHouseInfo(obj);
 				$rootScope.loading = false;
 			});
-			// ONLY FOR TEST //
-			// FILLING DATA ARRAY WITH INDICATORS //
-			let tab = $scope.data;
-			tab.forEach((obj) => {
-				$scope.data.push({name: obj.name, data: 12, lastUpdate: obj.lastUpdate, type: 'indicator', state: 'disconnected'})
-			});
-			///////////////////
-			$scope.changeMode();
-			$scope.getData($scope.selectors[2]);
+			$scope.getData($rootScope.selectors[0]);
 			$scope.changeGraph($rootScope.globalIndicator);
 			updateDisplayedDates();
 		} else {
@@ -120,6 +130,15 @@ angular.module('nsoc')
 				obj.lastUpdate =  moment(obj.date).fromNow();
 			});
 			$rootScope.globalIndicator.lastUpdate = moment($rootScope.globalIndicator.date).fromNow();
-		}, 1000);
+		}, 60000);
 	}
+
+	function initialize () {
+		$scope.changeMode();
+		if ($rootScope.globalIndicator) {
+			drawChart();
+		}
+	}
+
+	initialize();
 });

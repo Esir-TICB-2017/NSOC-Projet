@@ -9,18 +9,49 @@
 	flex-direction   : column;
 	background-image : linear-gradient(-180deg, #92a8a3 0%, #3d3d3d 100%);
 
-	&.loaded {
-		opacity          : 1;
+	.switch {
+		border: 1px solid rgba(255, 255, 255, 0.41) !important;
 	}
 
-	&.bad {
-		background-image   : linear-gradient(-180deg, #f76668 0%, #f49058 100%);
+	.tabs {
+		margin : auto;
+
+		&>button.mainMenuButton {
+			text-transform   : uppercase;
+			outline          : none;
+			cursor           : pointer;
+			color            : $button-color;
+			transition       : background-color .2s ease-out;
+			box-sizing:border-box;
+			margin-left      : 1px;
+			width            : $button-width;
+			height           : $button-height;
+			background-color : rgba(255, 255, 255, 0.3);
+			border           : $button-border-width solid rgba(255, 255, 255, 0);
+			&:first-child{
+				border-right-style        : none;
+				border-top-left-radius    : 25px;
+				border-bottom-left-radius : 25px;
+				margin-left               : 0px;
+			}
+
+			&:last-child {
+				border-left-style          : none;
+				border-top-right-radius    : 25px;
+				border-bottom-right-radius : 25px;
+			}
+
+			&:hover {
+				background-color: rgba(255, 255, 255, 0.6);
+			}
+			&.active {
+				background-color: rgba(255, 255, 255, 0.6);
+			}
+		}
 	}
-	&.ok {
-		background-image   : linear-gradient(-180deg, #028aab 0%, #6bdaea 100%);
-	}
-	&.great {
-		background-image : linear-gradient(-180deg, #34c9c0 0%, #05cd9c 100%);
+
+	&.loaded {
+		opacity          : 1;
 	}
 
 	& > .mainMenu {
@@ -45,41 +76,7 @@
 			&>.name {
 				margin-left : 10px;
 				font-size   : 19px;
-			}
-		}
-
-		&>.tabs {
-			margin : auto;
-
-			&>button.mainMenuButton {
-				text-transform   : uppercase;
-				outline          : none;
-				cursor           : pointer;
-				color            : $button-color;
-				transition       : background-color .2s ease-out;
-				margin-left      : 1px;
-				width            : $button-width;
-				height           : $button-height;
-				background-color : rgba(255, 255, 255, 0.3);
-				border           : $button-border-width solid rgba(255, 255, 255, 0);
-				&:first-child{
-					border-right-style        : none;
-					border-top-left-radius    : 25px;
-					border-bottom-left-radius : 25px;
-				}
-
-				&:last-child {
-					border-left-style          : none;
-					border-top-right-radius    : 25px;
-					border-bottom-right-radius : 25px;
-				}
-
-				&:hover {
-					background-color: rgba(255, 255, 255, 0.6);
-				}
-				&.active {
-					background-color: rgba(255, 255, 255, 0.6);
-				}
+				color       : $grey;
 			}
 		}
 
@@ -91,7 +88,7 @@
 			width            : 120px;
 			background-color : white;
 			border           : none;
-			color            : #757575;
+			color            : $grey;
 			font-size        : 16px;
 			font-family      : $font-family;
 			box-shadow       : 0 2px 4px 0 rgba(0,0,0,.25);
@@ -114,6 +111,7 @@
 				width: 100%;
 			}
 			@import 'general';
+			@import 'settings';
 		}
 	}
 }

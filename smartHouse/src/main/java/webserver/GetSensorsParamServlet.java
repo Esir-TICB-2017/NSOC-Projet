@@ -20,43 +20,33 @@ import java.io.IOException;
 public class GetSensorsParamServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JSONObject message =  new JSONObject();
 
-        JSONArray arraySensor;
-        JSONObject objSensor =  new JSONObject();
-
-        JSONArray arrayIndicator;
-        JSONObject objIndicator = new JSONObject();
+        JSONArray globalResults = new JSONArray();
         JSONObject data;
 
         for (Sensor sensor : Sensors.getInstance().getSensors()){
-            arraySensor = new JSONArray();
             data = new JSONObject();
             data.put("name", sensor.getLastRecord().getName());
             data.put("data", sensor.getLastRecord().getData());
             data.put("date", sensor.getLastRecord().getDate());
+            data.put("type", sensor.getType());
             data.put("unit", sensor.getUnit());
             data.put("status", sensor.getStatus());
-            arraySensor.put(data);
-            objSensor.put(sensor.getType(),arraySensor);
+            globalResults.put(data);
         }
-        message.put("Sensors", objSensor);
 
         for (Indicator indicator : Indicators.getInstance().getIndicators()){
-            arrayIndicator = new JSONArray();
             data = new JSONObject();
             data.put("name", indicator.getLastRecord().getName());
             data.put("data", indicator.getLastRecord().getData());
             data.put("date", indicator.getLastRecord().getDate());
-            arrayIndicator.put(data);
-            objIndicator.put(indicator.getType(),arrayIndicator);
+            data.put("type", indicator.getType());
+            globalResults.put(data);
         }
-        message.put("Indicateurs",objIndicator);
 
-        String responseData = message.toString();
+        String responseData = globalResults.toString();
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().println(responseData);
-
     }
 }

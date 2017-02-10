@@ -1,7 +1,7 @@
 // main: style.scss
 
   & > .area {
-    fill: url(#area-gradient);
+    fill: rgba(255,255,255,0.6);
   }
   & > .line {
     stroke: white;
@@ -18,7 +18,7 @@
       opacity: 0;
     }
     & > text {
-      fill: #FFFFFF;
+      fill: $grey;
     }
   }
 }
@@ -32,7 +32,7 @@
         opacity: 0;
       }
       & > text {
-        fill: #FFFFFF;
+        fill: $grey;
       }
     }
   }
