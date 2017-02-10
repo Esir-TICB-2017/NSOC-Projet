@@ -23,8 +23,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.json.JSONArray;
-import sensor.sensorClass.Sensors;
 import utils.Constants;
 
 import static database.Database.getCurrentTimeStamp;
@@ -78,15 +76,6 @@ public class WebSocketHandler {
                         disconnect(session);
                     } else {
                         session.setIdleTimeout(remainingTime);
-                        ArrayList<DataRecord> lastValues = Sensors.getInstance().getLastValues();
-                        Indicator indicator = Indicators.getInstance().getIndicatorByString("global");
-                        System.out.println(indicator.getId());
-                        DataRecord lastRecord = indicator.getLastRecord();
-                        lastValues.add(lastRecord);
-
-                        JSONArray responseData = new JSONArray(lastValues);
-                        String toSendString = responseData.toString();
-                        session.getRemote().sendString(toSendString);
                         ConnectedClients.getInstance().join(this);
                     }
                 } else {

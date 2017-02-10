@@ -19,19 +19,22 @@
 
 		.round {
 			background-color : rgba(255, 255, 255, 0.1);
-			width            : 90px;
-			height           : 90px;
+			width            : 100px;
+			height           : 100px;
 			border           : 2px white solid;
 			border-radius    : 50%;
 			display          : flex;
 			cursor           : pointer;
 
 			&:hover {
-				background-color: rgba(255, 255, 255, 0.3);
+				background-color: rgba(255, 255, 255, 0.3) !important;
 			}
 
 			&.disconnected {
-				background-color: rgba(245, 0, 0, 0.4)
+				background-color: rgba(33, 33, 33, 0.4);
+				&>.value {
+					font-size  : 70%;
+				}
 			}
 
 			&.active {
@@ -59,7 +62,8 @@
 				text-align : center;
 				&>.disconnected-message {
 					&>.status {
-						color: red;
+						font-weight: bold;
+						color: #c62121;
 					}
 					&>.last-value {
 						text-decoration: underline;

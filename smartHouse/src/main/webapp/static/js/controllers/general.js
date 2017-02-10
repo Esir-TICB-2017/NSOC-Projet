@@ -28,7 +28,7 @@ angular.module('nsoc')
 	};
 
 	function drawChart() {
-	 	let actualMode = $scope.mode;
+		let actualMode = $scope.mode;
 		if ($rootScope.actualGraph === $rootScope.globalIndicator.name) {
 			actualMode = $rootScope.globalIndicator.type;
 		}
@@ -47,7 +47,7 @@ angular.module('nsoc')
 		} else if (toValue > 100) {
 			toValue = 100;
 		}
-			$rootScope.backgroundGradient = {'background-image':'linear-gradient(-180deg, '+getColor(fromValue)+' 0%, '+getColor(toValue)+' 100%)'};
+		$rootScope.backgroundGradient = {'background-image':'linear-gradient(-180deg, '+getColor(fromValue)+' 0%, '+getColor(toValue)+' 100%)'};
 	}
 
 	function getHouseHealth(value) {
@@ -65,48 +65,59 @@ angular.module('nsoc')
 	}
 
 	function getColor(value){
-			var hue=(value * 1.75).toString(10);
-			return "hsl("+hue+",50%,50%)";
+		var hue=(value * 1.75).toString(10);
+		return "hsl("+hue+",50%,50%)";
 	}
 	let monte = true;
 
 	function displayHouseInfo(obj) {
-		$scope.$apply(() => {
-			if (obj.date) {
-				obj.lastUpdate = moment(obj.date).fromNow();
-			}
-			if (obj.data) {
-				obj.data = Math.round(obj.data * 10) / 10;
-			}
-			if (obj.type === 'indicator' && obj.name === 'global') {
-				$rootScope.globalIndicator = obj;
-				getHomeBackgroundGradient(obj.data);
-				getHouseHealth(obj.data);
+		if (obj.date) {
+			obj.lastUpdate = moment(obj.date).fromNow();
+		}
+		if (obj.data) {
+			obj.data = Math.round(obj.data * 10) / 10;
+		}
+		obj.unit = transformUnit(obj.unit);
+
+		if (obj.type === 'indicator' && obj.name === 'global') {
+			$rootScope.globalIndicator = obj;
+			getHomeBackgroundGradient(obj.data);
+			getHouseHealth(obj.data);
+		} else {
+			const index = _.findIndex($scope.data, (object) => {
+				object.name === obj.name && object.type === obj.type;
+			});
+			if (index !== -1) {
+				$scope.data[index] = obj;
 			} else {
-				const index = _.findIndex($scope.data, (object) => {
-					object.name === obj.name && object.type === obj.type;
-				});
-				if (index !== -1) {
-					$scope.data[index] = obj;
-				} else {
-					$scope.data.push(obj);
-				}
+				$scope.data.push(obj);
 			}
-		});
+		}
 	};
 
-	$scope.$on('data', (event, data) => {
-		if (_.isArray(data)) {
-			data.forEach((obj) => {
-				displayHouseInfo(obj);
-				$rootScope.loading = false;
-			});
-			$scope.getData($rootScope.selectors[0]);
-			$scope.changeGraph($rootScope.globalIndicator);
-			updateDisplayedDates();
-		} else {
-			displayHouseInfo(data);
+	function transformUnit(unit) {
+		switch(unit) {
+			case 'celsius':
+					return '\°C';
+					break;
+			case 'ppm':
+					return 'ppm';
+					break;
+			case 'w/h':
+					return 'w/h';
+					break;
+			case 'perrcentage':
+					return '%';
+					break;
+			default:
+					return '%';
+					break;
 		}
+	}
+
+	$scope.$on('data', (event, data) => {
+		console.log(data);
+		displayHouseInfo(data);
 	});
 
 	$scope.displayDate = function (round) {
@@ -133,7 +144,28 @@ angular.module('nsoc')
 		}, 60000);
 	}
 
+	function getFirstData() {
+		$http({
+			method: 'GET',
+			url: '/getFirstData'
+		}).then(function success(res) {
+			console.log(res.data);
+			res.data.forEach((obj) => {
+				displayHouseInfo(obj);
+			});
+			$scope.getData($rootScope.selectors[0]);
+			$scope.changeGraph($rootScope.globalIndicator);
+			updateDisplayedDates();
+			$rootScope.loading = false;
+		}, function error(err) {
+			console.log(err);
+		});
+	};
+
 	function initialize () {
+		if ($scope.data.length == 0) {
+			getFirstData();
+		}
 		$scope.changeMode();
 		if ($rootScope.globalIndicator) {
 			drawChart();
