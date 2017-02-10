@@ -17,10 +17,12 @@ public class Sensor {
 	private Integer id;
 	private Integer bacnetId;
 	private Boolean status;
+	private String typeOf = "sensor";
 
 	public int getId() {
 		return id;
 	}
+	public String getTypeOf(){return typeOf;}
 
 
 	public Sensor(String type, Integer id, String unit, Integer bacnetId, Boolean status) {
