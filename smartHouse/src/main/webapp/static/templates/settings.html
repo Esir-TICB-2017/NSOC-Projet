@@ -1,10 +1,14 @@
 <div class='settings' ng-controller='settingsController'>
-	<div class='row night-mode'>
+	<div class='row'>
 		<div class='text'>Default homepage period : </div>
 		<div class='tabs'>
 			<button ng-repeat='selector in $root.selectors' ng-class="{active: $root.actualSelector.name == selector.name}"	class="mainMenuButton">
 				{{selector.name}}
 			</button>
 		</div>
+	</div>
+	<div class='row'>
+		<div class='text'>Enable helpers : </div>
+		<switch ng-model="helpers"></switch>
 	</div>
 </div>
