@@ -40,8 +40,8 @@ angular.module('nsoc')
 	}
 
 	function getHomeBackgroundGradient(value) {
-		let fromValue = value - 5;
-		let toValue = value + 5;
+		let fromValue = value - 10;
+		let toValue = value + 10;
 		if (fromValue < 0) {
 			fromValue = 0;
 		} else if (toValue > 100) {
