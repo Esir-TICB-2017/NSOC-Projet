@@ -1,6 +1,3 @@
-/**
-* Created by loulou on 30/01/2017.
-*/
 angular.module('nsoc')
 .controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _, $interval) => {
 	$scope.selectors = [
@@ -42,15 +39,36 @@ angular.module('nsoc')
 		});
 	}
 
-	function getHouseHealth() {
-		if ($rootScope.globalIndicator.data <= 33) {
+	function getHomeBackgroundGradient(value) {
+		let fromValue = value - 5;
+		let toValue = value + 5;
+		if (fromValue < 0) {
+			fromValue = 0;
+		} else if (toValue > 100) {
+			toValue = 100;
+		}
+			$rootScope.backgroundGradient = {'background-image':'linear-gradient(-180deg, '+getColor(fromValue)+' 0%, '+getColor(toValue)+' 100%)'};
+	}
+
+	function getHouseHealth(value) {
+		if (value >= 0 && value < 25) {
+			$rootScope.houseHealth = 'very bad';
+		} else if (value >= 25 && value < 50) {
 			$rootScope.houseHealth = 'bad';
-		} else if ($rootScope.globalIndicator.data > 33 && $rootScope.globalIndicator.data < 66) {
+		} else if (value >= 50 && value < 75) {
 			$rootScope.houseHealth = 'ok';
-		} else {
+		} else if (value >= 75 && value <= 100) {
 			$rootScope.houseHealth = 'great';
+		} else {
+			$rootScope.houseHealth = 'abnormally';
 		}
 	}
+
+	function getColor(value){
+			var hue=(value * 1.75).toString(10);
+			return "hsl("+hue+",50%,50%)";
+	}
+	let monte = true;
 
 	function displayHouseInfo(obj) {
 		$scope.$apply(() => {
@@ -62,7 +80,8 @@ angular.module('nsoc')
 			}
 			if (obj.type === 'indicator' && obj.name === 'global') {
 				$rootScope.globalIndicator = obj;
-				getHouseHealth();
+				getHomeBackgroundGradient(obj.data);
+				getHouseHealth(obj.data);
 			} else {
 				const index = _.findIndex($scope.data, (object) => {
 					object.name === obj.name && object.type === obj.type;

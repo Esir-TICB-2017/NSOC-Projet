@@ -13,16 +13,6 @@
 		opacity          : 1;
 	}
 
-	&.bad {
-		background-image   : linear-gradient(-180deg, #f76668 0%, #f49058 100%);
-	}
-	&.ok {
-		background-image   : linear-gradient(-180deg, #028aab 0%, #6bdaea 100%);
-	}
-	&.great {
-		background-image : linear-gradient(-180deg, #34c9c0 0%, #05cd9c 100%);
-	}
-
 	& > .mainMenu {
 		margin      : 10px 10px 30px 10px;
 		height      : 65px;
