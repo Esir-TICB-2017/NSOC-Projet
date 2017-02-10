@@ -29,7 +29,7 @@ public class GetSensorsParamServlet extends HttpServlet {
             data.put("name", sensor.getLastRecord().getName());
             data.put("data", sensor.getLastRecord().getData());
             data.put("date", sensor.getLastRecord().getDate());
-            data.put("type", sensor.getType());
+            data.put("type", sensor.getTypeOf());
             data.put("unit", sensor.getUnit());
             data.put("status", sensor.getStatus());
             globalResults.put(data);
@@ -40,7 +40,7 @@ public class GetSensorsParamServlet extends HttpServlet {
             data.put("name", indicator.getLastRecord().getName());
             data.put("data", indicator.getLastRecord().getData());
             data.put("date", indicator.getLastRecord().getDate());
-            data.put("type", indicator.getType());
+            data.put("type", indicator.getTypeOf());
             globalResults.put(data);
         }
 

@@ -19,6 +19,7 @@ public class Indicator {
 	private Double maxComfortValue;
 	private Double minValue;
 	private Double maxValue;
+	private String typeOf = "indicator";
 
 	public Indicator(String type, Integer id) {
 		this.id = id;
@@ -119,4 +120,6 @@ public class Indicator {
 		globalIndicator = sum / length;
 		return globalIndicator;
 	}
+
+	public String getTypeOf(){return typeOf;}
 }
