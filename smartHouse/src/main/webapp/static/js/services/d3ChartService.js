@@ -19,7 +19,6 @@ angular.module('nsoc').factory('d3ChartService', () => {
                     ticks = d3.timeMonth;
             }
 
-
             const svg = d3.select(`svg#${svgId}`);
 
             const width = parseInt(svg.style('width'), 0);

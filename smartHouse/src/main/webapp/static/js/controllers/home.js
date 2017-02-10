@@ -32,7 +32,8 @@ angular.module('nsoc')
 	}
 
 	initSocket = function () {
-		if ($cookies.get('authenticated')) {
+		const authenticate = $cookies.get('authenticated') === 'true'? true : false;
+		if (authenticate) {
 			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('idtoken'),
 			function onOpen(websocket) {
 			},
@@ -43,7 +44,6 @@ angular.module('nsoc')
 				$scope.$broadcast('data', JSON.parse(evt.data));
 			});
 		}
-		// Rediriger vers login si on reçoit un forbidden (refresh de la page mais plus authentifié, le serveur renvoie 403)
 	};
 
 	initSocket();

@@ -1,5 +1,5 @@
 angular.module('nsoc')
-.controller('generalController', ($scope, $rootScope, $cookies, getDataService, d3ChartService, $http, _, $interval) => {
+.controller('generalController', ($scope, $rootScope, getDataService, d3ChartService, $http, _, $interval) => {
 	$rootScope.selectors = [
 		{name: 'Monthly', value: 'month'},
 		{name: 'Weekly', value: 'week'},
@@ -148,7 +148,6 @@ angular.module('nsoc')
 			method: 'GET',
 			url: '/getFirstData'
 		}).then(function success(res) {
-			console.log(res.data);
 			res.data.forEach((obj) => {
 				displayHouseInfo(obj);
 			});

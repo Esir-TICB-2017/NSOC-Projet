@@ -9,12 +9,12 @@ angular.module('nsoc')
 		$scope.GoogleAuth  = gapi.auth2.getAuthInstance();
 	});
 	$rootScope.$on('$routeChangeStart', function (e) {
-		const authenticate = $cookies.get('authenticated');
-		if($location.path() === '/home' && !$cookies.get('authenticated')){
-				e.preventDefault();
-				console.log('Please login first');
-				$location.path('/login');
-		} else if ($location.path === '/login' && $cookies.get('authenticated')) {
+		const authenticate = $cookies.get('authenticated') === 'true'? true : false;
+		if($location.path() === '/home' && !authenticate){
+			e.preventDefault();
+			console.log('Please login first');
+			$location.path('/login');
+		} else if ($location.path() === '/login' && authenticate) {
 			e.preventDefault();
 			console.log('Already logged in');
 		}
