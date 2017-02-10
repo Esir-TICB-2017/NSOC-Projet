@@ -20,6 +20,7 @@ angular.module('nsoc')
 				method: 'GET',
 				url: '/logout'
 			}).then(function success(res) {
+				$rootScope.loading = false;
 				console.log('User signed out.');
 				$cookies.put('authenticated', false);
 				$location.path('/login');
@@ -36,7 +37,6 @@ angular.module('nsoc')
 			function onOpen(websocket) {
 			},
 			function onClose() {
-				// reconnect 1 fois au moins avant de rediriger vers login
 				$scope.signOut();
 			},
 			function onMessage(evt) {
