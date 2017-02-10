@@ -3,7 +3,6 @@ package database;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceWriteDatabase;
 import indicators.Indicator;
-import javafx.beans.binding.BooleanBinding;
 import org.json.JSONArray;
 import sensor.sensorClass.Sensor;
 import java.sql.Connection;

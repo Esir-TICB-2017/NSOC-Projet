@@ -1,6 +1,7 @@
 package webserver;
 
 
+import database.data.DataRecord;
 import indicators.Indicator;
 import indicators.Indicators;
 import org.json.JSONArray;
@@ -17,7 +18,7 @@ import java.io.IOException;
 /**
  * Created by clement on 08/02/2017.
  */
-public class GetSensorsParamServlet extends HttpServlet {
+public class GetFirstDataServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -26,20 +27,22 @@ public class GetSensorsParamServlet extends HttpServlet {
 
         for (Sensor sensor : Sensors.getInstance().getSensors()){
             data = new JSONObject();
-            data.put("name", sensor.getLastRecord().getName());
-            data.put("data", sensor.getLastRecord().getData());
-            data.put("date", sensor.getLastRecord().getDate());
+            DataRecord lastRecord = sensor.getLastRecord();
+            data.put("name", sensor.getType());
+            data.put("data", lastRecord.getData());
+            data.put("date", lastRecord.getDate());
             data.put("type", sensor.getTypeOf());
             data.put("unit", sensor.getUnit());
-            data.put("status", sensor.getStatus());
+            data.put("connected", sensor.getStatus());
             globalResults.put(data);
         }
 
         for (Indicator indicator : Indicators.getInstance().getIndicators()){
             data = new JSONObject();
-            data.put("name", indicator.getLastRecord().getName());
-            data.put("data", indicator.getLastRecord().getData());
-            data.put("date", indicator.getLastRecord().getDate());
+            DataRecord lastRecord = indicator.getLastRecord();
+            data.put("name", indicator.getType());
+            data.put("data", lastRecord.getData());
+            data.put("date", lastRecord.getDate());
             data.put("type", indicator.getTypeOf());
             globalResults.put(data);
         }

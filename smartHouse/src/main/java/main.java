@@ -33,7 +33,6 @@ public class main {
 		Sensors.getInstance().initSensors();
 		Indicators.getInstance().initIndicators();
 		JSONArray settings = ReadInDatabase.getSettings();
-		System.out.println(settings.toString());
 
 		//BacNetToJava.getInstance();
 
@@ -80,6 +79,7 @@ public class main {
 		context.addServlet(new ServletHolder(new GetSettingsServlet()), "/getSettings");
 		context.addServlet(new ServletHolder(new GetUserSettingsServlet()), "/getUserSettings");
 		context.addServlet(new ServletHolder(new PostSettingsServlet()), "/postSettings");
+		context.addServlet(new ServletHolder(new GetFirstDataServlet()), "/getFirstData");
 
 		context.addFilter(RequestFilter.class, "*", EnumSet.of(DispatcherType.REQUEST));
 
