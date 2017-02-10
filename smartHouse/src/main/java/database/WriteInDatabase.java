@@ -206,18 +206,18 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 		try {
 
-			for(int i=0; i<(settings.length()-2); i+=4) {
+			for(int i=0; i<settings.length(); i+=2) {
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-				int setting_id = settings.getInt(i+2);
-				String value = settings.getString(i+3);
+				int setting_id = settings.getInt(i);
+				String value = settings.getString(i+1);
 
 				preparedStatement.setString(1, userId);
-				preparedStatement.setDouble(2, setting_id);
+				preparedStatement.setInt(2, setting_id);
 				preparedStatement.setString(3, value);
 				preparedStatement.setString(4, userId);
-				preparedStatement.setDouble(5, setting_id);
+				preparedStatement.setInt(5, setting_id);
 				preparedStatement.setString(6, userId);
 				preparedStatement.setInt(7, setting_id);
 				preparedStatement.setString(8, value);

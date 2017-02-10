@@ -230,8 +230,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			preparedStatement.setString(1, userId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					String setting_id = rs.getString("setting_id");
-					Double value = rs.getDouble("value");
+					int setting_id = rs.getInt("setting_id");
+					String value = rs.getString("value");
 					JSONObject userSetting = new JSONObject();
 					userSetting.put("setting_id", setting_id);
 					userSetting.put("value", value);
@@ -248,7 +248,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return userSettings;
 	}
 
-	public static Integer findSettingInJson(JSONArray settings, String name) {
+	public static Integer  findSettingInJson(JSONArray settings, String name) {
 		for(int i = 0; i < settings.length(); ++i) {
 			JSONObject setting = settings.getJSONObject(i);
 			if(setting.get("name").equals(name)) {
