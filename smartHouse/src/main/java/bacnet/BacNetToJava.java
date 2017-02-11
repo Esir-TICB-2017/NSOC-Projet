@@ -36,7 +36,9 @@ import java.util.Random;
 //ENLEVER LES COMMENTAIRES UNE FOIS CONNECTÉ AU RESEAU WIFI "DOMOTIQUE" DU LABO
 //-> SINON CA RETURN UN NOMBRE RANDOM
 
-
+/**
+ * This class is the interface connection between the main program and bacnet sensors.
+ */
 public class BacNetToJava implements InterfaceReadBacnet {
 
 	private IpNetwork network;
@@ -94,25 +96,6 @@ public class BacNetToJava implements InterfaceReadBacnet {
                 e.printStackTrace();
                 System.out.println("Problème de récupération de la valeur !");
             }*/
-
-	}
-
-	private double getTemperature() throws Exception {
-
-
-		String sURL = "https://api.darksky.net/forecast/d1465e3ebc6da2c83fb849178a605d54/48.1113,-1.68,1485796324?lang=fr&units=si";
-
-		URL url = new URL(sURL);
-		HttpURLConnection request = (HttpURLConnection) url.openConnection();
-		request.connect();
-
-		// Convert to a JSON object to print data
-		JsonParser jp = new JsonParser(); //from gson
-		JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
-		JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
-		JsonObject currently = rootobj.getAsJsonObject("currently");
-		double temperature = currently.get("temperature").getAsDouble();
-		return temperature;
 
 	}
 

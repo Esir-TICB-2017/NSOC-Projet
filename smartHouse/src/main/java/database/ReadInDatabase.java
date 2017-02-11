@@ -3,6 +3,7 @@ package database;
 import com.google.gson.JsonObject;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceReadDatabase;
+import indicators.Indicator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
@@ -37,7 +38,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				while (rs.next()) {
 					date = rs.getTimestamp("submission_date");
 					data = rs.getDouble("sensor_value");
-					result = new DataRecord(data, date);
+					result = new DataRecord(data, date, "sensor", sensorType);
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -225,12 +226,12 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	public static JSONArray getUserSettings(String userId) {
 		JSONArray userSettings = new JSONArray();
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT * FROM users_settings WHERE userid=?";
+		String sql = "SELECT setting_id, value FROM users_settings WHERE userid=?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, userId);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					int setting_id = rs.getInt("setting_id");
+					Integer setting_id = rs.getInt("setting_id");
 					String value = rs.getString("value");
 					JSONObject userSetting = new JSONObject();
 					userSetting.put("setting_id", setting_id);
@@ -290,7 +291,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return list;
 	}
 
-	public static DataRecord getLastIndicator(Integer indicatorId) {
+	public static DataRecord getLastIndicator(Indicator indicator) {
 		DataRecord result = null;
 		double data;
 		Timestamp date;
@@ -300,12 +301,12 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"WHERE indicator_type_id = ? " +
 				"ORDER BY submission_date DESC LIMIT 1";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setInt(1, indicatorId);
+			preparedStatement.setInt(1, indicator.getId());
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					date = rs.getTimestamp("submission_date");
 					data = rs.getDouble("indicator_value");
-					result = new DataRecord(data, date);
+					result = new DataRecord(data, date, "indicator", indicator.getType());
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -318,7 +319,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
-	public static ArrayList<DataRecord> getIndicatorsOnPeriod(Integer indicatorId, Timestamp startDate, Timestamp endDate) {
+	public static ArrayList<DataRecord> getIndicatorsOnPeriod(Indicator indicator, Timestamp startDate, Timestamp endDate) {
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<DataRecord> list = new ArrayList(1);
 		String sql = "SELECT submission_date, indicator_value " +
@@ -326,14 +327,14 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"WHERE indicator_type_id = ? " +
 				"AND submission_date BETWEEN ? AND ?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setInt(1, indicatorId);
+			preparedStatement.setInt(1, indicator.getId());
 			preparedStatement.setTimestamp(2, startDate);
 			preparedStatement.setTimestamp(3, endDate);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					Double data = rs.getDouble("indicator_value");
 					Timestamp date = rs.getTimestamp("submission_date");
-					list.add(new DataRecord(data, date));
+					list.add(new DataRecord(data, date, "indicator", indicator.getType()));
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -390,47 +391,4 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return list;
 	}
-
-/*	public static ArrayList<String> getSettings(String userId) {
-
-		Connection connection = ConnectionManager.getConnection();
-		ArrayList<String> listSettings = new ArrayList();
-		String sql = "SELECT * FROM settings WHERE userid=?";
-
-		//Values attribution and query execution
-		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setString(1, userId);
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				rs.
-				listSettings.set(0, rs.getString("settemp"));
-				listSettings.set(1, rs.getString("setco2min"));
-				listSettings.set(2, rs.getString("setco2max"));
-				listSettings.set(3, rs.getString("setconsobj"));
-				listSettings.set(4, rs.getString("setprodobj"));
-
-				listSettings.set(5, rs.getString("tempind"));
-				listSettings.set(6, rs.getString("humidityind"));
-				listSettings.set(7, rs.getString("co2ind"));
-				listSettings.set(8, rs.getString("consind"));
-				listSettings.set(9, rs.getString("prodind"));
-				listSettings.set(10, rs.getString("perhome"));
-
-				listSettings.set(11, rs.getString("globalchart"));
-				listSettings.set(12, rs.getString("tempchart"));
-				listSettings.set(13, rs.getString("humiditychart"));
-				listSettings.set(14, rs.getString("co2chart"));
-				listSettings.set(14, rs.getString("conschart"));
-				listSettings.set(16, rs.getString("prodchart"));
-				listSettings.set(17, rs.getString("perdata"));
-				rs.close();
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return listSettings;
-	}
-*/
 }
