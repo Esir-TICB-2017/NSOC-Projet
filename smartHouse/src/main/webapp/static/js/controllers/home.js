@@ -1,13 +1,13 @@
 angular.module('nsoc')
-.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService) => {
+.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService, utils, Flash) => {
 
-	$scope.changeTab = (newTab) => {
+	$scope.changeTab = function(newTab) {
 		$scope.actualTab = newTab;
 		$scope.actualTab.notifications = 0;
 	};
 
 	$scope.signOut = function () {
-		$scope.GoogleAuth.signOut().then(() => {
+		$scope.GoogleAuth.signOut().then(function() {
 			$http({
 				method: 'GET',
 				url: '/logout'
@@ -31,6 +31,7 @@ angular.module('nsoc')
 			if ($scope.actualTab.name !== $scope.tabs[0].name) {
 				$scope.tabs[0].notifications++;
 			}
+			Flash.create('success', 'Received new data!');
 			$scope.$broadcast('firstData', res.data);
 		}, function error(err) {
 			console.log(err);
@@ -38,7 +39,7 @@ angular.module('nsoc')
 	}
 
 	initSocket = function () {
-		const authenticate = $cookies.get('authenticated') === 'true'? true : false;
+		const authenticate = utils.getBoolean($cookies.get('authenticated'));
 		if (authenticate) {
 			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('idtoken'),
 			function onOpen(websocket) {
@@ -47,10 +48,13 @@ angular.module('nsoc')
 				$scope.signOut();
 			},
 			function onMessage(evt) {
+				const data = JSON.parse(evt.data);
 				if ($scope.actualTab.name !== $scope.tabs[0].name) {
 					$scope.tabs[0].notifications++;
 				}
-				$scope.$broadcast('data', JSON.parse(evt.data));
+				const message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data + data.unit;
+				Flash.create('success', message);
+				$scope.$broadcast('data', data);
 			});
 		}
 	};

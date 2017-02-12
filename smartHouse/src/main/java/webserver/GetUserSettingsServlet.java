@@ -17,17 +17,14 @@ import java.util.ArrayList;
 public class GetUserSettingsServlet extends HttpServlet {
 
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            JSONArray userSettings;
             String userid = (String) request.getSession().getAttribute("userId");
 
-            userSettings = ReadInDatabase.getUserSettings(userid);
+            JSONArray userSettings = ReadInDatabase.getUserSettings(userid);
 
             if (userSettings != null) {
-                Gson gson = new Gson();
-                String json = gson.toJson(userSettings).toString();
-                response.setContentType("text/HTML");
+                response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().println(json);
+                response.getWriter().println(userSettings);
             } else {
                 response.sendError(403);
             }

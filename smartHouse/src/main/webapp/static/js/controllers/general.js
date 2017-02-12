@@ -1,5 +1,5 @@
 angular.module('nsoc')
-.controller('generalController', ($scope, $rootScope, getDataService, d3ChartService, $http, _, $interval, $timeout) => {
+.controller('generalController', function($scope, $rootScope, getDataService, d3ChartService, $http, _, $interval, $timeout, Flash) {
 	$rootScope.selectors = [
 		{name: 'Monthly', value: 'month'},
 		{name: 'Weekly', value: 'week'},

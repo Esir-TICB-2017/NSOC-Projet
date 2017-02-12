@@ -8,7 +8,7 @@
 			</div>
 		</div>
 		<div class='data'>
-			<div class='sensors-or-indicators' ng-repeat="obj in data | filter : {type : mode} : true">
+			<div class='sensors-or-indicators' ng-repeat="obj in data | filter : {type : mode} : true | orderBy:'name'">
 				<div class='round' ng-class="{active: $root.actualGraph.name === obj.name && mode === obj.type, disconnected: !obj.connected && obj.type === 'sensor'}" ng-mouseenter='displayDate()' ng-mouseleave='hideDate()' ng-click='changeGraph()'>
 					<div ng-show='!showDate' class='value'>
 						<div class='disconnected-message' ng-if='!obj.connected && obj.type === "sensor"'>

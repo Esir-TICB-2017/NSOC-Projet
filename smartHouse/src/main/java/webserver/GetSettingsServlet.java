@@ -18,16 +18,12 @@ import java.util.ArrayList;
 public class GetSettingsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JSONArray settings;
-
-        settings = ReadInDatabase.getSettings();
+        JSONArray settings = ReadInDatabase.getSettings();
 
         if (settings != null) {
-            Gson gson = new Gson();
-            String json = gson.toJson(settings);
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().println(json);
+            response.getWriter().println(settings);
         } else {
             response.sendError(403);
         }

@@ -9,67 +9,13 @@
 	flex-direction   : column;
 	background-image : linear-gradient(-180deg, #92a8a3 0%, #3d3d3d 100%);
 
-	.switch {
-		border: 1px solid rgba(255, 255, 255, 0.41) !important;
-	}
-
-	.tabs {
-		margin : auto;
-
-		button.mainMenuButton {
-			text-transform   : uppercase;
-			position: relative;
-			outline          : none;
-			cursor           : pointer;
-			color            : $button-color;
-			transition       : background-color .2s ease-out;
-			box-sizing       : border-box;
-			margin-left      : 1px;
-			width            : $button-width;
-			height           : $button-height;
-			background-color : rgba(255, 255, 255, 0.3);
-			border           : $button-border-width solid rgba(255, 255, 255, 0);
-
-			&>.notifications {
-				position         : absolute;
-				top              : -7px;
-				right            : 1px;
-				font-weight      : bold;
-				font-size        : 11px;
-				padding          : 2px;
-				background-color : #e1141e;
-				border-radius    : 25%;
-			}
-
-			&:first-child{
-				border-right-style        : none;
-				border-top-left-radius    : 25px;
-				border-bottom-left-radius : 25px;
-				margin-left               : 0px;
-			}
-
-			&:last-child {
-				border-left-style          : none;
-				border-top-right-radius    : 25px;
-				border-bottom-right-radius : 25px;
-			}
-
-			&:hover {
-				background-color: rgba(255, 255, 255, 0.6);
-			}
-			&.active {
-				background-color: rgba(255, 255, 255, 0.6);
-			}
-		}
-	}
-
 	&.loaded {
 		opacity          : 1;
 	}
 
 	& > .mainMenu {
-		margin      : 10px 10px 30px 10px;
-		height      : 65px;
+		margin      : $mainMenuHeightMargin 10px 30px $mainMenuHeightMargin;
+		height      : $mainMenuHeight;
 		position    : relative;
 		display     : flex;
 		align-items : center;
