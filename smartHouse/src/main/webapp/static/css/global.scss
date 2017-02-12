@@ -7,15 +7,7 @@ flash-message {
 	position: absolute;
 	right: 10px;
 	top: $mainMenuHeightMargin*2 + $mainMenuHeight;
-
-	.alert.ng-leave {
-		opacity: 1;
-		transition: opacity 1.5s ease-out;
-	}
-
-	.alert.ng-leave-active {
-		opacity: 0;
-	}
+	z-index: 2;
 }
 
 .tabs {
