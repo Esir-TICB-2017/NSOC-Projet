@@ -3,6 +3,7 @@ angular.module('nsoc')
 
 	$scope.changeTab = (newTab) => {
 		$scope.actualTab = newTab;
+		$scope.actualTab.notifications = 0;
 	};
 
 	$scope.signOut = function () {
@@ -27,6 +28,9 @@ angular.module('nsoc')
 			method: 'GET',
 			url: '/getFirstData'
 		}).then(function success(res) {
+			if ($scope.actualTab.name !== $scope.tabs[0].name) {
+				$scope.tabs[0].notifications++;
+			}
 			$scope.$broadcast('firstData', res.data);
 		}, function error(err) {
 			console.log(err);
@@ -43,13 +47,38 @@ angular.module('nsoc')
 				$scope.signOut();
 			},
 			function onMessage(evt) {
+				if ($scope.actualTab.name !== $scope.tabs[0].name) {
+					$scope.tabs[0].notifications++;
+				}
 				$scope.$broadcast('data', JSON.parse(evt.data));
 			});
 		}
 	};
 
+	getSettings = function() {
+		$http({
+			method: 'GET',
+			url: '/getSettings'
+		}).then(function success(res) {
+			console.log('settings : ', res);
+		}, function error(err) {
+			console.log(err);
+		});
+	}
+
+	getUserSettings = function() {
+		$http({
+			method: 'GET',
+			url: '/getUserSettings'
+		}).then(function success(res) {
+			console.log('user settings : ', res);
+		}, function error(err) {
+			console.log(err);
+		});
+	}
+
 	initialize = function () {
-		$scope.tabs = ['general', 'settings'];
+		$scope.tabs = [{name: 'general', notifications: 0}, {name: 'settings', notifications: 0}];
 		$scope.actualTab = $scope.tabs[0];
 		$scope.userInfo = {
 			givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
@@ -60,6 +89,8 @@ angular.module('nsoc')
 		$rootScope.indicatorMode = false;
 		initSocket();
 		getFirstData();
+		getSettings();
+		getUserSettings();
 	}
 
 	initialize();

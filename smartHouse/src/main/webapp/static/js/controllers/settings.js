@@ -3,28 +3,9 @@
 */
 
 angular.module('nsoc')
-    .controller('settingsController', ($scope, $http) => {
-    $http({
-        method: 'GET',
-        url: '/getSettings'
-    }).then(function success(res) {
-    console.log(res);
-}, function error(err) {
-    console.log(err);
-});
+.controller('settingsController', ($scope, $http) => {
 });
 
-angular.module('nsoc')
-.controller('userSettingsController', ($scope, $http) => {
-	$http({
-		method: 'GET',
-		url: '/getUserSettings'
-	}).then(function success(res) {
-		console.log(res);
-	}, function error(err) {
-		console.log(err);
-	});
-});
 
 
 /*------A REVOIR-------
