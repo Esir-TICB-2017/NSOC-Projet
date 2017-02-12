@@ -188,7 +188,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					Double maxValue = rs.getDouble("max_value");
 					String itemValue = rs.getString("item_value");
 					String caption = rs.getString("caption");
-					Integer found = findSettingInJson(settings, name);
+						Integer found = findSettingInJson(settings, name);
 					if(found != -1) {
 							JSONObject setting = settings.getJSONObject(found);
 							JSONObject newItemValue = new JSONObject();

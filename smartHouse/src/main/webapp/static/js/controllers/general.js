@@ -1,5 +1,5 @@
 angular.module('nsoc')
-.controller('generalController', ($scope, $rootScope, getDataService, d3ChartService, $http, _, $interval) => {
+.controller('generalController', ($scope, $rootScope, getDataService, d3ChartService, $http, _, $interval, $timeout) => {
 	$rootScope.selectors = [
 		{name: 'Monthly', value: 'month'},
 		{name: 'Weekly', value: 'week'},
@@ -16,25 +16,33 @@ angular.module('nsoc')
 		} else {
 			$scope.mode = 'sensor';
 		}
+		$timeout(function() {
+			if (!$rootScope.loading) {
+				const element = document.querySelectorAll('.general>.mainInfo .round.active');
+				const scope = angular.element(element).scope();
+				if (scope.obj) {
+					$scope.changeGraph(scope.obj);
+				}
+			}
+		}, 0);
 	};
 
 	$scope.changeGraph = function(target) {
+		const oldGraph = angular.copy($rootScope.actualGraph);
 		if (target) {
-			$rootScope.actualGraph = target.name;
+			$rootScope.actualGraph = target;
 		} else if (this.obj) {
-			$rootScope.actualGraph = this.obj.name;
+			$rootScope.actualGraph = this.obj;
 		}
-		drawChart();
+		if (!oldGraph || oldGraph.name !== $rootScope.actualGraph.name || oldGraph.type !== $rootScope.actualGraph.type) {
+			drawChart();
+		}
 	};
 
 	function drawChart() {
-		let actualMode = $scope.mode;
-		if ($rootScope.actualGraph === $rootScope.globalIndicator.name) {
-			actualMode = $rootScope.globalIndicator.type;
-		}
 		const startDate = moment().startOf($rootScope.actualSelector.value).format('X');
 		const endDate = moment().format('X');
-		getDataService.get(startDate, endDate, actualMode, $rootScope.actualGraph, (data) => {
+		getDataService.get(startDate, endDate, $rootScope.actualGraph.type, $rootScope.actualGraph.name, (data) => {
 			d3ChartService.draw(data, 'month', 'homeChart');
 		});
 	}
@@ -115,10 +123,6 @@ angular.module('nsoc')
 		}
 	}
 
-	$scope.$on('data', (event, data) => {
-		displayHouseInfo(data);
-	});
-
 	$scope.displayDate = function (round) {
 		if (round) {
 			round.showDate = true;
@@ -143,32 +147,20 @@ angular.module('nsoc')
 		}, 60000);
 	}
 
-	function getFirstData() {
-		$http({
-			method: 'GET',
-			url: '/getFirstData'
-		}).then(function success(res) {
-			res.data.forEach((obj) => {
-				displayHouseInfo(obj);
-			});
-			$scope.getData($rootScope.selectors[0]);
-			$scope.changeGraph($rootScope.globalIndicator);
-			updateDisplayedDates();
-			$rootScope.loading = false;
-		}, function error(err) {
-			console.log(err);
+	$scope.$on('firstData', (e, data) => {
+		data.forEach((obj) => {
+			displayHouseInfo(obj);
 		});
-	};
+		const defaultParameters = {selector: $rootScope.selectors[0], graph: $rootScope.globalIndicator};
+		$scope.getData(defaultParameters.selector);
+		$scope.changeGraph(defaultParameters.graph);
+		updateDisplayedDates();
+		$rootScope.loading = false;
+	});
 
-	function initialize () {
-		if ($scope.data.length == 0) {
-			getFirstData();
-		}
-		$scope.changeMode();
-		if ($rootScope.globalIndicator) {
-			drawChart();
-		}
-	}
+	$scope.$on('data', (event, data) => {
+		displayHouseInfo(data);
+	});
 
-	initialize();
+	$scope.changeMode();
 });

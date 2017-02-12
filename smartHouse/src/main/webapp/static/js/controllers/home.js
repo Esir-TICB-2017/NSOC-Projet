@@ -1,14 +1,5 @@
 angular.module('nsoc')
 .controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService) => {
-	$scope.tabs = ['general', 'settings'];
-	$scope.actualTab = $scope.tabs[0];
-	$rootScope.loading = true;
-	$scope.userInfo = {
-		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
-		pictureUrl: $cookies.get('pictureUrl'),
-	};
-	$scope.data = [];
-	$rootScope.indicatorMode = false;
 
 	$scope.changeTab = (newTab) => {
 		$scope.actualTab = newTab;
@@ -31,6 +22,17 @@ angular.module('nsoc')
 		});
 	}
 
+	getFirstData = function () {
+		$http({
+			method: 'GET',
+			url: '/getFirstData'
+		}).then(function success(res) {
+			$scope.$broadcast('firstData', res.data);
+		}, function error(err) {
+			console.log(err);
+		});
+	}
+
 	initSocket = function () {
 		const authenticate = $cookies.get('authenticated') === 'true'? true : false;
 		if (authenticate) {
@@ -46,5 +48,20 @@ angular.module('nsoc')
 		}
 	};
 
-	initSocket();
+	initialize = function () {
+		$scope.tabs = ['general', 'settings'];
+		$scope.actualTab = $scope.tabs[0];
+		$scope.userInfo = {
+			givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
+			pictureUrl: $cookies.get('pictureUrl'),
+		};
+		$scope.data = [];
+		$rootScope.loading = true;
+		$rootScope.indicatorMode = false;
+		initSocket();
+		getFirstData();
+	}
+
+	initialize();
+
 });
