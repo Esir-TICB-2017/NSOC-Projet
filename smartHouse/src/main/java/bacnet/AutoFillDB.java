@@ -13,22 +13,22 @@ import java.util.*;
 /**
  * Created by Loulou on 07/02/2017.
  */
+
+/**
+ * This class is just a way to fill database with fake sensors values
+ */
 public class AutoFillDB {
 	public static void main(String[] args) throws Exception {
 		double value = 0;
 		Random r = new Random();
+		// Create fake sensors instance
 		List<Sensor> sensors = new ArrayList();
 		ArrayList<JSONObject> sensorsList = ReadInDatabase.getAllSensors();
-		for(JSONObject sensorAttributes : sensorsList) {
+		for (JSONObject sensorAttributes : sensorsList) {
 			Sensor sensor = new Sensor(sensorAttributes.getString("name"), sensorAttributes.getInt("id"), sensorAttributes.getString("unit"), sensorAttributes.getInt("bacnetId"), sensorAttributes.getBoolean("status"));
 			sensors.add(sensor);
 		}
-		//                 connection();
-		try {
-			// getTemperature();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//Fill database with normal distributed values
 		while (true) {
 			for (Sensor sensor : sensors) {
 				switch (sensor.getType()) {
@@ -68,17 +68,9 @@ public class AutoFillDB {
 					default:
 						break;
 				}
-
-//				Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
-//				indicator.calculateIndicator();
 			}
-//                        try {
-//                            value = getTemperature();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        ts.setNewValue(value);
 			try {
+				//Fill DB every 10 minutes
 				Thread.sleep(1000 * 60 * 10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
