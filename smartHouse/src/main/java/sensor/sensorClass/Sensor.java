@@ -42,7 +42,7 @@ public class Sensor {
 	}
 
 	public void setStatus(Boolean status) {
-		WriteInDatabase.setSensorStatus(getId(), status);
+		WriteInDatabase.setSensorStatus(this, status);
 		//TODO broadcast new value;
 		this.status = status;
 	}

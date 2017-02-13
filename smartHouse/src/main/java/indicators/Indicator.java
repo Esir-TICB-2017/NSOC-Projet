@@ -103,6 +103,7 @@ public class Indicator {
 
 		this.setCurrentValue(indicator);
 		WriteInDatabase.writeIndicatorValue(this, indicator);
+		calculateGlobalIndicator();
 		return indicator;
 	}
 
@@ -118,6 +119,7 @@ public class Indicator {
 			}
 		}
 		globalIndicator = sum / length;
+		WriteInDatabase.writeIndicatorValue(Indicators.getInstance().getIndicatorByString("global"),globalIndicator);
 		return globalIndicator;
 	}
 

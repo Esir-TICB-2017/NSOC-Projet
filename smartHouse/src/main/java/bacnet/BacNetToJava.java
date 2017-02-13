@@ -73,23 +73,22 @@ public class BacNetToJava implements InterfaceReadBacnet {
 						if (value == -1){
 							if(sensor.getStatus()){
 								sensor.setStatus(false);
-								DatabaseEventsHandler.broadcastStatus(sensor);
 							}
 						}
 						else{
 							if(!sensor.getStatus()){
 								sensor.setStatus(true);
-								DatabaseEventsHandler.broadcastStatus(sensor);
 							}
+							sensor.setNewValue(value);
 						}
 
-						sensor.setNewValue(value);
+
 
 						Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
-						System.out.println("indicateur " + indicator.calculateIndicator());
+						indicator.calculateIndicator();
 					}
 					try {
-						Thread.sleep(1000 * 60 * 10);
+						Thread.sleep(1000 * 10);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

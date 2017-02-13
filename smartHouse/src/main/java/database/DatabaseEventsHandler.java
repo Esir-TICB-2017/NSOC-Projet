@@ -21,7 +21,12 @@ public class DatabaseEventsHandler {
 
     public static void broadcastStatus(Sensor sensor) {
         JSONObject data = new JSONObject();
+        DataRecord lastRecord = sensor.getLastRecord();
         data.put("name", sensor.getType());
+        data.put("data", lastRecord.getData());
+        data.put("date", lastRecord.getDate());
+        data.put("type", sensor.getTypeOf());
+        data.put("unit", sensor.getUnit());
         data.put("connected", sensor.getStatus());
         ConnectedClients.getInstance().writeAllMembers(data.toString());
     }
