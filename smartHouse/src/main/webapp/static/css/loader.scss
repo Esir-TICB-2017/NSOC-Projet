@@ -118,22 +118,3 @@
 
 	}
 }
-// .loader {
-// 	$loaderSize   : 40px;
-// 	$loaderBorder : 5px;
-// 	z-index       : 1;
-// 	position      : absolute;
-// 	top           : calc(50% - ((#{$loaderSize} / 2) + #{$loaderBorder}));
-// 	left          : calc(50% - ((#{$loaderSize} / 2) + #{$loaderBorder}));
-// 	border        : $loaderBorder solid #524b4b;
-// 	border-top    : $loaderBorder solid #c6cfc4;
-// 	border-radius : 50%;
-// 	width         : $loaderSize;
-// 	height        : $loaderSize;
-// 	animation     : spin 2s linear infinite;
-// }
-//
-// @keyframes spin {
-// 	0% { transform: rotate(0deg); }
-// 	100% { transform: rotate(360deg); }
-// }

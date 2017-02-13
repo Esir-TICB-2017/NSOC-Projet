@@ -38,8 +38,8 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body ng-app="nsoc" ng-controller="mainController">
+	<flash-message duration="3000" show-close="true"></flash-message>
 	<ng-include ng-if="$root.loading" class='loader-container' src="'static/templates/loader.html'"></ng-include>
-	<!-- <div ng-if="$root.loading" class="loader"></div> -->
 	<div class="view" ng-view></div>
 </body>
 </html>

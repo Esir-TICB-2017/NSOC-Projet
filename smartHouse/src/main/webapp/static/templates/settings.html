@@ -1,6 +1,6 @@
 <div class='settings' ng-controller='settingsController'>
 	<div class='row' ng-repeat='setting in settings'>
-		<div class='text'>{{setting.description}}</div>
+		<div class='text'>{{setting.name}}</div>
 		<div class='value'>
 			<switch ng-if='setting.dataType === "boolean"'></switch>
 		</div>

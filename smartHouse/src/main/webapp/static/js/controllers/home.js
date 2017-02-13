@@ -34,8 +34,12 @@ angular.module('nsoc')
 			Flash.create('success', 'Received new data!');
 			$scope.$broadcast('firstData', res.data);
 		}, function error(err) {
-			Flash.create('danger', 'Can\'t receive any data!');
 			console.log(err);
+			if (err.status === 403) {
+				$cookies.put('authenticate', false);
+				$location.path('/login');
+				Flash.create('danger', 'Access denied');
+			}
 		});
 	}
 
