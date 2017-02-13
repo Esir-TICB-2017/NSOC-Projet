@@ -14,8 +14,7 @@ angular.module('nsoc')
 			}).then(function success(res) {
 				$rootScope.loading = false;
 				console.log('User signed out.');
-				$cookies.put('authenticated', false);
-				$location.path('/login');
+				$cookies.put('authenticate', false);
 			}, function error(err) {
 				console.log(err);
 				console.log('Please try to logout again');
@@ -40,9 +39,8 @@ angular.module('nsoc')
 	}
 
 	initSocket = function () {
-		const authenticate = utils.getBoolean($cookies.get('authenticated'));
-		if (authenticate) {
-			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('idtoken'),
+		if (utils.getBoolean($cookies.get('authenticate'))) {
+			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('token'),
 			function onOpen(websocket) {
 			},
 			function onClose() {

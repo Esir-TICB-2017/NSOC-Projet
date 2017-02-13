@@ -18,4 +18,11 @@ public class DatabaseEventsHandler {
         String str = record.toJsonElement().toString();
         ConnectedClients.getInstance().writeAllMembers(str);
     }
+
+    public static void broadcastStatus(Sensor sensor) {
+        JSONObject data = new JSONObject();
+        data.put("name", sensor.getType());
+        data.put("connected", sensor.getStatus());
+        ConnectedClients.getInstance().writeAllMembers(data.toString());
+    }
 }

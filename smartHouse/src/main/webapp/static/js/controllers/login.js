@@ -1,8 +1,7 @@
 angular.module('nsoc')
-.controller('loginController', function($scope, $rootScope, $http, $location, $cookies, websocketService, Flash) {
-	$cookies.put('authenticated', false);
-		$scope.options = {
-		'onsuccess': function(googleUser) {
+.controller('loginController', function ($scope, $rootScope, $http, $location, $cookies, websocketService) {
+	$scope.options = {
+		'onsuccess': function (googleUser) {
 			$rootScope.loading = true;
 			// Useful data for our client-side scripts:
 			var profile = googleUser.getBasicProfile();
@@ -19,30 +18,29 @@ angular.module('nsoc')
 				},
 				data: "idtoken=" + id_token,
 			}).then(function success(res) {
-				console.log('User signed in');
-				// user is authenticated
-				$cookies.put('authenticated', true);
+				$cookies.put('authenticate', true);
 				// redirect on home
 				$location.path('/home');
 			}, function error(err) {
+				$cookies.put('authenticate', false);
 				$rootScope.loading = false;
 				console.log(err);
-				Flash.create('danger', 'Please try to login again');
+				console.log('Please try to login again');
 			});
 		},
-		'onerror': function(err) {
+		'onerror': function (err) {
 			console.log("error", err);
 		},
 	}
 })
-.directive('googleSignInButton', function() {
+.directive('googleSignInButton', function () {
 	return {
 		scope: {
 			buttonId: '@',
 			options: '&'
 		},
 		template: '<div></div>',
-		link: function(scope, element, attrs) {
+		link: function (scope, element, attrs) {
 			var div = element.find('div')[0];
 			div.id = attrs.buttonId;
 			gapi.signin2.render(div.id, scope.options());

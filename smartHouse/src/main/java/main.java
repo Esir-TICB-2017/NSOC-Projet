@@ -1,3 +1,4 @@
+import bacnet.BacNetToJava;
 import database.ReadInDatabase;
 import indicators.Indicators;
 import org.eclipse.jetty.server.Connector;
@@ -27,7 +28,7 @@ public class main {
 		Indicators.getInstance().initIndicators();
 		JSONArray settings = ReadInDatabase.getSettings();
 
-		//BacNetToJava.getInstance();
+		BacNetToJava.getInstance();
 
 		// Get webapp directory
 		String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
@@ -64,7 +65,6 @@ public class main {
 		context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
 		context.setWelcomeFiles(new String[]{"index.html"});
 		context.setParentLoaderPriority(true);
-		context.addServlet(new ServletHolder(new IsAuthenticatedServlet()), "/isAuthenticated");
 		context.addServlet(new ServletHolder(new LoginServlet()), "/login");
 		context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 		context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/getValuesOverPeriod");

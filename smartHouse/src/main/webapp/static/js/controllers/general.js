@@ -85,8 +85,6 @@ angular.module('nsoc')
 		if (obj.data) {
 			obj.data = Math.round(obj.data * 10) / 10;
 		}
-		obj.unit = transformUnit(obj.unit);
-
 		if (obj.type === 'indicator' && obj.name === 'global') {
 			$rootScope.globalIndicator = obj;
 			getHomeBackgroundGradient(obj.data);
@@ -102,26 +100,6 @@ angular.module('nsoc')
 			}
 		}
 	};
-
-	function transformUnit(unit) {
-		switch(unit) {
-			case 'celsius':
-					return String.fromCharCode(176) + 'C';
-					break;
-			case 'ppm':
-					return 'ppm';
-					break;
-			case 'w/h':
-					return 'w/h';
-					break;
-			case 'perrcentage':
-					return '%';
-					break;
-			default:
-					return '%';
-					break;
-		}
-	}
 
 	$scope.displayDate = function (round) {
 		if (round) {
@@ -148,6 +126,7 @@ angular.module('nsoc')
 	}
 
 	$scope.$on('firstData', (e, data) => {
+		console.log(data);
 		data.forEach((obj) => {
 			displayHouseInfo(obj);
 		});
@@ -159,8 +138,8 @@ angular.module('nsoc')
 	});
 
 	$scope.$on('data', (event, data) => {
+		console.log(data);
 		displayHouseInfo(data);
 	});
-
 	$scope.changeMode();
 });

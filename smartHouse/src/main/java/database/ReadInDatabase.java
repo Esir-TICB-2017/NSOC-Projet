@@ -317,6 +317,31 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
+	public static Boolean checkExistingUser(String email) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT email FROM users WHERE email=?";
+		String result = null;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setString(1, email);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while(rs.next()) {
+					result = rs.getString("email");
+				}
+				rs.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		if(email.equals(result)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public static ArrayList<DataRecord> getIndicatorsOnPeriod(Indicator indicator, Timestamp startDate, Timestamp endDate) {
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<DataRecord> list = new ArrayList(1);

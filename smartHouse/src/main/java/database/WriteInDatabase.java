@@ -6,6 +6,8 @@ import indicators.Indicator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
+import utils.Utils;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -21,7 +23,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 	public static void writeSensorValue(Sensor sensor, Double value) {
 
 		Connection connection = ConnectionManager.getConnection();
-		Timestamp currentDate = getCurrentTimeStamp();
+		Timestamp currentDate = Utils.getCurrentTimeStamp();
 		String sql = "INSERT INTO sensors_data "
 				+ "(sensor_value, submission_date, sensor_type_id) VALUES"
 				+ "(?, ?, ?)";
@@ -42,7 +44,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	public static void writeIndicatorValue(Indicator indicator, Double value) {
 		Connection connection = ConnectionManager.getConnection();
-		Timestamp currentDate = getCurrentTimeStamp();
+		Timestamp currentDate = Utils.getCurrentTimeStamp();
 		String sql = "INSERT INTO indicators "
 				+ "(indicator_value, submission_date, indicator_type_id) VALUES"
 				+ "(?, ?, ?)";
