@@ -188,8 +188,18 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		long endTime = System.currentTimeMillis();
 	}
 
-	public static void setDefaultSettings(Integer userId) {
-
+	public static void writeNewToken(String email, String token) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "UPDATE users SET current_token = ? WHERE email = ?";
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, token);
+			preparedStatement.setString(2, email);
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void writeUserSettings(String userId, JSONObject settings) {

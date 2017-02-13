@@ -26,7 +26,7 @@ public class SessionManager {
 		try {
 			parseJWT(token);
 		} catch (JwtException e) {
-			e.printStackTrace();
+			System.out.println("erreur liée à la vérification du JWT : " + e.getMessage());
 			return false;
 		}
 		return true;
