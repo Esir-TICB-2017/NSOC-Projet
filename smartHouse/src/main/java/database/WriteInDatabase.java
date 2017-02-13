@@ -248,4 +248,18 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			e.printStackTrace();
 		}
 	}
+
+	public static void addUser(JSONObject user) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "INSERT INTO users (email, role) VALUES (?, ?)";
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, user.getString("email"));
+			preparedStatement.setString(2, user.getString("role"));
+			preparedStatement.executeQuery();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
