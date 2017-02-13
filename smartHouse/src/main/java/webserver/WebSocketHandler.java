@@ -47,11 +47,11 @@ public class WebSocketHandler {
 		this.session = session;
 		String idTokenString = session.getUpgradeRequest().getQueryString();
 		IdToken idToken = SessionManager.getGoogleIdToken(idTokenString);
-		if(idToken != null) {
+		if (idToken != null) {
 			this.userId = idToken.getPayload().getSubject();
 			String email = (String) idToken.getPayload().get("email");
 			//String currentToken = ReadInDatabase.getCurrentToken(userId);
-			if(ReadInDatabase.checkExistingUser(email)) {
+			if (ReadInDatabase.checkExistingUser(email)) {
 				ConnectedClients.getInstance().join(this);
 			} else {
 				disconnect(session);
@@ -71,15 +71,25 @@ public class WebSocketHandler {
 		System.out.println("Error: " + t.getMessage());
 	}
 
-    @OnWebSocketMessage
-    public void onText(String message) {
-		System.out.println(message);
+	@OnWebSocketMessage
+	public void onText(String message) {
+
+		/*receiving a string like:
+		{
+		 key:
+		 setting_id:
+		 value:
+		}
+		*/
+
+	//	System.out.println(message);
 		JSONObject result = new JSONObject(message);
-		/*String key = result.get("key").toString();
 
-        if(key != null && key.equals("settings")) {
-            WriteInDatabase.writeUserSettings(this.userId, result);
-        }*/
-
-    }
+		if (result.has("key")) {
+			String key = result.get("key").toString();
+			if (key != null && key.equals("settings")) {
+				WriteInDatabase.writeUserSetting(this.userId, result);
+			}
+		}
+	}
 }
