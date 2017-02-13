@@ -4,11 +4,13 @@
 
 angular.module('nsoc')
 .controller('settingsController', ($scope, $http) => {
+	console.log($scope.settings);
+	console.log($scope.userSettings);
 });
 
 
 
-/*------A REVOIR-------
+/*
 angular.module('nsoc')
     .controller('userPostSettingsController', ($scope, $http) => {
     $http({
