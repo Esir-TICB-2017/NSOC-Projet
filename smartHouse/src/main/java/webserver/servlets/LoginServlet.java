@@ -22,6 +22,7 @@ public class LoginServlet extends HttpServlet {
 		if (idToken != null) {
 			String userId = idToken.getPayload().getSubject();
 			String email = (String) idToken.getPayload().get("email");
+			System.out.println(ReadInDatabase.checkExistingUser(email));
 			if (ReadInDatabase.checkExistingUser(email)) {
 				String token = SessionManager.createJWT("http://smarthouseapp.com", userId, 5 * 60 * 1000);
 				WriteInDatabase.writeNewToken(email, token);

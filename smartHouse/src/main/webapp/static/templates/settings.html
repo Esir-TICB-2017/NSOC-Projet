@@ -3,22 +3,8 @@
 		<div class='text'>{{setting.name}}</div>
 		<div class='value'>
 			<switch ng-model="setting.defaultValue" ng-if='setting.dataType === "boolean"'></switch>
-			<select ng-options="setting.defaultValue" ng-if='setting.dataType === "varchar"'></select>
+			<select ng-model="setting.defaultValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="changeValue()">{{setting.defaultValue.caption}}</select>
+			<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.defaultValue" ng-if='setting.dataType === "double"' ng-change="changeValue()"></input>
 		</div>
 	</div>
-	<!--
-	<div class='row'>
-		<div class='tabs'>
-			<button ng-repeat='selector in $root.selectors' ng-class="{active: $root.actualSelector.name == selector.name}"	class="mainMenuButton">
-				{{selector.name}}
-			</button>
-		</div>
-	</div>
-	<div class='row'>
-		<div class='text'>Enable helpers : </div>
-		<switch ng-model="helpers"></switch>
-	</div>
-	<div class='settings' ng-controller='userSettingsController'>
-	</div>
--->
 </div>

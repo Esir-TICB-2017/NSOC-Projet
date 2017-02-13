@@ -3,24 +3,17 @@
 */
 
 angular.module('nsoc')
-.controller('settingsController', ($scope, $http) => {
+.controller('settingsController', ($scope, $http, _) => {
+	$scope.settings.forEach((setting) => {
+		const index = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === setting.defaultValue);
+		if (index !== -1) {
+			setting.defaultValue = setting.allowedValues[index];
+		}
+	});
 	console.log($scope.settings);
+	
 	console.log($scope.userSettings);
-});
 
-
-
-/*
-angular.module('nsoc')
-    .controller('userPostSettingsController', ($scope, $http) => {
-    $http({
-        method: 'POST',
-        url: '/postSettings',
-        data: "{“users_settings”: [{“setting_id”: 172,“value”: “thisisit”}, {“setting_id”: 174,“value”: “thisisit2”} ]}"
-}).then(function success(res) {
-    console.log(res);
-}, function error(err) {
-    console.log(err);
+	$scope.changeValue = function() {
+	}
 });
-});
-*/
