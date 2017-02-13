@@ -52,8 +52,8 @@ angular.module('nsoc')
 				if ($scope.actualTab.name !== $scope.tabs[0].name) {
 					$scope.tabs[0].notifications++;
 				}
-				const message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data + data.unit;
-				Flash.create('success', message);
+				const message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data;
+				// Flash.create('success', message);
 				$scope.$broadcast('data', data);
 			});
 		}
