@@ -56,7 +56,7 @@ public class Indicator {
 		}
 	}
 	public DataRecord getLastRecord() {
-		DataRecord record = ReadInDatabase.getLastIndicator(getId());
+		DataRecord record = ReadInDatabase.getLastIndicator(this);
 		record.setType("indicator");
 		record.setName(this.getType());
 		return record;
@@ -67,7 +67,7 @@ public class Indicator {
 	}
 
 	public ArrayList<DataRecord> getRecordsOnPeriod(Timestamp startDate, Timestamp endDate) {
-		return ReadInDatabase.getIndicatorsOnPeriod(getId(), startDate, endDate);
+		return ReadInDatabase.getIndicatorsOnPeriod(this, startDate, endDate);
 	}
 
 	public void setCurrentValue(Double currentValue) {

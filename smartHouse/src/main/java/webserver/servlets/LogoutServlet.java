@@ -1,6 +1,7 @@
-package webserver;
+package webserver.servlets;
 
 import database.WriteInDatabase;
+import webserver.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;

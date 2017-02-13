@@ -5,15 +5,17 @@
 			<div class='name'>Hi {{userInfo.givenName}}!</div>
 		</div>
 		<div class='tabs'>
-			<button ng-repeat='tab in tabs' ng-class="{active: actualTab == tab}" ng-click="changeTab(tab)"	class="mainMenuButton">
-				{{tab}}
-			</button>
+				<button  ng-repeat='tab in tabs' ng-class="{active: actualTab.name == tab.name}" ng-click="changeTab(tab)"	class="mainMenuButton">
+					{{tab.name}}
+					<div ng-if='tab.notifications !== 0' class='notifications'>{{tab.notifications}}</div>
+				</button>
 		</div>
 		<button class="signOut" ng-click="signOut()">
 			Sign out
 		</button>
 	</div>
+	<flash-message duration="3000" show-close="true"></flash-message>
 	<div class="body">
-		<ng-include src="'static/templates/'+actualTab+'.html'"></ng-include>
+		<ng-include src="'static/templates/'+actualTab.name+'.html'"></ng-include>
 	</div>
 </div>

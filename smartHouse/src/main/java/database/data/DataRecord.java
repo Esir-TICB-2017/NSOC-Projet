@@ -10,18 +10,20 @@ import java.sql.Timestamp;
 /**
  * Created by clement on 25/01/2017.
  */
+
+/**
+ * This class is used to represent a specific data row returned from database.
+ * The format of the data is [value][date][type][name]
+ */
 public class DataRecord {
 	private Double data;
 	private Timestamp date;
-	private String type;
-	private String name;
-	// TODO : REFACTOR
-	public DataRecord(Double data, Timestamp date) {
+	private String type; // indicator or sensor
+	private String name; //e.g : co2, humidity, etc
+
+	public DataRecord(Double data, Timestamp date, String type, String name) {
 		this.data = data;
 		this.date = date;
-	}
-	public DataRecord(Double data, Timestamp date, String type, String name) {
-		this(data, date);
 		this.type = type;
 		this.name = name;
 	}
@@ -58,6 +60,11 @@ public class DataRecord {
 		return name;
 	}
 
+	/**
+	 * this method is used to get a data record as a jsonObject, in order to send
+	 * it to client
+	 * @return jsonObject : {data: data, date: date, type: type, name: name}
+	 */
 	public JsonElement toJsonElement() {
 		JsonObject jsonElement = new JsonObject();
 		jsonElement.addProperty("data", this.data);

@@ -2,9 +2,10 @@
 
 &>.login {
 	margin: auto;
+	display: block;
 
 	&.loading {
-		opacity: 0.2;
+		display: none;
 	}
 
 	&>.welcome {

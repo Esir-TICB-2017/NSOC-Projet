@@ -1,13 +1,16 @@
 // main: style.scss
-$background-color : #f9f9f9;
+$background-color : white;
 $green            : #00796b;
 $green-shadow     : rgba(0, 121, 107, 0.3);
 $font-family      : CenturyGothic;
 $grey: #383838;
-
 
 //Buttons
 $button-border-width : 1px;
 $button-width : 120px;
 $button-height : 35px;
 $button-color : white;
+
+//mainMenu
+$mainMenuHeight: 65px;
+$mainMenuHeightMargin: 10px;

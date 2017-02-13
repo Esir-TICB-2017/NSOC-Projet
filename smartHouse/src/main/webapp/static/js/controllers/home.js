@@ -1,21 +1,13 @@
 angular.module('nsoc')
-.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService) => {
-	$scope.tabs = ['general', 'settings'];
-	$scope.actualTab = $scope.tabs[0];
-	$rootScope.loading = true;
-	$scope.userInfo = {
-		givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
-		pictureUrl: $cookies.get('pictureUrl'),
-	};
-	$scope.data = [];
-	$rootScope.indicatorMode = false;
+.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService, utils, Flash) => {
 
-	$scope.changeTab = (newTab) => {
+	$scope.changeTab = function(newTab) {
 		$scope.actualTab = newTab;
+		$scope.actualTab.notifications = 0;
 	};
 
 	$scope.signOut = function () {
-		$scope.GoogleAuth.signOut().then(() => {
+		$scope.GoogleAuth.signOut().then(function() {
 			$http({
 				method: 'GET',
 				url: '/logout'
@@ -31,8 +23,25 @@ angular.module('nsoc')
 		});
 	}
 
+	getFirstData = function () {
+		$http({
+			method: 'GET',
+			url: '/getFirstData'
+		}).then(function success(res) {
+			if ($scope.actualTab.name !== $scope.tabs[0].name) {
+				$scope.tabs[0].notifications++;
+			}
+			Flash.create('success', 'Received new data!');
+			$scope.$broadcast('firstData', res.data);
+		}, function error(err) {
+			Flash.create('danger', 'Can\'t receive any data!');
+			console.log(err);
+		});
+	}
+
 	initSocket = function () {
-		if ($cookies.get('authenticated')) {
+		const authenticate = utils.getBoolean($cookies.get('authenticated'));
+		if (authenticate) {
 			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('idtoken'),
 			function onOpen(websocket) {
 			},
@@ -40,11 +49,55 @@ angular.module('nsoc')
 				$scope.signOut();
 			},
 			function onMessage(evt) {
-				$scope.$broadcast('data', JSON.parse(evt.data));
+				const data = JSON.parse(evt.data);
+				if ($scope.actualTab.name !== $scope.tabs[0].name) {
+					$scope.tabs[0].notifications++;
+				}
+				const message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data + data.unit;
+				Flash.create('success', message);
+				$scope.$broadcast('data', data);
 			});
 		}
-		// Rediriger vers login si on reçoit un forbidden (refresh de la page mais plus authentifié, le serveur renvoie 403)
 	};
 
-	initSocket();
+	getSettings = function() {
+		$http({
+			method: 'GET',
+			url: '/getSettings'
+		}).then(function success(res) {
+			$scope.settings = res.data;
+		}, function error(err) {
+			console.log(err);
+		});
+	}
+
+	getUserSettings = function() {
+		$http({
+			method: 'GET',
+			url: '/getUserSettings'
+		}).then(function success(res) {
+			$scope.userSettings = res.data;
+		}, function error(err) {
+			console.log(err);
+		});
+	}
+
+	initialize = function () {
+		$scope.tabs = [{name: 'general', notifications: 0}, {name: 'settings', notifications: 0}];
+		$scope.actualTab = $scope.tabs[0];
+		$scope.userInfo = {
+			givenName: $cookies.get('givenName').charAt(0).toUpperCase() + $cookies.get('givenName').slice(1),
+			pictureUrl: $cookies.get('pictureUrl'),
+		};
+		$scope.data = [];
+		$rootScope.loading = true;
+		$rootScope.indicatorMode = false;
+		initSocket();
+		getFirstData();
+		getSettings();
+		getUserSettings();
+	}
+
+	initialize();
+
 });
