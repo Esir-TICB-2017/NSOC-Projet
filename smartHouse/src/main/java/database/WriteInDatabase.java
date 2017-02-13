@@ -206,30 +206,29 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		}
 	}
 
-	public static void writeUserSettings(String userId, JSONObject settings) {
+	public static void writeUserSetting(String userId, JSONObject settings) {
 
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "IF EXISTS (SELECT * FROM user_settings WHERE userid=? AND setting_id=?) " +
-				"UPDATE users_settings SET(value=?) WHERE userid=? " +
-				"ELSE " +
-				"INSERT INTO users_settings(userid, setting_id, value) VALUES(?, ?, ?) ";
+		String sql = "INSERT INTO users_settings(userid, setting_id, value) " +
+				"VALUES(?, ?, ?) " +
+				"ON DUPLICATE KEY UPDATE userid = VALUES(userid), setting_id = VALUES(setting_id), value = VALUES(value)";
 
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-			int setting_id = (int) settings.get("id");
+			int setting_id = (int) settings.get("setting_id");
 			String value = settings.get("value").toString();
 
 			preparedStatement.setString(1, userId);
 			preparedStatement.setInt(2, setting_id);
 			preparedStatement.setString(3, value);
-			preparedStatement.setString(4, userId);
+		/*	preparedStatement.setString(4, userId);
 			preparedStatement.setString(5, userId);
 			preparedStatement.setInt(6, setting_id);
 			preparedStatement.setString(7, value);
-
+*/
 			//query execution
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();

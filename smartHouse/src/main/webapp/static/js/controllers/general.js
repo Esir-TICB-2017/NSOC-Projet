@@ -85,16 +85,28 @@ angular.module('nsoc')
 		if (obj.data) {
 			obj.data = Math.round(obj.data * 10) / 10;
 		}
+		if (!obj.unit) {
+			obj.unit='%';
+		}
 		if (obj.type === 'indicator' && obj.name === 'global') {
 			$rootScope.globalIndicator = obj;
 			getHomeBackgroundGradient(obj.data);
 			getHouseHealth(obj.data);
 		} else {
-			const index = _.findIndex($scope.data, (object) => {
-				object.name === obj.name && object.type === obj.type;
+			let index = -1;
+			$scope.data.some((object, i) => {
+				if (object.name == obj.name && object.type == obj.type) {
+					index = i;
+					return true;
+				}
 			});
 			if (index !== -1) {
-				$scope.data[index] = obj;
+				$scope.data[index].date = obj.date;
+				$scope.data[index].data = obj.data;
+				$scope.data[index].lastUpdate = obj.lastUpdate;
+				if (obj.connected !== undefined) {
+					$scope.data[index].connected = obj.connected;
+				}
 			} else {
 				$scope.data.push(obj);
 			}
@@ -126,7 +138,6 @@ angular.module('nsoc')
 	}
 
 	$scope.$on('firstData', (e, data) => {
-		console.log(data);
 		data.forEach((obj) => {
 			displayHouseInfo(obj);
 		});
@@ -138,7 +149,6 @@ angular.module('nsoc')
 	});
 
 	$scope.$on('data', (event, data) => {
-		console.log(data);
 		displayHouseInfo(data);
 	});
 	$scope.changeMode();
