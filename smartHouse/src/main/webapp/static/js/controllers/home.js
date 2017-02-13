@@ -53,7 +53,7 @@ angular.module('nsoc')
 					$scope.tabs[0].notifications++;
 				}
 				const message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data;
-				Flash.create('success', message);
+				// Flash.create('success', message);
 				$scope.$broadcast('data', data);
 			});
 		}
