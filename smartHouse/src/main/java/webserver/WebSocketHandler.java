@@ -49,15 +49,15 @@ public class WebSocketHandler {
 		String idTokenString = session.getUpgradeRequest().getQueryString();
 		IdToken idToken = SessionManager.getGoogleIdToken(idTokenString);
 		if (idToken != null) {
-			this.userId = idToken.getPayload().getSubject();
 			String email = (String) idToken.getPayload().get("email");
-			this.role = ReadInDatabase.getUserRole(email);
 			String currentToken = ReadInDatabase.getCurrentToken(email);
 			if (currentToken != null) {
 				Timestamp sessionExpiration = SessionManager.getExpirationTime(currentToken);
 				Timestamp currentDate = Utils.getCurrentTimeStamp();
 				long remainingTime = sessionExpiration.getTime() - currentDate.getTime();
 				if (remainingTime > 0) {
+					this.userId = idToken.getPayload().getSubject();
+					this.role = ReadInDatabase.getUserRole(email);
 					session.setIdleTimeout(remainingTime);
 					ConnectedClients.getInstance().join(this);
 				}
