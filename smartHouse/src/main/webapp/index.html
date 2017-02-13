@@ -38,7 +38,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body ng-app="nsoc" ng-controller="mainController">
-	<ng-include  class='loader-container' src="'static/templates/loader.html'"></ng-include>
+	<ng-include ng-if="$root.loading" class='loader-container' src="'static/templates/loader.html'"></ng-include>
 	<!-- <div ng-if="$root.loading" class="loader"></div> -->
 	<div class="view" ng-view></div>
 </body>
