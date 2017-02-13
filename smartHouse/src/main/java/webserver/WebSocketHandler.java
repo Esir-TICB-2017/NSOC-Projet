@@ -14,6 +14,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import database.ReadInDatabase;
+import database.WriteInDatabase;
 import database.data.DataRecord;
 import indicators.Indicator;
 import indicators.Indicators;
@@ -23,6 +24,8 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import utils.Constants;
 
 import static database.Database.getCurrentTimeStamp;
@@ -102,5 +105,43 @@ public class WebSocketHandler {
 
     @OnWebSocketMessage
     public void onText(String message) {
+        this.session = session;
+        String tokenId = session.getUpgradeRequest().getQueryString();
+        if (tokenId != null) {
+            try {
+                HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+                JsonFactory jsonFactory = new JacksonFactory();
+                GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                        .setAudience(Collections.singletonList(Constants.CLIENT_ID))
+                        .build();
+
+                GoogleIdToken idToken = null;
+                try {
+                    idToken = verifier.verify(tokenId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (idToken != null) {
+                    IdToken.Payload payload = idToken.getPayload();
+                    String userId = payload.getSubject();
+
+                    JSONObject result = new JSONObject(message);
+
+                    if(result.get("key").equals("settings")) {
+                        WriteInDatabase.writeUserSettings(userId, result);
+                    }
+
+                } else {
+                    disconnect(session);
+                }
+
+            } catch (Exception e) {
+                disconnect(session);
+                e.printStackTrace();
+            }
+        } else {
+            disconnect(session);
+        }
     }
 }
