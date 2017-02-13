@@ -15,12 +15,10 @@ public class RequestFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 
 	}
-
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		chain.doFilter(request, response);
 		String path = request.getRequestURI().substring(request.getContextPath().length());
 		Boolean isStatic = path.startsWith("/static");
 		Boolean isLoginServlet = request.getRequestURI().equals("/login");
@@ -31,7 +29,6 @@ public class RequestFilter implements Filter {
 			return;
 		} else {
 			Cookie[] cookies = request.getCookies();
-			String authorizationHeader = request.getHeader("sfdsf");
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("Set-Cookie")) {
 					String token = cookie.getValue();
