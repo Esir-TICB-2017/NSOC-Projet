@@ -102,6 +102,7 @@ public class WebSocketHandler {
 					WriteInDatabase.writeUserSetting(this.userId, result);
 					break;
 				case "userRole" :
+					System.out.println("ici");
 					WriteInDatabase.writeNewRole(result);
 					break;
 				case "deleteUser" :
