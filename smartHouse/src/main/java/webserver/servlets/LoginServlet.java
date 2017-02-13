@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
 				WriteInDatabase.writeNewToken(email, token);
 				Cookie cookie = new Cookie("Set-Cookie", token);
 				cookie.setPath(";Path=/;HttpOnly;");
-			//	response.addCookie(cookie);
+				response.addCookie(cookie);
 				response.setStatus(HttpServletResponse.SC_OK);
 			}
 		} else {

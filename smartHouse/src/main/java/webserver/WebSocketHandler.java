@@ -75,7 +75,6 @@ public class WebSocketHandler {
     public void onText(String message) {
 
 	    String userId = null;
-		System.out.println(this.userId);
 
 	    JSONObject result = new JSONObject(message);
 
