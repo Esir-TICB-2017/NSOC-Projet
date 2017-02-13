@@ -73,7 +73,16 @@ public class WebSocketHandler {
 
 	@OnWebSocketMessage
 	public void onText(String message) {
-		System.out.println(message);
+
+		/*receiving a string like:
+		{
+		 key:
+		 setting_id:
+		 value:
+		}
+		*/
+
+	//	System.out.println(message);
 		JSONObject result = new JSONObject(message);
 
 		if (result.has("key")) {

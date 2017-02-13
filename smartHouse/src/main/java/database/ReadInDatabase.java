@@ -235,7 +235,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					int setting_id = rs.getInt("setting_id");
 					String value = rs.getString("value");
 					JSONObject userSetting = new JSONObject();
-					userSetting.put("id", setting_id);
+					userSetting.put("setting_id", setting_id);
 					userSetting.put("value", value);
 					userSettings.put(userSetting);
 				}

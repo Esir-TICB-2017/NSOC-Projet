@@ -213,7 +213,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-			int setting_id = (int) settings.get("id");
+			int setting_id = (int) settings.get("setting_id");
 			String value = settings.get("value").toString();
 
 			preparedStatement.setString(1, userId);
