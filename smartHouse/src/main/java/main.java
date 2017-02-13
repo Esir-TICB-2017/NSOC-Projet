@@ -65,7 +65,6 @@ public class main {
 		context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
 		context.setWelcomeFiles(new String[]{"index.html"});
 		context.setParentLoaderPriority(true);
-		context.addServlet(new ServletHolder(new IsAuthenticatedServlet()), "/isAuthenticated");
 		context.addServlet(new ServletHolder(new LoginServlet()), "/login");
 		context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
 		context.addServlet(new ServletHolder(new GetValuesOnPeriodServlet()), "/getValuesOverPeriod");

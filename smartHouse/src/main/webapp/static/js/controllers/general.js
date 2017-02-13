@@ -86,11 +86,6 @@ angular.module('nsoc')
 			obj.data = Math.round(obj.data * 10) / 10;
 		}
 		if (obj.type === 'indicator' && obj.name === 'global') {
-			$interval(() => {
-				$rootScope.globalIndicator.data = Math.floor((Math.random() * 100) + 1);
-				getHomeBackgroundGradient(obj.data);
-				getHouseHealth(obj.data);
-			}, 5000);
 			$rootScope.globalIndicator = obj;
 			getHomeBackgroundGradient(obj.data);
 			getHouseHealth(obj.data);
@@ -131,6 +126,7 @@ angular.module('nsoc')
 	}
 
 	$scope.$on('firstData', (e, data) => {
+		console.log(data);
 		data.forEach((obj) => {
 			displayHouseInfo(obj);
 		});
@@ -144,6 +140,5 @@ angular.module('nsoc')
 	$scope.$on('data', (event, data) => {
 		displayHouseInfo(data);
 	});
-
 	$scope.changeMode();
 });
