@@ -85,9 +85,12 @@ angular.module('nsoc')
 		if (obj.data) {
 			obj.data = Math.round(obj.data * 10) / 10;
 		}
-		obj.unit = transformUnit(obj.unit);
-
 		if (obj.type === 'indicator' && obj.name === 'global') {
+			$interval(() => {
+				$rootScope.globalIndicator.data = Math.floor((Math.random() * 100) + 1);
+				getHomeBackgroundGradient(obj.data);
+				getHouseHealth(obj.data);
+			}, 5000);
 			$rootScope.globalIndicator = obj;
 			getHomeBackgroundGradient(obj.data);
 			getHouseHealth(obj.data);
@@ -102,26 +105,6 @@ angular.module('nsoc')
 			}
 		}
 	};
-
-	function transformUnit(unit) {
-		switch(unit) {
-			case 'celsius':
-					return String.fromCharCode(176) + 'C';
-					break;
-			case 'ppm':
-					return 'ppm';
-					break;
-			case 'w/h':
-					return 'w/h';
-					break;
-			case 'perrcentage':
-					return '%';
-					break;
-			default:
-					return '%';
-					break;
-		}
-	}
 
 	$scope.displayDate = function (round) {
 		if (round) {
