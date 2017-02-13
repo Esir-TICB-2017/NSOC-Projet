@@ -85,6 +85,9 @@ angular.module('nsoc')
 		if (obj.data) {
 			obj.data = Math.round(obj.data * 10) / 10;
 		}
+		if (!obj.unit) {
+			obj.unit='%';
+		}
 		if (obj.type === 'indicator' && obj.name === 'global') {
 			$rootScope.globalIndicator = obj;
 			getHomeBackgroundGradient(obj.data);
