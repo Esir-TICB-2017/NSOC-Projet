@@ -27,7 +27,7 @@ angular.module('nsoc')
 });
 
 
-/*------A REVOIR-------
+/*
 angular.module('nsoc')
     .controller('userPostSettingsController', ($scope, $http) => {
     $http({
