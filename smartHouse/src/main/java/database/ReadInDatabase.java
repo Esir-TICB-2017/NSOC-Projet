@@ -435,4 +435,25 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return list;
 	}
+
+	public static String getUserRole(String email) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT role FROM users WHERE email=?";
+		String result = null;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setString(1, email);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while(rs.next()) {
+					result = rs.getString("role");
+				}
+				rs.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return result;
+	}
 }

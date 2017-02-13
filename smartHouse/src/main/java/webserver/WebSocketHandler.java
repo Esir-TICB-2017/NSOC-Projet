@@ -27,6 +27,7 @@ public class WebSocketHandler {
 	private final static HashMap<String, WebSocketHandler> sockets = new HashMap();
 	public Session session;
 	private String userId;
+	private String role;
 	private String myUniqueId;
 
 	private String getMyUniqueId() {
@@ -50,11 +51,10 @@ public class WebSocketHandler {
 		if (idToken != null) {
 			this.userId = idToken.getPayload().getSubject();
 			String email = (String) idToken.getPayload().get("email");
+			this.role = ReadInDatabase.getUserRole(email);
 			String currentToken = ReadInDatabase.getCurrentToken(email);
 			if (currentToken != null) {
 				Timestamp sessionExpiration = SessionManager.getExpirationTime(currentToken);
-				// TODO
-				// Create method to get user's role and put it in socket session
 				Timestamp currentDate = Utils.getCurrentTimeStamp();
 				long remainingTime = sessionExpiration.getTime() - currentDate.getTime();
 				if (remainingTime > 0) {
@@ -93,7 +93,6 @@ public class WebSocketHandler {
 		}
 		*/
 
-	//	System.out.println(message);
 		JSONObject result = new JSONObject(message);
 
 		if (result.has("key")) {
