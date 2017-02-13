@@ -107,6 +107,8 @@ public class WebSocketHandler {
 				case "deleteUser" :
 					WriteInDatabase.deleteUser(result);
 					break;
+				case "addUser" :
+					WriteInDatabase.addUser(result);
 				default:
 					break;
 			}
