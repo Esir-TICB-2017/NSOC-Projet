@@ -49,6 +49,7 @@ angular.module('nsoc')
 			},
 			function onMessage(evt) {
 				const data = JSON.parse(evt.data);
+				console.log(evt);
 				if ($scope.actualTab.name !== $scope.tabs[0].name) {
 					$scope.tabs[0].notifications++;
 				}

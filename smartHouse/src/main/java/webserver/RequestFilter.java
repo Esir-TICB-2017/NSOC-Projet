@@ -21,7 +21,7 @@ public class RequestFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		chain.doFilter(request, response);
-		/*String path = request.getRequestURI().substring(request.getContextPath().length());
+		String path = request.getRequestURI().substring(request.getContextPath().length());
 		Boolean isStatic = path.startsWith("/static");
 		Boolean isLoginServlet = request.getRequestURI().equals("/login");
 		Boolean isLogoutServlet = request.getRequestURI().equals("/logout");
@@ -46,7 +46,7 @@ public class RequestFilter implements Filter {
 					}
 				}
 			}
-		}*/
+		}
 	}
 
 	@Override
