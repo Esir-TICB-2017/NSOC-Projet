@@ -8,6 +8,17 @@ angular.module('nsoc')
 		);
 		$scope.GoogleAuth  = gapi.auth2.getAuthInstance();
 	});
+/*
+    $httpProvider.interceptors.push(function($q, $cookies) {
+        return {
+            'request': function(config) {
+                config.headers['Authorization'] = 'Bearer ' + $cookies.get('token');
+                return config;
+            }
+        };
+    });
+    */
+    /*
 	$rootScope.$on('$routeChangeStart', function (e) {
 		const authenticate = utils.getBoolean($cookies.get('authenticated'));
 		if($location.path() === '/home' && !authenticate){
@@ -19,4 +30,5 @@ angular.module('nsoc')
 			console.log('Already logged in');
 		}
 	});
+	*/
 });

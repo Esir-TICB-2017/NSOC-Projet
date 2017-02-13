@@ -320,6 +320,31 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
+	public static Boolean checkExistingUser(String userId) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT userid FROM users WHERE userid=?";
+		String result = null;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setString(1, userId);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while(rs.next()) {
+					result = rs.getString("userid");
+				}
+				rs.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		if(userId.equals(result)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public static ArrayList<DataRecord> getIndicatorsOnPeriod(Indicator indicator, Timestamp startDate, Timestamp endDate) {
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<DataRecord> list = new ArrayList(1);

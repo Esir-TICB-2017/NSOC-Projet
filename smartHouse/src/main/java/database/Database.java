@@ -10,11 +10,6 @@ import java.util.*;
  */
 public class Database {
 
-    public static java.sql.Timestamp getCurrentTimeStamp() {
-        java.util.Date today = new java.util.Date();
-        return new java.sql.Timestamp(today.getTime());
-    }
-
     protected static ArrayList<HashMap> formatData(ResultSet rs, int rows) throws SQLException {
         ArrayList list = new ArrayList(rows);
         ResultSetMetaData md = rs.getMetaData();

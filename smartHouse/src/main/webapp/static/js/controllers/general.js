@@ -161,6 +161,5 @@ angular.module('nsoc')
 	$scope.$on('data', (event, data) => {
 		displayHouseInfo(data);
 	});
-
 	$scope.changeMode();
 });
