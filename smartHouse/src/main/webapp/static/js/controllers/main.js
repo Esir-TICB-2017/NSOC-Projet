@@ -20,11 +20,10 @@ angular.module('nsoc')
     */
 
 	$rootScope.$on('$routeChangeStart', function (e) {
-		const authenticate = $cookies.get('token');
+		const authenticate = utils.getBoolean($cookies.get('authenticate'));
 		if($location.path() === '/home' && !authenticate){
-			// e.preventDefault();
-			// console.log('Please login first');
-			// $location.path('/login');
+			e.preventDefault();
+			console.log('Please login first');
 		} else if ($location.path() === '/login' && authenticate) {
 			e.preventDefault();
 			console.log('Already logged in');
