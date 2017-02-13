@@ -50,9 +50,20 @@ public class WebSocketHandler {
 		if (idToken != null) {
 			this.userId = idToken.getPayload().getSubject();
 			String email = (String) idToken.getPayload().get("email");
-			//String currentToken = ReadInDatabase.getCurrentToken(userId);
-			if (ReadInDatabase.checkExistingUser(email)) {
-				ConnectedClients.getInstance().join(this);
+			String currentToken = ReadInDatabase.getCurrentToken(email);
+			if (currentToken != null) {
+				Timestamp sessionExpiration = SessionManager.getExpirationTime(currentToken);
+				// TODO
+				// Create method to get user's role and put it in socket session
+				Timestamp currentDate = Utils.getCurrentTimeStamp();
+				long remainingTime = sessionExpiration.getTime() - currentDate.getTime();
+				if (remainingTime > 0) {
+					session.setIdleTimeout(remainingTime);
+					ConnectedClients.getInstance().join(this);
+				}
+				else {
+					disconnect(session);
+				}
 			} else {
 				disconnect(session);
 			}

@@ -47,6 +47,7 @@ angular.module('nsoc')
 		});
 	}
 
+
 	function getHomeBackgroundGradient(value) {
 		let fromValue = value - 10;
 		let toValue = value + 10;

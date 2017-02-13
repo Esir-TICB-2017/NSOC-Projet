@@ -342,15 +342,15 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 	}
 
-	/*public static Boolean getCurrentToken(String userId) {
+	public static String getCurrentToken(String email) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT current_token FROM users WHERE userId=?";
+		String sql = "SELECT current_token FROM users WHERE email=?";
 		String result = null;
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, email);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while(rs.next()) {
-					result = rs.getString("email");
+					result = rs.getString("current_token");
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -360,12 +360,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		if(email.equals(result)) {
-			return true;
-		} else {
-			return false;
-		}
-	}*/
+		return result;
+	}
 
 	public static ArrayList<DataRecord> getIndicatorsOnPeriod(Indicator indicator, Timestamp startDate, Timestamp endDate) {
 		Connection connection = ConnectionManager.getConnection();
