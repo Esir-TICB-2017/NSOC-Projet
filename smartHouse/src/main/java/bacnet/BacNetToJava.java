@@ -144,8 +144,6 @@ public class BacNetToJava implements InterfaceReadBacnet {
 			e.printStackTrace();
 			return -1;
 		}
-
-
 	}
 
 	static class Listener extends DeviceEventAdapter {

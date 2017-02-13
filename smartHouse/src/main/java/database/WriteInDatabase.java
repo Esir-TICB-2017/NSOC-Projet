@@ -191,7 +191,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	}
 
-	public static void writeUserSettings(String userId, JSONObject settings) {
+	public static void writeUserSetting(String userId, JSONObject settings) {
 
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "IF EXISTS (SELECT * FROM user_settings WHERE userid=? AND setting_id=?) " +

@@ -74,13 +74,10 @@ public class WebSocketHandler {
     @OnWebSocketMessage
     public void onText(String message) {
 
-	    String userId = null;
-		System.out.println(this.userId);
-
 	    JSONObject result = new JSONObject(message);
 
-        if(result.get("key").equals("settings")) {
-            WriteInDatabase.writeUserSettings(userId, result);
+        if(result.get("key") != null && result.get("key").equals("settings")) {
+            WriteInDatabase.writeUserSetting(this.userId, result);
         }
 
     }
