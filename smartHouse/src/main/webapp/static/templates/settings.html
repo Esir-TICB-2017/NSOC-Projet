@@ -3,7 +3,7 @@
 		<div class='text'>{{setting.name}}</div>
 		<div class='value'>
 			<switch ng-model="setting.defaultValue" ng-if='setting.dataType === "boolean"'></switch>
-			<select ng-model="setting.defaultValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="changeValue()">{{setting.defaultValue.caption}}</select>
+			<select ng-model="setting.defaultValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="changeValue()"></select>
 			<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.defaultValue" ng-if='setting.dataType === "double"' ng-change="changeValue()"></input>
 		</div>
 	</div>
