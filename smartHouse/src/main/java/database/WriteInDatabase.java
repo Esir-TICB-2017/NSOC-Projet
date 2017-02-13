@@ -189,7 +189,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	public static void writeNewToken(String email, String token) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "UPDATE users SET current_token = ? WHERE userid = ?";
+		String sql = "UPDATE users SET current_token = ? WHERE email = ?";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, token);
