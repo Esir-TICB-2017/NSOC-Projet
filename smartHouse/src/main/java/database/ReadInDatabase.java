@@ -345,6 +345,31 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 	}
 
+	/*public static Boolean getCurrentToken(String userId) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT current_token FROM users WHERE userId=?";
+		String result = null;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setString(1, email);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while(rs.next()) {
+					result = rs.getString("email");
+				}
+				rs.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		if(email.equals(result)) {
+			return true;
+		} else {
+			return false;
+		}
+	}*/
+
 	public static ArrayList<DataRecord> getIndicatorsOnPeriod(Indicator indicator, Timestamp startDate, Timestamp endDate) {
 		Connection connection = ConnectionManager.getConnection();
 		ArrayList<DataRecord> list = new ArrayList(1);

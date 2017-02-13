@@ -19,6 +19,7 @@ import utils.Utils;
 public class WebSocketHandler {
 	private final static HashMap<String, WebSocketHandler> sockets = new HashMap();
 	public Session session;
+	private String userId;
 	private String myUniqueId;
 
 	private String getMyUniqueId() {
@@ -38,12 +39,16 @@ public class WebSocketHandler {
 	public void onConnect(Session session) {
 		this.session = session;
 		String idTokenString = session.getUpgradeRequest().getQueryString();
-		if (SessionManager.checkAuthentication(idTokenString)) {
-			Timestamp currentDate = Utils.getCurrentTimeStamp();
-			Timestamp expirationDate = SessionManager.getExpirationTime(idTokenString);
-			long remainingTime = expirationDate.getTime() - currentDate.getTime();
-			session.setIdleTimeout(remainingTime);
-			ConnectedClients.getInstance().join(this);
+		IdToken idToken = SessionManager.getGoogleIdToken(idTokenString);
+		if(idToken != null) {
+			this.userId = idToken.getPayload().getSubject();
+			String email = (String) idToken.getPayload().get("email");
+			//String currentToken = ReadInDatabase.getCurrentToken(userId);
+			if(ReadInDatabase.checkExistingUser(email)) {
+				ConnectedClients.getInstance().join(this);
+			} else {
+				disconnect(session);
+			}
 		} else {
 			disconnect(session);
 		}
@@ -61,5 +66,6 @@ public class WebSocketHandler {
 
 	@OnWebSocketMessage
 	public void onText(String message) {
+		System.out.println(this.userId);
 	}
 }

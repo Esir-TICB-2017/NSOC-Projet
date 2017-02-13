@@ -24,10 +24,10 @@ angular.module('nsoc')
 		if($location.path() === '/home' && !authenticate){
 			e.preventDefault();
 			console.log('Please login first');
+			$location.path('/login');
 		} else if ($location.path() === '/login' && authenticate) {
 			e.preventDefault();
 			console.log('Already logged in');
-			$location.path('/home');
 		}
 	});
 
