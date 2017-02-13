@@ -4,6 +4,7 @@ import database.data.DataRecord;
 import database.databaseInterface.InterfaceWriteDatabase;
 import indicators.Indicator;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import sensor.sensorClass.Sensor;
 import utils.Utils;
 
@@ -169,8 +170,6 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 				}
 			} else {
 				try {
-
-
 					PreparedStatement preparedStatement = connection.prepareStatement(sql);
 					preparedStatement.setString(1, userId);
 					preparedStatement.setString(2, token);
@@ -192,45 +191,33 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	}
 
-
-	public static void writeUserSettings(String userId, JSONArray settings) {
+	public static void writeUserSettings(String userId, JSONObject settings) {
 
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "IF EXISTS (SELECT * FROM users_settings WHERE userid=? AND setting_id=?) \n" +
-				"BEGIN\n" +
-				"   UPDATE users_settings SET (value=?) WHERE userid=? AND setting_id=?" +
-				"END\n" +
-				"ELSE\n" +
-				"BEGIN\n" +
-				"   INSERT INTO users_settings(userid, setting_id, value) VALUES(?, ?, ?)\n" +
-				"END";
+		String sql = "IF EXISTS (SELECT * FROM user_settings WHERE userid=? AND setting_id=?) " +
+				"UPDATE users_settings SET(value=?) WHERE userid=? " +
+				"ELSE " +
+				"INSERT INTO users_settings(userid, setting_id, value) VALUES(?, ?, ?) ";
 
 		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-			for(int i=0; i<settings.length(); i+=2) {
+			int setting_id = (int) settings.get("id");
+			String value = settings.get("value").toString();
 
-				PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, userId);
+			preparedStatement.setInt(2, setting_id);
+			preparedStatement.setString(3, value);
+			preparedStatement.setString(4, userId);
+			preparedStatement.setString(5, userId);
+			preparedStatement.setInt(6, setting_id);
+			preparedStatement.setString(7, value);
 
-				int setting_id = settings.getInt(i);
-				String value = settings.getString(i+1);
+			//query execution
+			preparedStatement.executeQuery();
 
-				preparedStatement.setString(1, userId);
-				preparedStatement.setInt(2, setting_id);
-				preparedStatement.setString(3, value);
-				preparedStatement.setString(4, userId);
-				preparedStatement.setInt(5, setting_id);
-				preparedStatement.setString(6, userId);
-				preparedStatement.setInt(7, setting_id);
-				preparedStatement.setString(8, value);
-
-				//query execution
-				preparedStatement.executeQuery();
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
-
 	}
-
 }

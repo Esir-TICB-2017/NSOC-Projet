@@ -8,7 +8,9 @@ angular.module('nsoc')
 			this.websocket = new WebSocket(url);
 			this.websocket.onopen = () => {
 				console.log("Opened!");
-				onOpen(this.websocket);
+                this.websocket.send({data: "a"});
+
+                onOpen(this.websocket);
 			};
 			this.websocket.onclose = () => {
 				console.log("Closed!");

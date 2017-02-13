@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 /**
@@ -21,30 +22,32 @@ public class PostSettingsServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        /* on recoit un string tel que:
+        /* receiving a string like:
         {
-            “users_settings”: [
-            {
-                “setting_id”: 1,
-                “value”: “”
-            },
-            {
-                “setting_id”: 2,
-                “value”: “”
-            }
-        ]}
+        key:
+        nqme:
+        value:
+        }
         */
+
+
+        /*
 
         String stringRequest = request.getQueryString();
 
         JSONObject jObject = new JSONObject(stringRequest);
-        JSONArray result = jObject.getJSONArray("users_settings");
+        JSONArray result = jObject.getJSONArray("settings");
 
-        //retrieve userid
+        //retrieve userid----A CHANGER
         String userid = (String) request.getSession().getAttribute("userId");
 
         //write settings in database
         WriteInDatabase.writeUserSettings(userid ,result);
+
+        */
+
+
+        /*
 
         JSONArray savedSettings;
         savedSettings = ReadInDatabase.getUserSettings(userid);
@@ -58,5 +61,7 @@ public class PostSettingsServlet extends HttpServlet {
         } else {
             response.sendError(403);
         }
+
+        */
     }
 }

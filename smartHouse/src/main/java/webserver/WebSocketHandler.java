@@ -6,12 +6,19 @@ import java.util.HashMap;
 
 import com.google.api.client.auth.openidconnect.IdToken;
 import database.ReadInDatabase;
+import database.WriteInDatabase;
+import database.data.DataRecord;
+import indicators.Indicator;
+import indicators.Indicators;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import utils.Constants;
 import utils.Utils;
 
 
@@ -59,7 +66,16 @@ public class WebSocketHandler {
 		System.out.println("Error: " + t.getMessage());
 	}
 
-	@OnWebSocketMessage
-	public void onText(String message) {
-	}
+    @OnWebSocketMessage
+    public void onText(String message) {
+
+	    String userId = null;
+
+	    JSONObject result = new JSONObject(message);
+
+        if(result.get("key").equals("settings")) {
+            WriteInDatabase.writeUserSettings(userId, result);
+        }
+
+    }
 }
