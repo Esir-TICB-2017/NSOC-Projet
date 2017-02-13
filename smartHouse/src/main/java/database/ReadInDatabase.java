@@ -189,13 +189,13 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					Double maxValue = rs.getDouble("max_value");
 					String itemValue = rs.getString("item_value");
 					String caption = rs.getString("caption");
-						Integer found = findSettingInJson(settings, name);
+					Integer found = findSettingInJson(settings, name);
 					if(found != -1) {
-							JSONObject setting = settings.getJSONObject(found);
-							JSONObject newItemValue = new JSONObject();
-							newItemValue.put("itemValue", itemValue);
-							newItemValue.put("caption", caption);
-							setting.getJSONArray("allowedValues").put(newItemValue);
+						JSONObject setting = settings.getJSONObject(found);
+						JSONObject newItemValue = new JSONObject();
+						newItemValue.put("itemValue", itemValue);
+						newItemValue.put("caption", caption);
+						setting.getJSONArray("allowedValues").put(newItemValue);
 					} else {
 						JSONObject setting = new JSONObject();
 						setting.put("name", name);
@@ -258,9 +258,6 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			JSONObject setting = settings.getJSONObject(i);
 			if(setting.get("name").equals(name)) {
 				return i;
-			} else {
-				return -1;
-
 			}
 		}
 		return -1;
