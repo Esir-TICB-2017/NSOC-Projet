@@ -22,6 +22,7 @@ angular.module('nsoc')
 				// redirect on home
 				$location.path('/home');
 			}, function error(err) {
+				$cookies.remove('token');
 				$rootScope.loading = false;
 				console.log(err);
 				console.log('Please try to login again');

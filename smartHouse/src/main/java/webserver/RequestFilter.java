@@ -20,7 +20,6 @@ public class RequestFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		chain.doFilter(request, response);
 		String path = request.getRequestURI().substring(request.getContextPath().length());
 		Boolean isStatic = path.startsWith("/static");
 		Boolean isLoginServlet = request.getRequestURI().equals("/login");
