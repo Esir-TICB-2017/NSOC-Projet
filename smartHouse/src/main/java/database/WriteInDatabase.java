@@ -193,13 +193,13 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		}
 	}
 
-	public static void writeNewRole(String email, String role) {
+	public static void writeNewRole(JSONObject user) {
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "UPDATE users SET role = ? WHERE email = ?";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, role);
-			preparedStatement.setString(2, email);
+			preparedStatement.setString(1, user.getString("role"));
+			preparedStatement.setString(2, user.getString("email"));
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 		} catch (SQLException e) {
@@ -236,12 +236,12 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		}
 	}
 
-	public static void deleteUser(String email) {
+	public static void deleteUser(JSONObject user) {
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "DELETE  FROM users WHERE email = ?";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, email);
+			preparedStatement.setString(1, user.getString("email"));
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 		} catch (SQLException e) {
