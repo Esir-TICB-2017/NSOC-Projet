@@ -6,26 +6,20 @@ import java.util.HashMap;
 
 import com.google.api.client.auth.openidconnect.IdToken;
 import database.ReadInDatabase;
-<<<<<<< HEAD
 import database.WriteInDatabase;
 import database.data.DataRecord;
 import indicators.Indicator;
 import indicators.Indicators;
-=======
->>>>>>> 52082f1e8dd8b323f941b4cbe1c1835b69fe41ac
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-<<<<<<< HEAD
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.Constants;
-=======
 import utils.Utils;
->>>>>>> 52082f1e8dd8b323f941b4cbe1c1835b69fe41ac
 
 
 @WebSocket
@@ -72,20 +66,11 @@ public class WebSocketHandler {
 		System.out.println("Error: " + t.getMessage());
 	}
 
-    @OnWebSocketClose
-    public void onClose(int statusCode, String reason) {
-        ConnectedClients.getInstance().part(this);
-    }
-
-    @OnWebSocketError
-    public void onError(Throwable t) {
-        System.out.println("Error: " + t.getMessage());
-    }
-
     @OnWebSocketMessage
     public void onText(String message) {
 
-	    
+	    String userId = null;
+
 	    JSONObject result = new JSONObject(message);
 
         if(result.get("key").equals("settings")) {
