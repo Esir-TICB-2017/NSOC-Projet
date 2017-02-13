@@ -98,7 +98,6 @@ angular.module('nsoc')
 				}
 			});
 			if (index !== -1) {
-				console.log('already present');
 				$scope.data[index].date = obj.date;
 				$scope.data[index].data = obj.data;
 				$scope.data[index].lastUpdate = obj.lastUpdate;
