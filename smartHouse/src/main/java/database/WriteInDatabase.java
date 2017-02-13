@@ -35,10 +35,10 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setInt(3, sensor.getId());
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
+			DatabaseEventsHandler.broadcastValue(new DataRecord(value, currentDate, "sensor", sensor.getType()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		DatabaseEventsHandler.broadcastValue(new DataRecord(value, currentDate, "sensor", sensor.getType()));
 
 	}
 

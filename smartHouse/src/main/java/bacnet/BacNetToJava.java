@@ -89,7 +89,7 @@ public class BacNetToJava implements InterfaceReadBacnet {
 						System.out.println("indicateur " + indicator.calculateIndicator());
 					}
 					try {
-						Thread.sleep(1000 * 10);
+						Thread.sleep(1000 * 60 * 10);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
