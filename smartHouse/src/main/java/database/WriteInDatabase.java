@@ -15,6 +15,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static jdk.nashorn.internal.objects.NativeMath.round;
+
 /**
  * Created by loulou on 21/01/2017.
  */
@@ -43,6 +45,8 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 	}
 
 	public static void writeIndicatorValue(Indicator indicator, Double value) {
+		double val  = Math.round(value*100);
+		Double realVal = val/100;
 		Connection connection = ConnectionManager.getConnection();
 		Timestamp currentDate = Utils.getCurrentTimeStamp();
 		String sql = "INSERT INTO indicators "
@@ -50,7 +54,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 				+ "(?, ?, ?)";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setDouble(1, value);
+			preparedStatement.setDouble(1, realVal);
 			preparedStatement.setTimestamp(2, currentDate);
 			preparedStatement.setInt(3, indicator.getId());
 			preparedStatement.executeUpdate();
@@ -58,7 +62,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		DatabaseEventsHandler.broadcastValue(new DataRecord(value, currentDate, "indicator", indicator.getType()));
+		DatabaseEventsHandler.broadcastValue(new DataRecord(realVal, currentDate, "indicator", indicator.getType()));
 	}
 
 	public static void setSensorStatus(Sensor sensor, Boolean status) {
@@ -205,10 +209,9 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 	public static void writeUserSetting(String userId, JSONObject settings) {
 
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "IF EXISTS (SELECT * FROM user_settings WHERE userid=? AND setting_id=?) " +
-				"UPDATE users_settings SET(value=?) WHERE userid=? " +
-				"ELSE " +
-				"INSERT INTO users_settings(userid, setting_id, value) VALUES(?, ?, ?) ";
+		String sql = "INSERT INTO users_settings(userid, setting_id, value) " +
+				"VALUES(?, ?, ?) " +
+				"ON DUPLICATE KEY UPDATE userid = VALUES(userid), setting_id = VALUES(setting_id), value = VALUES(value)";
 
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -219,13 +222,13 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setString(1, userId);
 			preparedStatement.setInt(2, setting_id);
 			preparedStatement.setString(3, value);
-			preparedStatement.setString(4, userId);
+		/*	preparedStatement.setString(4, userId);
 			preparedStatement.setString(5, userId);
 			preparedStatement.setInt(6, setting_id);
 			preparedStatement.setString(7, value);
-
+*/
 			//query execution
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
