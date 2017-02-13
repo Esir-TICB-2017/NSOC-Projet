@@ -45,7 +45,7 @@ angular.module('nsoc')
 			function onOpen(websocket) {
 			},
 			function onClose() {
-			//	$scope.signOut();
+				$scope.signOut();
 			},
 			function onMessage(evt) {
 				const data = JSON.parse(evt.data);

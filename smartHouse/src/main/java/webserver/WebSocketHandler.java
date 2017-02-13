@@ -75,10 +75,11 @@ public class WebSocketHandler {
     public void onText(String message) {
 		System.out.println(message);
 		JSONObject result = new JSONObject(message);
+		/*String key = result.get("key").toString();
 
-        if(result.get("key").equals("settings")) {
+        if(key != null && key.equals("settings")) {
             WriteInDatabase.writeUserSettings(this.userId, result);
-        }
+        }*/
 
     }
 }
