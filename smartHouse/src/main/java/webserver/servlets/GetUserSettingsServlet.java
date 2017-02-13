@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class GetUserSettingsServlet extends HttpServlet {
 
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
             String userid = (String) request.getSession().getAttribute("userId");
 
             JSONArray userSettings = ReadInDatabase.getUserSettings(userid);
