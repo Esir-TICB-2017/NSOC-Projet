@@ -4,6 +4,8 @@
 
 angular.module('nsoc')
 .controller('settingsController', ($scope, $http) => {
+	console.log($scope.settings);
+	console.log($scope.userSettings);
 });
 
 

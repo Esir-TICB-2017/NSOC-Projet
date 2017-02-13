@@ -65,7 +65,7 @@ angular.module('nsoc')
 			method: 'GET',
 			url: '/getSettings'
 		}).then(function success(res) {
-			console.log('settings : ', res);
+			$scope.settings = res.data;
 		}, function error(err) {
 			console.log(err);
 		});
@@ -76,7 +76,7 @@ angular.module('nsoc')
 			method: 'GET',
 			url: '/getUserSettings'
 		}).then(function success(res) {
-			console.log('user settings : ', res);
+			$scope.userSettings = res.data;
 		}, function error(err) {
 			console.log(err);
 		});
