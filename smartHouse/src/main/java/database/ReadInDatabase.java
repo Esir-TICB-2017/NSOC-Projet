@@ -456,4 +456,30 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return result;
 	}
+	public static JSONArray getUsers() {
+		JSONArray users = new JSONArray();
+		JSONObject user;
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT email,role FROM users";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					String email = rs.getString("email");
+					String role = rs.getString("role");
+					user = new JSONObject();
+					user.put("email", email);
+					user.put("role", role);
+					users.put(user);
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return users;
+	}
 }
