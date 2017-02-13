@@ -1,5 +1,5 @@
 angular.module('nsoc')
-.controller('loginController', function($scope, $rootScope, $http, $location, $cookies, websocketService) {
+.controller('loginController', function($scope, $rootScope, $http, $location, $cookies, websocketService, Flash) {
 	$cookies.put('authenticated', false);
 		$scope.options = {
 		'onsuccess': function(googleUser) {
@@ -27,7 +27,7 @@ angular.module('nsoc')
 			}, function error(err) {
 				$rootScope.loading = false;
 				console.log(err);
-				console.log('Please try to login again');
+				Flash.create('danger', 'Please try to login again');
 			});
 		},
 		'onerror': function(err) {

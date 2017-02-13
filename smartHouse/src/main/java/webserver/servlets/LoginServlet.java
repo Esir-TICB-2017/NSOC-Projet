@@ -1,4 +1,4 @@
-package webserver;
+package webserver.servlets;
 
 import com.google.api.client.auth.openidconnect.IdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -14,6 +14,7 @@ import database.WriteInDatabase;
 import org.json.JSONObject;
 import utils.Constants;
 import utils.SessionIdentifierGenerator;
+import webserver.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;

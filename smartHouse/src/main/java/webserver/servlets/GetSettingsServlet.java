@@ -1,4 +1,4 @@
-package webserver;
+package webserver.servlets;
 
 import com.google.gson.Gson;
 import database.ReadInDatabase;

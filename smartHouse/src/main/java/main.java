@@ -1,7 +1,4 @@
-import bacnet.BacNetToJava;
-import com.google.gson.JsonObject;
 import database.ReadInDatabase;
-import indicators.Indicator;
 import indicators.Indicators;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -12,16 +9,12 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
 import webserver.*;
+import webserver.servlets.*;
 
 import javax.servlet.DispatcherType;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.Map;
 
 
 /**

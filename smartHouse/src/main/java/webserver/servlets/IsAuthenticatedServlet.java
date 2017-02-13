@@ -1,9 +1,10 @@
-package webserver;
+package webserver.servlets;
 
 import database.ReadInDatabase;
 import database.WriteInDatabase;
 import org.apache.http.protocol.HTTP;
 import org.eclipse.jetty.server.session.JDBCSessionManager;
+import webserver.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
