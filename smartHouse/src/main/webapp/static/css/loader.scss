@@ -29,7 +29,7 @@
 			height : 100%;
 
 			@for $i from 0 through 6  {
-				.hexa path:nth-child( #{$i + 1} ){
+				.hexas path:nth-child( #{$i + 1} ){
 					animation: hexa $time #{$i * $delay} infinite;
 					transform-origin: 50% 50%;
 				}
