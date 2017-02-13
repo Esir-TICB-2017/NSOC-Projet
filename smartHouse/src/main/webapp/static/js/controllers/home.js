@@ -14,7 +14,7 @@ angular.module('nsoc')
 			}).then(function success(res) {
 				$rootScope.loading = false;
 				console.log('User signed out.');
-				$cookies.put('authenticated', false);
+				$cookies.remove('token');
 				$location.path('/login');
 			}, function error(err) {
 				console.log(err);
@@ -40,8 +40,7 @@ angular.module('nsoc')
 	}
 
 	initSocket = function () {
-		if ($cookies.get('authenticated')) {
-		    console.log($cookies.get('token'))
+		if ($cookies.get('token')) {
 			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('token'),
 			function onOpen(websocket) {
 			},
@@ -50,7 +49,6 @@ angular.module('nsoc')
 			},
 			function onMessage(evt) {
 				const data = JSON.parse(evt.data);
-				console.log(data);
 				if ($scope.actualTab.name !== $scope.tabs[0].name) {
 					$scope.tabs[0].notifications++;
 				}
