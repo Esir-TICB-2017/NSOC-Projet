@@ -320,15 +320,15 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
-	public static Boolean checkExistingUser(String userId) {
+	public static Boolean checkExistingUser(String email) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT userid FROM users WHERE userid=?";
+		String sql = "SELECT email FROM users WHERE email=?";
 		String result = null;
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setString(1, userId);
+			preparedStatement.setString(1, email);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while(rs.next()) {
-					result = rs.getString("userid");
+					result = rs.getString("email");
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -338,7 +338,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		if(userId.equals(result)) {
+		if(email.equals(result)) {
 			return true;
 		} else {
 			return false;
