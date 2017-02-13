@@ -1,6 +1,5 @@
 angular.module('nsoc')
     .controller('loginController', function ($scope, $rootScope, $http, $location, $cookies, websocketService) {
-        $cookies.put('authenticated', false);
         $scope.options = {
             'onsuccess': function (googleUser) {
                 $rootScope.loading = true;

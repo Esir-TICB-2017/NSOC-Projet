@@ -18,9 +18,9 @@ angular.module('nsoc')
         };
     });
     */
-    /*
+
 	$rootScope.$on('$routeChangeStart', function (e) {
-		const authenticate = utils.getBoolean($cookies.get('authenticated'));
+		const authenticate = $cookies.get('token');
 		if($location.path() === '/home' && !authenticate){
 			e.preventDefault();
 			console.log('Please login first');
@@ -28,7 +28,8 @@ angular.module('nsoc')
 		} else if ($location.path() === '/login' && authenticate) {
 			e.preventDefault();
 			console.log('Already logged in');
+			$location.path('/home');
 		}
 	});
-	*/
+
 });
