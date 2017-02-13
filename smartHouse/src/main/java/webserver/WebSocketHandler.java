@@ -97,9 +97,21 @@ public class WebSocketHandler {
 
 		if (result.has("key")) {
 			String key = result.get("key").toString();
-			if (key != null && key.equals("settings")) {
-				WriteInDatabase.writeUserSetting(this.userId, result);
+			switch (key){
+				case "settings" :
+					WriteInDatabase.writeUserSetting(this.userId, result);
+					break;
+				case "userRole" :
+					WriteInDatabase.writeNewRole(result.getString("email"),result.getString("role"));
+					break;
+				case "deleteUser" :
+					WriteInDatabase.deleteUser(result.getString("email"));
+					break;
+				default:
+					break;
 			}
 		}
+
+
 	}
 }

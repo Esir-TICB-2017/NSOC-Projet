@@ -142,19 +142,6 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		}
 	}
 
-	public static void deleteUser(String userId) {
-		Connection connection = ConnectionManager.getConnection();
-		String sql = "DELETE FROM users WHERE userid = ?";
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, userId);
-			preparedStatement.executeQuery();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static void storeNewSession(String token, String userId, Timestamp expirationDate) {
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "INSERT INTO sessions (userid, token, expiration_date) VALUES (?, ?, ?)";
@@ -246,6 +233,19 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+		}
+	}
+
+	public static void deleteUser(String email) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "DELETE  FROM users WHERE email = ?";
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, email);
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }
