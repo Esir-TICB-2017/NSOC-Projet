@@ -18,10 +18,11 @@ angular.module('nsoc')
 				},
 				data: "idtoken=" + id_token,
 			}).then(function success(res) {
-				$cookies.put('token', res.data);
+				$cookies.put('authenticate', true);
 				// redirect on home
 				$location.path('/home');
 			}, function error(err) {
+				$cookies.put('authenticate', false);
 				$rootScope.loading = false;
 				console.log(err);
 				console.log('Please try to login again');
