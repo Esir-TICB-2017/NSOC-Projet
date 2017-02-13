@@ -74,8 +74,8 @@ public class WebSocketHandler {
     @OnWebSocketMessage
     public void onText(String message) {
 		System.out.println(message);
-
 		JSONObject result = new JSONObject(message);
+
         if(result.get("key").equals("settings")) {
             WriteInDatabase.writeUserSettings(this.userId, result);
         }
