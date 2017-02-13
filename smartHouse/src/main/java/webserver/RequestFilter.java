@@ -15,7 +15,6 @@ public class RequestFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 
 	}
-
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -30,7 +29,6 @@ public class RequestFilter implements Filter {
 			return;
 		} else {
 			Cookie[] cookies = request.getCookies();
-			String authorizationHeader = request.getHeader("sfdsf");
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("Set-Cookie")) {
 					String token = cookie.getValue();
