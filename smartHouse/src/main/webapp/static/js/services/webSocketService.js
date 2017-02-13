@@ -8,7 +8,6 @@ angular.module('nsoc')
 			this.websocket = new WebSocket(url);
 			this.websocket.onopen = () => {
 				console.log("Opened!");
-				console.log("test");
 				this.websocket.send(JSON.stringify({key: "settings", setting_id: 14, value: "it works again"}));
 				this.websocket.send(JSON.stringify({key: "userRole", email: "clement.cheron@gmail.com", role: "guest"}));
 				onOpen(this.websocket);

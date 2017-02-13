@@ -2,7 +2,8 @@
 	<div class='row' ng-repeat='setting in settings'>
 		<div class='text'>{{setting.name}}</div>
 		<div class='value'>
-			<switch ng-if='setting.dataType === "boolean"'></switch>
+			<switch ng-model="setting.defaultValue" ng-if='setting.dataType === "boolean"'></switch>
+			<select ng-options="setting.defaultValue" ng-if='setting.dataType === "varchar"'></select>
 		</div>
 	</div>
 	<!--

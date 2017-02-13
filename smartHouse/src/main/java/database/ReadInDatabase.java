@@ -176,7 +176,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	public static JSONArray getSettings() {
 		JSONArray settings = new JSONArray();
 		Connection connection = ConnectionManager.getConnection();
-		String sql ="SELECT settings.id, settings.description, settings.name, settings.data_type, settings.min_value, settings.max_value, allowed_setting_value.item_value, allowed_setting_value.caption " +
+		String sql ="SELECT settings.id, settings.default_value, settings.description, settings.name, settings.data_type, settings.min_value, settings.max_value, allowed_setting_value.item_value, allowed_setting_value.caption " +
 		"FROM settings " +
 		"LEFT JOIN allowed_setting_value ON settings.id = allowed_setting_value.setting_id";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -187,6 +187,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					String dataType = rs.getString("data_type");
 					Double minValue = rs.getDouble("min_value");
 					Double maxValue = rs.getDouble("max_value");
+					String defaultValue = rs.getString("default_value");
 					String itemValue = rs.getString("item_value");
 					String caption = rs.getString("caption");
 					Integer found = findSettingInJson(settings, name);
@@ -203,6 +204,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 						setting.put("minValue", minValue);
 						setting.put("maxValue", maxValue);
 						setting.put("dataType", dataType);
+						setting.put("defaultValue", defaultValue);
 						JSONArray allowedValues = new JSONArray();
 						JSONObject newItemValue = new JSONObject();
 						newItemValue.put("itemValue", itemValue);
