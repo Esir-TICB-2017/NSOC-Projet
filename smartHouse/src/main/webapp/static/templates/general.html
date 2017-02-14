@@ -1,15 +1,15 @@
-<div class='general' ng-controller='generalController'>
+<div class='general'>
 	<div class="mainInfo">
 		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
-		<div class='houseIndicator round' ng-class="{active: $root.actualGraph.name === $root.globalIndicator.name}" ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)' ng-click='changeGraph($root.globalIndicator)'>
+		<div class='houseIndicator round' ng-class="{active: actualGraph.name === $root.globalIndicator.name}" ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)' ng-click='changeGraph($root.globalIndicator)'>
 			<div ng-show='!$root.globalIndicator.showDate' class='value'>{{$root.globalIndicator.data}}%</div>
 			<div ng-show='$root.globalIndicator.showDate' class='date'>
 				Updated {{$root.globalIndicator.lastUpdate}}
 			</div>
 		</div>
 		<div class='data'>
-			<div class='sensors-or-indicators' ng-repeat="obj in data | filter : {type : mode} : true | orderBy:'name'">
-				<div class='round' ng-class="{active: $root.actualGraph.name === obj.name && mode === obj.type, disconnected: !obj.connected && obj.type === 'sensor'}" ng-mouseenter='displayDate()' ng-mouseleave='hideDate()' ng-click='changeGraph()'>
+			<div class='sensors-or-indicators' ng-repeat="obj in data | filter : {type : actualMode} : true | orderBy:'name'">
+				<div class='round' ng-class="{active: actualGraph.name === obj.name && actualMode === obj.type, disconnected: !obj.connected && obj.type === 'sensor'}" ng-mouseenter='displayDate()' ng-mouseleave='hideDate()' ng-click='changeGraph()'>
 					<div ng-show='!showDate' class='value'>
 						<div class='disconnected-message' ng-if='!obj.connected && obj.type === "sensor"'>
 							<span class='status'>Disconnected</span>
@@ -24,16 +24,14 @@
 				<div class='name'>{{obj.name}}</div>
 			</div>
 		</div>
-		<div class='modes'>
-			<div class='switchMode'>
-				<div class='title'>Mode</div>
-				<switch ng-model="$root.indicatorMode" ng-change="changeMode()"></switch>
-				<div class='mode'>{{mode}}</div>
-			</div>
-			<div class='aggregationSelectorButtonList'>
-				<button ng-repeat='selector in $root.selectors' ng-class="{active: $root.actualSelector.name == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
-			</div>
+		<div class='aggregationSelectorButtonList'>
+			<button ng-repeat='selector in selectors' ng-class="{active: actualSelector.name == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
 		</div>
+	</div>
+	<div class='graphParameters'>
+		<button  ng-repeat='mode in modes' ng-class="{active: actualMode == mode}" ng-click='changeMode(mode)' class="switchButton">
+			{{mode}}
+		</button>
 	</div>
 	<svg id="homeChart"></svg>
 </div>

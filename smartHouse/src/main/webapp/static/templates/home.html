@@ -5,7 +5,7 @@
 			<div class='name'>Hi {{userInfo.givenName}}!</div>
 		</div>
 		<div class='tabs'>
-				<button  ng-repeat='tab in tabs' ng-class="{active: actualTab.name == tab.name}" ng-click="changeTab(tab)"	class="mainMenuButton">
+				<button  ng-repeat='tab in tabs' ng-class="{active: actualTab.name == tab.name}" ng-click="changeTab(tab)"	class="switchButton">
 					{{tab.name}}
 					<div ng-if='tab.notifications !== 0' class='notifications'>{{tab.notifications}}</div>
 				</button>
@@ -15,6 +15,7 @@
 		</button>
 	</div>
 	<div class="body">
-		<ng-include src="'static/templates/'+actualTab.name+'.html'"></ng-include>
+		<ng-include  ng-show='actualTab.name === "general"' ng-controller='generalController' src="'static/templates/general.html'"></ng-include>
+		<ng-include  ng-show='actualTab.name === "settings"' ng-controller='settingsController' src="'static/templates/settings.html'"></ng-include>
 	</div>
 </div>

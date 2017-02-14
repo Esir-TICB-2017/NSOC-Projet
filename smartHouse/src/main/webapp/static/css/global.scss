@@ -7,52 +7,38 @@ flash-message {
 	z-index: 2;
 }
 
-.tabs {
-	margin : auto;
 
-	button.mainMenuButton {
-		text-transform   : uppercase;
-		position: relative;
-		outline          : none;
-		cursor           : pointer;
-		color            : $button-color;
-		transition       : background-color .2s ease-out;
-		box-sizing       : border-box;
-		margin-left      : 1px;
-		width            : $button-width;
-		height           : $button-height;
-		background-color : rgba(255, 255, 255, 0.3);
-		border           : $button-border-width solid rgba(255, 255, 255, 0);
+button.switchButton {
+	text-transform   : uppercase;
+	position: relative;
+	outline          : none;
+	cursor           : pointer;
+	color            : $button-color;
+	transition       : background-color .2s ease-out;
+	box-sizing       : border-box;
+	margin-left      : 1px;
+	width            : $button-width;
+	height           : $button-height;
+	background-color : rgba(255, 255, 255, 0.3);
+	border           : $button-border-width solid rgba(255, 255, 255, 0);
 
-		&>.notifications {
-			position         : absolute;
-			top              : -7px;
-			right            : 1px;
-			font-weight      : bold;
-			font-size        : 11px;
-			padding          : 2px;
-			background-color : #e1141e;
-			border-radius    : 25%;
-		}
+	&:first-child{
+		border-right-style        : none;
+		border-top-left-radius    : 25px;
+		border-bottom-left-radius : 25px;
+		margin-left               : 0px;
+	}
 
-		&:first-child{
-			border-right-style        : none;
-			border-top-left-radius    : 25px;
-			border-bottom-left-radius : 25px;
-			margin-left               : 0px;
-		}
+	&:last-child {
+		border-left-style          : none;
+		border-top-right-radius    : 25px;
+		border-bottom-right-radius : 25px;
+	}
 
-		&:last-child {
-			border-left-style          : none;
-			border-top-right-radius    : 25px;
-			border-bottom-right-radius : 25px;
-		}
-
-		&:hover {
-			background-color: rgba(255, 255, 255, 0.6);
-		}
-		&.active {
-			background-color: rgba(255, 255, 255, 0.6);
-		}
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.45);
+	}
+	&.active {
+		background-color: rgba(255, 255, 255, 0.45);
 	}
 }

@@ -27,7 +27,6 @@ angular.module('nsoc').factory('getDataService', ($http) => {
                     "objectName": objectName,
                 }
             }).then(function success(res) {
-                console.log(res.data[0])
                 callback(res.data);
             }, function error(err) {
                 console.log(err);

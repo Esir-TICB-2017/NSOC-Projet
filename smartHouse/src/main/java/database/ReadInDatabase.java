@@ -466,7 +466,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return result;
 	}
-
+	
 	public static ArrayList<String> getSettingRole(JSONObject setting){
 		ArrayList<String> roles = new ArrayList<String>();
 		Connection connection = ConnectionManager.getConnection();
