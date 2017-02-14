@@ -26,12 +26,20 @@ public class ConnectedClients {
 		}
 	}
 
-//    public void writeSpecificMember(String memberName, String message) {
-//        WebSocketHandler member = findMemberByName(memberName);
-//        member.session.getRemote().sendStringByFuture(message);
-//    }
+   public void writeSpecificMember(String uniqueId, String message) {
+        WebSocketHandler member = findMemberById(uniqueId);
+        member.session.getRemote().sendStringByFuture(message);
+    }
 
-//    public WebSocketHandler findMemberByName(String memberName) {
-//
-//    }
+    public WebSocketHandler findMemberById(String uniqueId) {
+		String id;
+
+		for (WebSocketHandler member : members){
+			id = Integer.toHexString(member.hashCode());
+			if(id.equals(uniqueId)){
+				return member;
+			}
+		}
+		return null;
+	}
 }

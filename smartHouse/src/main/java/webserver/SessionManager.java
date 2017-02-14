@@ -65,7 +65,7 @@ public class SessionManager {
 		return userId;
 	}
 
-	public static String createJWT(String issuer, String subject, long ttlMillis) {
+	public static String createJWT(String issuer, String subject, long ttlMillis, String role) {
 
 		//The JWT signature algorithm we will be using to sign the token
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -82,7 +82,9 @@ public class SessionManager {
 				.setIssuedAt(now)
 				.setSubject(subject)
 				.setIssuer(issuer)
+				.setAudience(role)
 				.signWith(signatureAlgorithm, signingKey);
+
 
 		//if it has been specified, let's add the expiration
 		if (ttlMillis >= 0) {

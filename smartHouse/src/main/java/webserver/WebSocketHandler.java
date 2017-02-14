@@ -97,18 +97,42 @@ public class WebSocketHandler {
 
 		if (result.has("key")) {
 			String key = result.get("key").toString();
+			String id;
 			switch (key){
 				case "settings" :
+
 					WriteInDatabase.writeUserSetting(this.userId, result);
 					break;
 				case "userRole" :
-					WriteInDatabase.writeNewRole(result);
+					id = getMyUniqueId();
+					if (this.role.equals("admin")){
+						WriteInDatabase.writeNewRole(result);
+						ConnectedClients.getInstance().writeSpecificMember(id, "Done");
+					}
+					else {
+						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
+					}
 					break;
 				case "deleteUser" :
-					WriteInDatabase.deleteUser(result);
+					id = getMyUniqueId();
+					if (this.role.equals("admin")){
+						WriteInDatabase.deleteUser(result);
+						ConnectedClients.getInstance().writeSpecificMember(id, "Done");
+					}
+					else {
+						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
+					}
 					break;
 				case "addUser" :
-					WriteInDatabase.addUser(result);
+					id = getMyUniqueId();
+					if (this.role.equals("admin")){
+						WriteInDatabase.addUser(result);
+						ConnectedClients.getInstance().writeSpecificMember(id, "Done");
+					}
+					else {
+						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
+					}
+					break;
 				default:
 					break;
 			}
