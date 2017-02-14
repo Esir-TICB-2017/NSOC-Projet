@@ -101,15 +101,15 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .style('opacity', 1)
                 .attr("d", areaGen);
 
-             var totalLength = test.node().getTotalLength();
+            var totalLength = test.node().getTotalLength();
 
-             test
-             .attr("stroke-dasharray", totalLength + " " + totalLength)
-             .attr("stroke-dashoffset", totalLength)
-             .transition()
-             .duration(2000)
-             .ease(d3.easeLinear)
-             .attr("stroke-dashoffset", 0);
+            test
+                .attr("stroke-dasharray", totalLength + " " + totalLength)
+                .attr("stroke-dashoffset", totalLength)
+                .transition()
+                .duration(2000)
+                .ease(d3.easeLinear)
+                .attr("stroke-dashoffset", 0);
 
             svg.select('g.xAxis').remove();
             svg.select('g.yAxis').remove();
@@ -156,30 +156,30 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .attr("x", 9)
                 .attr("dy", ".35em");
             /*
-            svg.append("rect")
-                .attr('class', 'overlay')
-                .attr("width", width)
-                .attr("height", height)
-                .attr('fill', 'none')
-                .attr('pointer-events', 'all')
-                .on("mouseover", function () {
-                    focus.style("display", null);
-                })
-                .on("mouseout", function () {
-                    focus.style("display", "none");
-                })
-                .on("mousemove", mousemove);
+             svg.append("rect")
+             .attr('class', 'overlay')
+             .attr("width", width)
+             .attr("height", height)
+             .attr('fill', 'none')
+             .attr('pointer-events', 'all')
+             .on("mouseover", function () {
+             focus.style("display", null);
+             })
+             .on("mouseout", function () {
+             focus.style("display", "none");
+             })
+             .on("mousemove", mousemove);
 
-            function mousemove() {
-                var x0 = xScale.invert(d3.mouse(this)[0]),
-                    i = bisectDate(data, x0, 1),
-                    d0 = data[i - 1],
-                    d1 = data[i],
-                    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-                focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d.data) + ")");
-                focus.select("text").text(parseInt(d.data));
-            }
-*/
+             function mousemove() {
+             var x0 = xScale.invert(d3.mouse(this)[0]),
+             i = bisectDate(data, x0, 1),
+             d0 = data[i - 1],
+             d1 = data[i],
+             d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+             focus.attr("transform", "translate(" + xScale(d.date) + "," + yScale(d.data) + ")");
+             focus.select("text").text(parseInt(d.data));
+             }
+             */
 
         }
     }
