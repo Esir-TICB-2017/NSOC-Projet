@@ -57,14 +57,29 @@ angular.module('nsoc')
 
 
 	function getHomeBackgroundGradient(value) {
-		let fromValue = value - 10;
-		let toValue = value + 10;
-		if (fromValue < 0) {
-			fromValue = 0;
-		} else if (toValue > 100) {
-			toValue = 100;
+		let topColor;
+		let bottomColor;
+		if(value >= 80 && value < 100) {
+			topColor = '#00CD30';
+            bottomColor = '#42CBA5';
 		}
-		$rootScope.backgroundGradient = {'background-image': 'linear-gradient(-180deg, ' + getColor(fromValue) + ' 0%, ' + getColor(toValue) + ' 100%)'};
+        if(value >= 60 && value < 80) {
+            topColor = '#00CD98';
+            bottomColor = '#42C8CB';
+        }
+        if(value >= 40 && value < 60) {
+            topColor = '#FFCD7F';
+            bottomColor = '#F49058';
+        }
+        if(value >= 20 && value < 40) {
+            topColor = '#F49058';
+            bottomColor = '#F85D6B';
+        }
+        if(value >= 0 && value < 20) {
+            topColor = '#F52929';
+            bottomColor = '#F09191';
+        }
+		$rootScope.backgroundGradient = {'background-image': 'linear-gradient(-180deg, ' + topColor + ' 0%, ' + bottomColor + ' 100%)'};
 	}
 
 	function getHouseHealth(value) {

@@ -21,6 +21,7 @@ import indicators.Indicator;
 import indicators.Indicators;
 import sensor.sensorClass.Sensor;
 import sensor.sensorClass.Sensors;
+import utils.Utils;
 import webserver.ConnectedClients;
 
 import java.io.InputStream;
@@ -47,6 +48,7 @@ public class BacNetToJava implements InterfaceReadBacnet {
 	private IpNetwork network;
 	private LocalDevice localDevice;
 	private RemoteDevice r;
+	private Double currentvalue = 0.0;
 
 	private static BacNetToJava bacNetTojava = new BacNetToJava();
 
@@ -63,10 +65,12 @@ public class BacNetToJava implements InterfaceReadBacnet {
 		Thread thread = new Thread() {
 			Double value = 0.0;
 			Random r = new Random();
+			double finalValue;
 
 			public void run() {
 				connection();
 				while (true) {
+
 					for (Sensor sensor : Sensors.getInstance().getSensors()) {
 
 						value = getValue(sensor.getBacnetId());
@@ -79,7 +83,26 @@ public class BacNetToJava implements InterfaceReadBacnet {
 							if(!sensor.getStatus()){
 								sensor.setStatus(true);
 							}
-							sensor.setNewValue(value);
+
+							if(sensor.getType().equals("consumption")) {
+								long currentTime = Utils.getCurrentTimeStamp().getTime();
+								long lastTime = sensor.getLastRecord().getDate();
+								long diffTimeInMs = (currentTime-lastTime);
+								Double diffTimeInHour = ((double) diffTimeInMs)/3600000;
+								finalValue = (value-currentvalue)*diffTimeInHour*6;
+								currentvalue = value;
+
+								if(finalValue != 0.0) {
+									sensor.setNewValue(finalValue);
+								}
+
+							} else{
+
+								sensor.setNewValue(value);
+
+							}
+
+
 						}
 						Indicator indicator = Indicators.getInstance().getIndicatorByString(sensor.getType());
 						indicator.calculateIndicator();
