@@ -18,6 +18,9 @@ angular.module('nsoc')
 				},
 				data: "idtoken=" + id_token,
 			}).then(function success(res) {
+				parts = res.data.split(".");
+				role = atob(parts[1]);
+				$cookies.put('role',JSON.parse(role).aud);
 				$cookies.put('authenticate', true);
 				// redirect on home
 				$location.path('/home');
