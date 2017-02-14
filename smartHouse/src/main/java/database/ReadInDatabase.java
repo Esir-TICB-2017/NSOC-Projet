@@ -467,11 +467,39 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
+	public static ArrayList<String> getSettingRole(JSONObject setting){
+		ArrayList<String> roles = new ArrayList<String>();
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT roles.name " +
+				"FROM roles_settings " +
+				"INNER JOIN roles " +
+				"ON roles.id = roles_settings.role_id " +
+				"WHERE roles_settings.setting_id=?";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, setting.getInt(setting.getString("setting_id")));
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					roles.add(rs.getString("name"));
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return roles;
+	}
 	public static JSONArray getUsers() {
 		JSONArray users = new JSONArray();
 		JSONObject user;
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT email,role FROM users";
+		String sql = "SELECT email,roles.name" +
+				" FROM users" +
+				"INNER JOIN roles" +
+				"ON roles.id = users.role_id";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
