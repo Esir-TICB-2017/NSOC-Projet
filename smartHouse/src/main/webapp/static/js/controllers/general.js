@@ -1,5 +1,5 @@
 angular.module('nsoc')
-.controller('generalController', function($scope, $rootScope, getDataService, d3ChartService, $http, _, $interval, $timeout, Flash) {
+.controller('generalController', function($scope, $rootScope, getDataService, newD3Service, $http, _, $interval, $timeout, Flash) {
 	$rootScope.selectors = [
 		{name: 'Monthly', value: 'month'},
 		{name: 'Weekly', value: 'week'},
@@ -35,15 +35,24 @@ angular.module('nsoc')
 			$rootScope.actualGraph = this.obj;
 		}
 		if (!oldGraph || oldGraph.name !== $rootScope.actualGraph.name || oldGraph.type !== $rootScope.actualGraph.type) {
-			drawChart();
+			updateChart();
 		}
 	};
+
+
+	function updateChart() {
+        const startDate = moment().startOf($rootScope.actualSelector.value).format('X');
+        const endDate = moment().format('X');
+        getDataService.get(startDate, endDate, $rootScope.actualGraph.type, $rootScope.actualGraph.name, (data) => {
+            newD3Service.update(data);
+        });
+    }
 
 	function drawChart() {
 		const startDate = moment().startOf($rootScope.actualSelector.value).format('X');
 		const endDate = moment().format('X');
 		getDataService.get(startDate, endDate, $rootScope.actualGraph.type, $rootScope.actualGraph.name, (data) => {
-			d3ChartService.draw(data, 'month', 'homeChart');
+			newD3Service.init(data);
 		});
 	}
 
@@ -139,12 +148,14 @@ angular.module('nsoc')
 	}
 
 	$scope.$on('firstData', (e, data) => {
-		data.forEach((obj) => {
+        data.forEach((obj) => {
 			displayHouseInfo(obj);
 		});
 		const defaultParameters = {selector: $rootScope.selectors[0], graph: $rootScope.globalIndicator};
 		$scope.getData(defaultParameters.selector);
-		$scope.changeGraph(defaultParameters.graph);
+        $rootScope.actualGraph = $rootScope.globalIndicator;
+        // $scope.changeGraph(defaultParameters.graph);
+        drawChart();
 		updateDisplayedDates();
 		$rootScope.loading = false;
 	});

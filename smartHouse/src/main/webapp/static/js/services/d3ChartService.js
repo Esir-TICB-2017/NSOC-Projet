@@ -86,7 +86,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
             var area = svg.selectAll('path.area').data([data]);
 
 
-            line.enter().append('path')
+            const test = line.enter().append('path')
                 .attr("class", "line")
                 .attr("d", lineGen)
                 .on('mouseover', () => {
@@ -100,7 +100,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
                 .ease(d3.easeLinear)
                 .style('opacity', 1)
                 .attr("d", areaGen);
-            /*
+
              var totalLength = test.node().getTotalLength();
 
              test
@@ -110,7 +110,7 @@ angular.module('nsoc').factory('d3ChartService', () => {
              .duration(2000)
              .ease(d3.easeLinear)
              .attr("stroke-dashoffset", 0);
-             */
+
             svg.select('g.xAxis').remove();
             svg.select('g.yAxis').remove();
             svg.append("g")
