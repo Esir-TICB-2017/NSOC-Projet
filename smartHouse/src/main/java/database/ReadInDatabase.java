@@ -20,7 +20,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	// TODO : refactor function with Sensor in input
 	public static DataRecord getLastValue(Sensor sensor) {
 		double data;
-		Timestamp date;
+		Long date;
 		DataRecord result = null;
 		String sensorType = sensor.getType();
 		Connection connection = ConnectionManager.getConnection();
@@ -36,7 +36,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			preparedStatement.setString(1, sensorType);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					date = rs.getTimestamp("submission_date");
+					date = rs.getTimestamp("submission_date").getTime();
 					data = rs.getDouble("sensor_value");
 					result = new DataRecord(data, date, "sensor", sensorType);
 				}
@@ -115,7 +115,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			preparedStatement.setTimestamp(3, endDate);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					Timestamp date = rs.getTimestamp("submission_date");
+					Long date = rs.getTimestamp("submission_date").getTime();
 					Double data = rs.getDouble("sensor_value");
 					String name = rs.getString("type_name");
 					list.add(new DataRecord(data, date, "sensor", name));
@@ -156,7 +156,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					Timestamp date = rs.getTimestamp("submission_date");
+					Long date = rs.getTimestamp("submission_date").getTime();
 					Double data = rs.getDouble("sensor_value");
 					String name = rs.getString("type_name");
 					DataRecord row = new DataRecord(data, date, "sensor", name);
@@ -193,7 +193,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					String type = rs.getString("type");
 					int order = rs.getInt("order");
 					Integer found = findSettingInJson(settings, name);
-					if(found != -1) {
+					if (found != -1) {
 						JSONObject setting = settings.getJSONObject(found);
 						JSONObject newItemValue = new JSONObject();
 						newItemValue.put("itemValue", itemValue);
@@ -256,10 +256,10 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return userSettings;
 	}
 
-	public static Integer  findSettingInJson(JSONArray settings, String name) {
-		for(int i = 0; i < settings.length(); ++i) {
+	public static Integer findSettingInJson(JSONArray settings, String name) {
+		for (int i = 0; i < settings.length(); ++i) {
 			JSONObject setting = settings.getJSONObject(i);
-			if(setting.get("name").equals(name)) {
+			if (setting.get("name").equals(name)) {
 				return i;
 			}
 		}
@@ -278,7 +278,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					Timestamp date = rs.getTimestamp("submission_date");
+					Long date = rs.getTimestamp("submission_date").getTime();
 					Double data = rs.getDouble("indicator_value");
 					String name = rs.getString("type_name");
 					DataRecord row = new DataRecord(data, date, "indicator", name);
@@ -298,7 +298,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	public static DataRecord getLastIndicator(Indicator indicator) {
 		DataRecord result = null;
 		double data;
-		Timestamp date;
+		Long date;
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "SELECT submission_date, indicator_value " +
 				"FROM indicators " +
@@ -308,7 +308,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			preparedStatement.setInt(1, indicator.getId());
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					date = rs.getTimestamp("submission_date");
+					date = rs.getTimestamp("submission_date").getTime();
 					data = rs.getDouble("indicator_value");
 					result = new DataRecord(data, date, "indicator", indicator.getType());
 				}
@@ -330,7 +330,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, email);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
-				while(rs.next()) {
+				while (rs.next()) {
 					result = rs.getString("email");
 				}
 				rs.close();
@@ -341,7 +341,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		if(email.equals(result)) {
+		if (email.equals(result)) {
 			return true;
 		} else {
 			return false;
@@ -355,7 +355,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, email);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
-				while(rs.next()) {
+				while (rs.next()) {
 					result = rs.getString("current_token");
 				}
 				rs.close();
@@ -383,7 +383,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					Double data = rs.getDouble("indicator_value");
-					Timestamp date = rs.getTimestamp("submission_date");
+					Long date = rs.getTimestamp("submission_date").getTime();
 					list.add(new DataRecord(data, date, "indicator", indicator.getType()));
 				}
 				rs.close();
@@ -449,7 +449,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, email);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
-				while(rs.next()) {
+				while (rs.next()) {
 					result = rs.getString("role");
 				}
 				rs.close();
@@ -462,6 +462,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return result;
 	}
+
 	public static JSONArray getUsers() {
 		JSONArray users = new JSONArray();
 		JSONObject user;

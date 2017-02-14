@@ -17,11 +17,11 @@ import java.sql.Timestamp;
  */
 public class DataRecord {
 	private Double data;
-	private Timestamp date;
+	private Long date;
 	private String type; // indicator or sensor
 	private String name; //e.g : co2, humidity, etc
 
-	public DataRecord(Double data, Timestamp date, String type, String name) {
+	public DataRecord(Double data, Long date, String type, String name) {
 		this.data = data;
 		this.date = date;
 		this.type = type;
@@ -32,7 +32,7 @@ public class DataRecord {
 		this.data = data;
 	}
 
-	public void setDate(Timestamp date) {
+	public void setDate(Long date) {
 		this.date = date;
 	}
 
@@ -48,7 +48,7 @@ public class DataRecord {
 		return data;
 	}
 
-	public Timestamp getDate() {
+	public Long getDate() {
 		return date;
 	}
 
@@ -65,16 +65,16 @@ public class DataRecord {
 	 * it to client
 	 * @return jsonObject : {data: data, date: date, type: type, name: name}
 	 */
-	public JsonElement toJsonElement() {
-		JsonObject jsonElement = new JsonObject();
-		jsonElement.addProperty("data", this.data);
-		jsonElement.addProperty("date", this.date.toString());
+	public JSONObject toJson() {
+		JSONObject data = new JSONObject();
+		data.put("data", this.getData());
+		data.put("date", this.getDate());
 		if(type != null) {
-			jsonElement.addProperty("type", this.type);
+			data.put("type", this.getType());
 		}
 		if(name != null) {
-			jsonElement.addProperty("name", this.name);
+			data.put("name", this.getName());
 		}
-		return jsonElement;
+		return data;
 	}
 }

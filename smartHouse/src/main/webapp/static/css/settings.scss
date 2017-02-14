@@ -1,9 +1,12 @@
 // main: style.scss
 
 .settings {
-	color: $grey;
+	color          : $grey;
+	display        : flex;
+	flex-direction : column;
 	&>.type {
-		margin-top: 1%;
+		margin-top : 1%;
+		flex       : 1;
 		&:first-child {
 			margin-top: 0;
 		}

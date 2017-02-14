@@ -1,13 +1,13 @@
 angular.module('nsoc')
-.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService, utils, Flash) => {
+.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService, utils, Flash, newD3Service) => {
 
-	$scope.changeTab = function(newTab) {
+	$scope.changeTab = function (newTab) {
 		$scope.actualTab = newTab;
 		$scope.actualTab.notifications = 0;
 	};
 
 	$scope.signOut = function () {
-		$scope.GoogleAuth.signOut().then(function() {
+		$scope.GoogleAuth.signOut().then(function () {
 			$http({
 				method: 'GET',
 				url: '/logout'
@@ -45,7 +45,7 @@ angular.module('nsoc')
 
 	initSocket = function () {
 		if (utils.getBoolean($cookies.get('authenticate'))) {
-			websocketService.start('ws://127.0.0.1:8080/?'+$cookies.get('idtoken'),
+			websocketService.start('ws://127.0.0.1:8080/?' + $cookies.get('idtoken'),
 			function onOpen(websocket) {
 			},
 			function onClose() {
@@ -53,6 +53,12 @@ angular.module('nsoc')
 			},
 			function onMessage(evt) {
 				const data = JSON.parse(evt.data);
+				const currentData = newD3Service.getCurrentData();
+				console.log(currentData, data)
+				if (currentData.type === data.type && currentData.name == data.name) {
+					newD3Service.addRowToCurrentSet(data);
+					newD3Service.update();
+				}
 				if ($scope.actualTab.name !== $scope.tabs[0].name) {
 					$scope.tabs[0].notifications++;
 				}
@@ -83,7 +89,7 @@ angular.module('nsoc')
 		});
 	}
 
-	getUserSettings = function() {
+	getUserSettings = function () {
 		$http({
 			method: 'GET',
 			url: '/getUserSettings'

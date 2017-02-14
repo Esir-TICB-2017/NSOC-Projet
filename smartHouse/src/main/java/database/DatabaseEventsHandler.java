@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  */
 public class DatabaseEventsHandler {
     public static void broadcastValue (DataRecord record) {
-        String str = record.toJsonElement().toString();
+        String str = record.toJson().toString();
         ConnectedClients.getInstance().writeAllMembers(str);
     }
 
