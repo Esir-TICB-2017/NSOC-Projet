@@ -18,7 +18,7 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .rangeRound([-constants.widthMargin, constants.width + constants.widthMargin]);
             constants.yScale = d3.scaleLinear()
                 .rangeRound([constants.height, 0]);
-            constants.xAxis = d3.axisBottom(constants.xScale).ticks(d3.timeMinute.every(10));
+            constants.xAxis = d3.axisBottom(constants.xScale);
             constants.yAxis = d3.axisLeft(constants.yScale);
             constants.lineGen = d3.line()
                 .x((d) => constants.xScale(d.date))
@@ -34,21 +34,48 @@ angular.module('nsoc').factory('newD3Service', () => {
                 d.date = constants.parseTime(d.date);
                 d.data = d.data;
             });
-
             constants.xScale
                 .domain([new Date(data[0].date), new Date(data[data.length - 1].date)]);
             constants.yScale
                 .domain([0, d3.max(data, (d) => d.data)]);
+            constants.yScale.domain();
 
-            svg.append('path')
+            const line = svg.append('path')
                 .attr("class", "line")
                 .attr("d", constants.lineGen(data))
                 .on('mouseover', () => {
                     console.log('ici');
                 });
+            /*
+            var totalLength = line.node().getTotalLength();
+
+            line
+                .attr("stroke-dasharray", totalLength + " " + totalLength)
+                .attr("stroke-dashoffset", totalLength)
+                .transition()
+                .duration(2000)
+                .ease(d3.easeLinear)
+                .attr("stroke-dashoffset", 0);
+            */
+            svg.append("path")
+                .attr("class", "area")
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .ease(d3.easeLinear)
+                .style('opacity', 1)
+                .attr("d", constants.areaGen(data));
+
+            svg.append("g")
+                .attr('class', 'xAxis')
+                .attr("transform", "translate(0," + (constants.height - 30) + ")")
+                .call(constants.xAxis);
+            svg.append("g")
+                .attr('class', 'yAxis')
+                .attr("transform", "translate(60, -10)")
+                .call(constants.yAxis);
         },
         update: (data) => {
-            console.log(constants)
             data.forEach((d) => {
                 d.date = constants.parseTime(d.date);
                 d.data = d.data;
@@ -58,18 +85,24 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .domain([new Date(data[0].date), new Date(data[data.length - 1].date)]);
             constants.yScale
                 .domain([0, d3.max(data, (d) => d.data)]);
+
+            console.log(constants.yScale.domain());
+
             var svg = d3.select("body").transition();
 
             svg.select(".line")   // change the line
                 .duration(750)
                 .attr("d", constants.lineGen(data));
-            svg.select(".x.axis") // change the x axis
+            svg.select('.area')
+                .attr("class", "area")
+                .duration(750)
+                .attr("d", constants.areaGen(data));
+            svg.select(".xAxis") // change the x axis
                 .duration(750)
                 .call(constants.xAxis);
-            svg.select(".y.axis") // change the y axis
+            svg.select(".yAxis") // change the y axis
                 .duration(750)
                 .call(constants.yAxis);
-
         },
         appendGradient: () => {
             d3.select('svg#homeChart').append("linearGradient")
