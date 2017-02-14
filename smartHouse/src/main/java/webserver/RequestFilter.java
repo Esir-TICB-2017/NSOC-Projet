@@ -15,6 +15,7 @@ public class RequestFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 
 	}
+
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -29,20 +30,23 @@ public class RequestFilter implements Filter {
 			return;
 		} else {
 			Cookie[] cookies = request.getCookies();
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("Set-Cookie")) {
-					String token = cookie.getValue();
-					Boolean isAuthenticated = SessionManager.checkAuthentication(token);
-					if (isAuthenticated) {
-						System.out.println("on passe l'auth !");
-						chain.doFilter(request, response);
-						return;
-					} else {
-						response.sendError(403);
-						return;
+			if (cookies != null) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("Set-Cookie")) {
+						String token = cookie.getValue();
+						Boolean isAuthenticated = SessionManager.checkAuthentication(token);
+						if (isAuthenticated) {
+							System.out.println("on passe l'auth !");
+							chain.doFilter(request, response);
+							return;
+						} else {
+							response.sendError(403);
+							return;
+						}
 					}
 				}
 			}
+
 		}
 	}
 

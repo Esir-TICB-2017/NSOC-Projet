@@ -71,7 +71,7 @@ public class AutoFillDB {
 			}
 			try {
 				//Fill DB every 10 minutes
-				Thread.sleep(1000 * 60 * 10);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

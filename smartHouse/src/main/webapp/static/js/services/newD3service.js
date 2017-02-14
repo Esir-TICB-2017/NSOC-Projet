@@ -6,8 +6,9 @@
  */
 angular.module('nsoc').factory('newD3Service', () => {
     const constants = {};
+    const currentData = {};
     return {
-        init: (data) => {
+        init: () => {
             const svg = d3.select(`svg#homeChart`);
             constants.width = parseInt(svg.style('width'), 0);
             constants.height = parseInt(svg.style('height'), 0);
@@ -30,19 +31,16 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .y1((d) => constants.yScale(d.data))
                 .curve(constants.curve);
 
-            data.forEach((d) => {
-                d.date = constants.parseTime(d.date);
-                d.data = d.data;
-            });
+
             constants.xScale
-                .domain([new Date(data[0].date), new Date(data[data.length - 1].date)]);
+                .domain([new Date(currentData.data[0].date), new Date(currentData.data[currentData.data.length - 1].date)]);
             constants.yScale
-                .domain([0, d3.max(data, (d) => d.data)]);
+                .domain([0, d3.max(currentData.data, (d) => d.data)]);
             constants.yScale.domain();
 
             const line = svg.append('path')
                 .attr("class", "line")
-                .attr("d", constants.lineGen(data))
+                .attr("d", constants.lineGen(currentData.data))
                 .on('mouseover', () => {
                     console.log('ici');
                 });
@@ -64,7 +62,7 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .duration(1000)
                 .ease(d3.easeLinear)
                 .style('opacity', 1)
-                .attr("d", constants.areaGen(data));
+                .attr("d", constants.areaGen(currentData.data));
 
             svg.append("g")
                 .attr('class', 'xAxis')
@@ -75,28 +73,25 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .attr("transform", "translate(60, -10)")
                 .call(constants.yAxis);
         },
-        update: (data) => {
-            data.forEach((d) => {
-                d.date = constants.parseTime(d.date);
-                d.data = d.data;
-            });
+        update: () => {
+
+
 
             constants.xScale
-                .domain([new Date(data[0].date), new Date(data[data.length - 1].date)]);
+                .domain([new Date(currentData.data[0].date), new Date(currentData.data[currentData.data.length - 1].date)]);
             constants.yScale
-                .domain([0, d3.max(data, (d) => d.data)]);
+                .domain([0, d3.max(currentData.data, (d) => d.data)]);
 
-            console.log(constants.yScale.domain());
 
             var svg = d3.select("body").transition();
 
             svg.select(".line")   // change the line
                 .duration(750)
-                .attr("d", constants.lineGen(data));
+                .attr("d", constants.lineGen(currentData.data));
             svg.select('.area')
                 .attr("class", "area")
                 .duration(750)
-                .attr("d", constants.areaGen(data));
+                .attr("d", constants.areaGen(currentData.data));
             svg.select(".xAxis") // change the x axis
                 .duration(750)
                 .call(constants.xAxis);
@@ -133,6 +128,17 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .attr("stop-opacity", function (d) {
                     return d.opacity;
                 });
+        },
+        addRowToCurrentSet(row) {
+            currentData.data.push(row);
+        },
+        updateCurrentData(data) {
+            currentData.type = data[0].type;
+            currentData.name = data[0].name;
+            currentData.data = data;
+        },
+        getCurrentData: () => {
+            return currentData;
         }
     }
 });

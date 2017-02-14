@@ -37,6 +37,7 @@ angular.module('nsoc')
             }
             if (!oldGraph || oldGraph.name !== $rootScope.actualGraph.name || oldGraph.type !== $rootScope.actualGraph.type) {
                 updateChart();
+                console.log(newD3Service.getCurrentData());
             }
         };
 
@@ -46,7 +47,8 @@ angular.module('nsoc')
             const endDate = moment().format('X');
             getDataService.get(startDate, endDate, $rootScope.actualGraph.type, $rootScope.actualGraph.name, (data) => {
                 if (data.length != 0) {
-                    newD3Service.update(data);
+                    newD3Service.updateCurrentData(data);
+                    newD3Service.update();
                 } else {
                     Flash.create('info', 'no data for this configuration');
                 }
@@ -58,7 +60,8 @@ angular.module('nsoc')
             const endDate = moment().format('X');
             getDataService.get(startDate, endDate, $rootScope.actualGraph.type, $rootScope.actualGraph.name, (data) => {
                 newD3Service.appendGradient();
-                newD3Service.init(data);
+                newD3Service.updateCurrentData(data);
+                newD3Service.init();
             });
         }
 

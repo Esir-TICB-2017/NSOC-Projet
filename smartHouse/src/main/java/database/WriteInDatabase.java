@@ -37,7 +37,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setInt(3, sensor.getId());
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
-			DatabaseEventsHandler.broadcastValue(new DataRecord(value, currentDate, "sensor", sensor.getType()));
+			DatabaseEventsHandler.broadcastValue(new DataRecord(value, currentDate.getTime(), "sensor", sensor.getType()));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +62,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		DatabaseEventsHandler.broadcastValue(new DataRecord(realVal, currentDate, "indicator", indicator.getType()));
+		DatabaseEventsHandler.broadcastValue(new DataRecord(realVal, currentDate.getTime(), "indicator", indicator.getType()));
 	}
 
 	public static void setSensorStatus(Sensor sensor, Boolean status) {
