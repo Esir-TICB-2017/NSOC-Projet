@@ -4,16 +4,11 @@
 
 angular.module('nsoc')
 .controller('settingsController', ($scope, $http, _) => {
-	$scope.settings.forEach((setting) => {
-		const index = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === setting.defaultValue);
-		if (index !== -1) {
-			setting.defaultValue = setting.allowedValues[index];
-		}
-	});
 	console.log($scope.settings);
-	
+
 	console.log($scope.userSettings);
 
 	$scope.changeValue = function() {
+		console.log('here');
 	}
 });

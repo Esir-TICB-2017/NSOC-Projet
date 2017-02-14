@@ -54,7 +54,7 @@ angular.module('nsoc')
                     function onMessage(evt) {
                         const data = JSON.parse(evt.data);
                         const currentData = newD3Service.getCurrentData();
-                        console.log(data)
+                        console.log(currentData, data)
                         if (currentData.type === data.type && currentData.name == data.name) {
                             newD3Service.addRowToCurrentSet(data);
                             newD3Service.update();
@@ -74,7 +74,16 @@ angular.module('nsoc')
                 method: 'GET',
                 url: '/getSettings'
             }).then(function success(res) {
-                $scope.settings = res.data;
+                const data = _.sortBy(res.data, setting => setting.order);
+                $scope.settings = _.groupBy(data, setting => setting.type);
+                for (key in $scope.settings) {
+                    $scope.settings[key].forEach((setting) => {
+                        const index = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === setting.defaultValue);
+                        if (index !== -1) {
+                            setting.defaultValue = setting.allowedValues[index];
+                        }
+                    });
+                }
             }, function error(err) {
                 console.log(err);
             });
