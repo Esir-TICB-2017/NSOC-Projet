@@ -17,10 +17,18 @@ button.switchButton {
 	transition       : background-color .2s ease-out;
 	box-sizing       : border-box;
 	margin-left      : 1px;
-	width            : $button-width;
-	height           : $button-height;
 	background-color : rgba(255, 255, 255, 0.3);
 	border           : $button-border-width solid rgba(255, 255, 255, 0);
+
+	&.medium {
+		width            : $medium-button-width;
+		height           : $medium-button-height;
+	}
+
+	&.small {
+		width            : $small-button-width;
+		height           : $small-button-height;
+	}
 
 	&:first-child{
 		border-right-style        : none;

@@ -5,7 +5,7 @@
 			<div class='name'>Hi {{userInfo.givenName}}!</div>
 		</div>
 		<div class='tabs'>
-				<button  ng-repeat='tab in tabs' ng-class="{active: actualTab.name == tab.name}" ng-click="changeTab(tab)"	class="switchButton">
+				<button ng-repeat='tab in tabs' ng-class="{active: actualTab.name == tab.name}" ng-click="changeTab(tab)"	class="switchButton medium">
 					{{tab.name}}
 					<div ng-if='tab.notifications !== 0' class='notifications'>{{tab.notifications}}</div>
 				</button>
