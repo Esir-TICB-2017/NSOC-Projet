@@ -36,7 +36,6 @@ public class RequestFilter implements Filter {
 						String token = cookie.getValue();
 						Boolean isAuthenticated = SessionManager.checkAuthentication(token);
 						if (isAuthenticated) {
-							System.out.println("on passe l'auth !");
 							chain.doFilter(request, response);
 							return;
 						} else {

@@ -176,9 +176,9 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	public static JSONArray getSettings() {
 		JSONArray settings = new JSONArray();
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT settings.id, settings.default_value, settings.description, settings.name, settings.data_type, settings.min_value, settings.max_value, allowed_setting_value.item_value, allowed_setting_value.caption " +
-				"FROM settings " +
-				"LEFT JOIN allowed_setting_value ON settings.id = allowed_setting_value.setting_id";
+		String sql ="SELECT settings.id, settings.order, settings.type, settings.default_value, settings.description, settings.name, settings.data_type, settings.min_value, settings.max_value, allowed_setting_value.item_value, allowed_setting_value.caption " +
+		"FROM settings " +
+		"LEFT JOIN allowed_setting_value ON settings.id = allowed_setting_value.setting_id";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
@@ -190,6 +190,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					String defaultValue = rs.getString("default_value");
 					String itemValue = rs.getString("item_value");
 					String caption = rs.getString("caption");
+					String type = rs.getString("type");
+					int order = rs.getInt("order");
 					Integer found = findSettingInJson(settings, name);
 					if (found != -1) {
 						JSONObject setting = settings.getJSONObject(found);
@@ -205,6 +207,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 						setting.put("maxValue", maxValue);
 						setting.put("dataType", dataType);
 						setting.put("defaultValue", defaultValue);
+						setting.put("type", type);
+						setting.put("order", order);
 						JSONArray allowedValues = new JSONArray();
 						JSONObject newItemValue = new JSONObject();
 						newItemValue.put("itemValue", itemValue);
@@ -440,13 +444,17 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 
 	public static String getUserRole(String email) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT role FROM users WHERE email=?";
+		String sql = "SELECT roles.name " +
+				"FROM users " +
+				"INNER JOIN roles " +
+				"ON roles.id = users.role_id " +
+				"WHERE users.email=?";
 		String result = null;
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, email);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					result = rs.getString("role");
+					result = rs.getString("name");
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -459,11 +467,39 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
+	public static ArrayList<String> getSettingRole(JSONObject setting){
+		ArrayList<String> roles = new ArrayList<String>();
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT roles.name " +
+				"FROM roles_settings " +
+				"INNER JOIN roles " +
+				"ON roles.id = roles_settings.role_id " +
+				"WHERE roles_settings.setting_id=?";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, setting.getInt(setting.getString("setting_id")));
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					roles.add(rs.getString("name"));
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return roles;
+	}
 	public static JSONArray getUsers() {
 		JSONArray users = new JSONArray();
 		JSONObject user;
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT email,role FROM users";
+		String sql = "SELECT email,roles.name" +
+				" FROM users" +
+				"INNER JOIN roles" +
+				"ON roles.id = users.role_id";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
