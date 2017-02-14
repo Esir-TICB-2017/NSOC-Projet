@@ -223,13 +223,23 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setString(1, userId);
 			preparedStatement.setInt(2, setting_id);
 			preparedStatement.setString(3, value);
-		/*	preparedStatement.setString(4, userId);
-			preparedStatement.setString(5, userId);
-			preparedStatement.setInt(6, setting_id);
-			preparedStatement.setString(7, value);
-*/
-			//query execution
-			preparedStatement.executeUpdate();
+
+			//query execution after checking value
+			if(isInteger(value)) {
+				preparedStatement.executeUpdate();
+			}
+			else{
+				ArrayList<String> allowedValues = ReadInDatabase.checkIfValueIsAllowed(setting_id);
+				Boolean authorize = false;
+				for (String valueToTest : allowedValues){
+					if (valueToTest.equals(value)){
+						authorize = true;
+					}
+				}
+				if(authorize) {
+					preparedStatement.executeUpdate();
+				}
+			}
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -261,5 +271,17 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch(NumberFormatException e) {
+			return false;
+		} catch(NullPointerException e) {
+			return false;
+		}
+		// only got here if we didn't return false
+		return true;
 	}
 }

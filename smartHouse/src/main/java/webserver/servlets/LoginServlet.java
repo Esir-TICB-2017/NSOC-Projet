@@ -25,11 +25,11 @@ public class LoginServlet extends HttpServlet {
 			if (ReadInDatabase.checkExistingUser(email)) {
 				String role = ReadInDatabase.getUserRole(email);
 				String token = SessionManager.createJWT("http://smarthouseapp.com", userId, 15 * 60 * 1000, role);
-
 				WriteInDatabase.writeNewToken(email, token);
 				Cookie cookie = new Cookie("Set-Cookie", token);
 				cookie.setPath(";Path=/;HttpOnly;");
 				response.addCookie(cookie);
+				response.getWriter().println(token);
 				response.setStatus(HttpServletResponse.SC_OK);
 			}
 		} else {

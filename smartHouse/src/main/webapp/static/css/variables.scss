@@ -1,16 +1,21 @@
 // main: style.scss
+//font
+$font-family : CenturyGothic;
+
+//Colors
+$grey             : #383838;
 $background-color : white;
 $green            : #00796b;
 $green-shadow     : rgba(0, 121, 107, 0.3);
-$font-family      : CenturyGothic;
-$grey: #383838;
 
 //Buttons
-$button-border-width : 1px;
-$button-width : 120px;
-$button-height : 35px;
-$button-color : white;
+$button-border-width  : 1px;
+$medium-button-width  : 120px;
+$medium-button-height : 35px;
+$small-button-width   : 90px;
+$small-button-height  : 28px;
+$button-color         : white;
 
 //mainMenu
-$mainMenuHeight: 65px;
-$mainMenuHeightMargin: 10px;
+$mainMenuHeight       : 65px;
+$mainMenuHeightMargin : 10px;
