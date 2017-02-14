@@ -86,7 +86,7 @@ angular.module('nsoc')
 		if (obj.data) {
 			obj.data = Math.round(obj.data * 10) / 10;
 		}
-		if (!obj.unit) {
+		if (obj.type === 'indicator') {
 			obj.unit='%';
 		}
 		if (obj.type === 'indicator' && obj.name === 'global') {
@@ -152,5 +152,6 @@ angular.module('nsoc')
 	$scope.$on('data', (event, data) => {
 		displayHouseInfo(data);
 	});
+
 	$scope.changeMode();
 });
