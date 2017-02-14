@@ -223,11 +223,7 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 			preparedStatement.setString(1, userId);
 			preparedStatement.setInt(2, setting_id);
 			preparedStatement.setString(3, value);
-		/*	preparedStatement.setString(4, userId);
-			preparedStatement.setString(5, userId);
-			preparedStatement.setInt(6, setting_id);
-			preparedStatement.setString(7, value);
-*/
+
 			//query execution
 			preparedStatement.executeUpdate();
 
