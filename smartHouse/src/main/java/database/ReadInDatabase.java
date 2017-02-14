@@ -521,4 +521,29 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return users;
 	}
+
+
+	public static ArrayList<String> checkIfValueIsAllowed(int setting_id) {
+		ArrayList<String> result = null;
+
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT item_value FROM allowed_setting_value WHERE setting_id=?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, setting_id);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					result.add(rs.getString("item_value"));
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+
+	}
 }

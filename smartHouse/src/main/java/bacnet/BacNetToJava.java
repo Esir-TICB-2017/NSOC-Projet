@@ -85,11 +85,12 @@ public class BacNetToJava implements InterfaceReadBacnet {
 							}
 
 							if(sensor.getType().equals("consumption")) {
-								long currentTime = Utils.getCurrentTimeStamp().getTime();
-								long lastTime = sensor.getLastRecord().getDate();
-								long diffTimeInMs = (currentTime-lastTime);
-								Double diffTimeInHour = ((double) diffTimeInMs)/3600000;
-								finalValue = (value-currentvalue)*diffTimeInHour*6;
+					//			long currentTime = Utils.getCurrentTimeStamp().getTime();
+					//			long lastTime = sensor.getLastRecord().getDate();
+					//			long diffTimeInMs = (currentTime-lastTime);
+					//			Double diffTimeInHour = ((double) diffTimeInMs)/3600000;
+					//			finalValue = (value-currentvalue)*diffTimeInHour*6;
+								finalValue = (value-currentvalue);
 								currentvalue = value;
 
 								if(finalValue != 0.0) {
