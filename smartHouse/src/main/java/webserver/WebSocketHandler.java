@@ -2,6 +2,7 @@ package webserver;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.api.client.auth.openidconnect.IdToken;
@@ -100,14 +101,26 @@ public class WebSocketHandler {
 			String id;
 			switch (key){
 				case "settings" :
-
-					WriteInDatabase.writeUserSetting(this.userId, result);
+					id = getMyUniqueId();
+					Boolean authorize = false;
+					ArrayList<String> roles = ReadInDatabase.getSettingRole(result);
+					for (String role : roles){
+						if (role.equals(this.role)){
+							authorize = true;
+						}
+					}
+					if (authorize){
+						WriteInDatabase.writeUserSetting(this.userId, result);
+						ConnectedClients.getInstance().writeSpecificMember(id, "Done");
+					}
+					else{
+						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
+					}
 					break;
 				case "userRole" :
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.writeNewRole(result);
-						ConnectedClients.getInstance().writeSpecificMember(id, "Done");
 					}
 					else {
 						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
