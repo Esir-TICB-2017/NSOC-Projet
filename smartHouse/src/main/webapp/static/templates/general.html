@@ -1,10 +1,10 @@
 <div class='general'>
 	<div class="mainInfo">
 		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
-		<div class='houseIndicator round' ng-class="{active: actualGraph.name === $root.globalIndicator.name}" ng-mouseenter='displayDate($root.globalIndicator)' ng-mouseleave='hideDate($root.globalIndicator)' ng-click='changeGraph($root.globalIndicator)'>
-			<div ng-show='!$root.globalIndicator.showDate' class='value'>{{$root.globalIndicator.data}}%</div>
-			<div ng-show='$root.globalIndicator.showDate' class='date'>
-				Updated {{$root.globalIndicator.lastUpdate}}
+		<div class='houseIndicator round' ng-class="{active: actualGraph.name === globalIndicator.name}" ng-mouseenter='displayDate(globalIndicator)' ng-mouseleave='hideDate(globalIndicator)' ng-click='changeGraph(globalIndicator)'>
+			<div ng-show='!globalIndicator.showDate' class='value'>{{globalIndicator.data}}%</div>
+			<div ng-show='globalIndicator.showDate' class='date'>
+				Updated {{globalIndicator.lastUpdate}}
 			</div>
 		</div>
 		<div class='data'>

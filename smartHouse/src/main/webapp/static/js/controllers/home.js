@@ -1,5 +1,5 @@
 angular.module('nsoc')
-    .controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService, utils, Flash, newD3Service) => {
+    .controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService, utils, Flash) => {
 
         $scope.changeTab = function (newTab) {
             $scope.actualTab = newTab;
@@ -33,16 +33,11 @@ angular.module('nsoc')
                     },
                     function onMessage(evt) {
                         const data = JSON.parse(evt.data);
-                        const currentData = newD3Service.getCurrentData();
-                        if (currentData.type === data.type && currentData.name == data.name) {
-                            newD3Service.addRowToCurrentSet(data);
-                            newD3Service.update();
-                        }
                         if ($scope.actualTab.name !== $scope.tabs[0].name) {
                             $scope.tabs[0].notifications++;
                         }
                         const message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data;
-                        // Flash.create('success', message);
+                        Flash.create('success', message);
                         $scope.$broadcast('data', data);
                     });
             }

@@ -40,10 +40,18 @@ angular.module('nsoc')
 				newD3Service.updateCurrentData(data);
 				newD3Service.update();
 			} else {
-				Flash.create('info', 'no data for this configuration');
+				Flash.create('info', 'No data for this configuration');
 			}
 		});
 	}
+
+	function addNewDataToChard(data) {
+		const currentData = newD3Service.getCurrentData();
+		if (currentData.type === data.type && currentData.name == data.name) {
+				newD3Service.addRowToCurrentSet(data);
+				newD3Service.update();
+		}
+	};
 
 	function drawChart() {
 		const startDate = moment().startOf($scope.actualSelector.value).format('X');
@@ -107,7 +115,7 @@ angular.module('nsoc')
 			obj.unit='%';
 		}
 		if (obj.type === 'indicator' && obj.name === 'global') {
-			$rootScope.globalIndicator = obj;
+			$scope.globalIndicator = obj;
 			getHomeBackgroundGradient(obj.data);
 			getHouseHealth(obj.data);
 		} else {
@@ -151,7 +159,7 @@ angular.module('nsoc')
 			$scope.data.forEach((obj) => {
 				obj.lastUpdate = moment(obj.date).fromNow();
 			});
-			$rootScope.globalIndicator.lastUpdate = moment($rootScope.globalIndicator.date).fromNow();
+			$scope.globalIndicator.lastUpdate = moment($scope.globalIndicator.date).fromNow();
 		}, 60000);
 	}
 
@@ -167,10 +175,7 @@ angular.module('nsoc')
 					res.data.forEach((obj) => {
 						displayHouseInfo(obj);
 					});
-					const defaultParameters = {selector: $scope.selectors[0], graph: $rootScope.globalIndicator};
-					$scope.actualSelector = $scope.selectors[0];
-					$scope.actualGraph = $rootScope.globalIndicator;
-					// $scope.changeGraph(defaultParameters.graph);
+					$scope.actualGraph = $scope.globalIndicator;
 					drawChart();
 					updateDisplayedDates();
 					$rootScope.loading = false;
@@ -192,12 +197,13 @@ angular.module('nsoc')
 			{name: 'Daily', value: 'day'},
 		];
 		$scope.modes = ['indicator', 'sensor'];
-		$scope.changeMode('sensor');
+		$scope.actualSelector = $scope.selectors[0];
+		$scope.changeMode($scope.modes[1]);
 		getFirstData();
 		$scope.$on('data', (event, data) => {
 			displayHouseInfo(data);
+			addNewDataToChard(data);
 		});
 	}
-
 	init();
 });
