@@ -24,10 +24,8 @@
 				<div class='name'>{{obj.name}}</div>
 			</div>
 		</div>
-		<div class='modes'>
-			<div class='aggregationSelectorButtonList'>
-				<button ng-repeat='selector in selectors' ng-class="{active: actualSelector.name == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
-			</div>
+		<div class='aggregationSelectorButtonList'>
+			<button ng-repeat='selector in selectors' ng-class="{active: actualSelector.name == selector.name}" class="aggregationSelector" ng-click="getData(selector)">{{selector.name}}</button>
 		</div>
 	</div>
 	<div class='graphParameters'>

@@ -96,11 +96,6 @@ angular.module('nsoc')
 		}
 	}
 
-	function getColor(value) {
-		var hue = (value * 1.75).toString(10);
-		return "hsl(" + hue + ",50%,50%)";
-	}
-
 	function displayHouseInfo(obj) {
 		if (obj.date) {
 			obj.lastUpdate = moment(obj.date).fromNow();
