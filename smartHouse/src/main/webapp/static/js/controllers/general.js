@@ -1,22 +1,13 @@
 angular.module('nsoc')
 .controller('generalController', function ($scope, $rootScope, getDataService, newD3Service, $http, _, $interval, $timeout, Flash) {
-	$rootScope.selectors = [
-		{name: 'Monthly', value: 'month'},
-		{name: 'Weekly', value: 'week'},
-		{name: 'Daily', value: 'day'},
-	];
 
 	$scope.getData = function (selector) {
-		$rootScope.actualSelector = selector;
+		$scope.actualSelector = selector;
 		updateChart();
 	};
 
-	$scope.changeMode = function () {
-		if ($rootScope.indicatorMode) {
-			$scope.mode = 'indicator';
-		} else {
-			$scope.mode = 'sensor';
-		}
+	$scope.changeMode = function (newMode) {
+		$scope.actualMode = newMode;
 		$timeout(function () {
 			if (!$rootScope.loading) {
 				const element = document.querySelectorAll('.general>.mainInfo .round.active');
@@ -29,23 +20,22 @@ angular.module('nsoc')
 	};
 
 	$scope.changeGraph = function (target) {
-		const oldGraph = angular.copy($rootScope.actualGraph);
+		const oldGraph = angular.copy($scope.actualGraph);
 		if (target) {
-			$rootScope.actualGraph = target;
+			$scope.actualGraph = target;
 		} else if (this.obj) {
-			$rootScope.actualGraph = this.obj;
+			$scope.actualGraph = this.obj;
 		}
-		if (!oldGraph || oldGraph.name !== $rootScope.actualGraph.name || oldGraph.type !== $rootScope.actualGraph.type) {
+		if (!oldGraph || oldGraph.name !== $scope.actualGraph.name || oldGraph.type !== $scope.actualGraph.type) {
 			updateChart();
-			console.log(newD3Service.getCurrentData());
 		}
 	};
 
 
 	function updateChart() {
-		const startDate = moment().startOf($rootScope.actualSelector.value).format('X');
+		const startDate = moment().startOf($scope.actualSelector.value).format('X');
 		const endDate = moment().format('X');
-		getDataService.get(startDate, endDate, $rootScope.actualGraph.type, $rootScope.actualGraph.name, (data) => {
+		getDataService.get(startDate, endDate, $scope.actualGraph.type, $scope.actualGraph.name, (data) => {
 			if (data.length != 0) {
 				newD3Service.updateCurrentData(data);
 				newD3Service.update();
@@ -56,9 +46,9 @@ angular.module('nsoc')
 	}
 
 	function drawChart() {
-		const startDate = moment().startOf($rootScope.actualSelector.value).format('X');
+		const startDate = moment().startOf($scope.actualSelector.value).format('X');
 		const endDate = moment().format('X');
-		getDataService.get(startDate, endDate, $rootScope.actualGraph.type, $rootScope.actualGraph.name, (data) => {
+		getDataService.get(startDate, endDate, $scope.actualGraph.type, $scope.actualGraph.name, (data) => {
 			newD3Service.appendGradient();
 			newD3Service.updateCurrentData(data);
 			newD3Service.init();
@@ -79,15 +69,15 @@ angular.module('nsoc')
 
 	function getHouseHealth(value) {
 		if (value >= 0 && value < 25) {
-			$rootScope.houseHealth = 'very bad';
+			$scope.houseHealth = 'very bad';
 		} else if (value >= 25 && value < 50) {
-			$rootScope.houseHealth = 'bad';
+			$scope.houseHealth = 'bad';
 		} else if (value >= 50 && value < 75) {
-			$rootScope.houseHealth = 'ok';
+			$scope.houseHealth = 'ok';
 		} else if (value >= 75 && value <= 100) {
-			$rootScope.houseHealth = 'great';
+			$scope.houseHealth = 'great';
 		} else {
-			$rootScope.houseHealth = 'abnormally';
+			$scope.houseHealth = 'abnormally';
 		}
 	}
 
@@ -95,8 +85,6 @@ angular.module('nsoc')
 		var hue = (value * 1.75).toString(10);
 		return "hsl(" + hue + ",50%,50%)";
 	}
-
-	let monte = true;
 
 	function displayHouseInfo(obj) {
 		if (obj.date) {
@@ -157,21 +145,49 @@ angular.module('nsoc')
 		}, 60000);
 	}
 
-	$scope.$on('firstData', (e, data) => {
-		data.forEach((obj) => {
-			displayHouseInfo(obj);
-		});
-		const defaultParameters = {selector: $rootScope.selectors[0], graph: $rootScope.globalIndicator};
-		$rootScope.actualSelector = $rootScope.selectors[0];
-		$rootScope.actualGraph = $rootScope.globalIndicator;
-		// $scope.changeGraph(defaultParameters.graph);
-		drawChart();
-		updateDisplayedDates();
-		$rootScope.loading = false;
-	});
+	getFirstData = function () {
+			$http({
+					method: 'GET',
+					url: '/getFirstData'
+			}).then(function success(res) {
+					if ($scope.actualTab.name !== $scope.tabs[0].name) {
+							$scope.tabs[0].notifications++;
+					}
+					Flash.create('success', 'Received new data!');
+					res.data.forEach((obj) => {
+						displayHouseInfo(obj);
+					});
+					const defaultParameters = {selector: $scope.selectors[0], graph: $rootScope.globalIndicator};
+					$scope.actualSelector = $scope.selectors[0];
+					$scope.actualGraph = $rootScope.globalIndicator;
+					// $scope.changeGraph(defaultParameters.graph);
+					drawChart();
+					updateDisplayedDates();
+					$rootScope.loading = false;
+			}, function error(err) {
+					console.log(err);
+					if (err.status === 403) {
+							$cookies.put('authenticate', false);
+							$location.path('/login');
+							Flash.create('danger', 'Access denied');
+					}
+			});
+	}
 
-	$scope.$on('data', (event, data) => {
-		displayHouseInfo(data);
-	});
-	$scope.changeMode();
+	function init() {
+		$scope.data = [];
+		$scope.selectors = [
+			{name: 'Monthly', value: 'month'},
+			{name: 'Weekly', value: 'week'},
+			{name: 'Daily', value: 'day'},
+		];
+		$scope.modes = ['indicator', 'sensor'];
+		$scope.changeMode('sensor');
+		getFirstData();
+		$scope.$on('data', (event, data) => {
+			displayHouseInfo(data);
+		});
+	}
+
+	init();
 });

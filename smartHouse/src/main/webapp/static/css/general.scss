@@ -9,10 +9,10 @@
 		display        : flex;
 		flex-direction : column;
 		width          : 100%;
-		height         : 70%;
+		height         : 53%;
 
 		&>.houseHealth {
-			margin    : auto auto 50px auto;
+			margin    : 0 auto 20px auto;
 			font-size : 22px;
 			color     : $grey;
 		}
@@ -84,8 +84,6 @@
 				color          : white;
 
 				&>.name {
-					position: absolute;
-					bottom: -29px;
 					&:first-letter {
 						text-transform: uppercase;
 					}
@@ -103,24 +101,6 @@
 			width            : auto;
 			flex-direction   : column;
 
-			&>.switchMode {
-				font-size      : 13px;
-				color          : white;
-				font-weight    : bold;
-				display        : flex;
-				flex-direction : column;
-				margin-bottom  : 20px;
-				align-items    : center;
-				&>.title {
-					text-decoration: underline;
-				}
-				&>.mode {
-					text-transform : capitalize;
-				}
-				&>.switch {
-					margin-top: 5px;
-				}
-			}
 			& > .aggregationSelectorButtonList {
 				display        : flex;
 				flex-direction : column;
@@ -150,6 +130,10 @@
 			}
 		}
 	}
+	&>.graphParameters {
+		margin: 10px;
+	}
+
 	& > svg#homeChart {
 		width: 100%;
 		flex: 1;

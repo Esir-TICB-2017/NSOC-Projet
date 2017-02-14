@@ -467,7 +467,6 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return result;
 	}
 
-	public static ArrayList<String>
 
 	public static JSONArray getUsers() {
 		JSONArray users = new JSONArray();
