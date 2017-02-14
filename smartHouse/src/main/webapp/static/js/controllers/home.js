@@ -54,7 +54,7 @@ angular.module('nsoc')
                     function onMessage(evt) {
                         const data = JSON.parse(evt.data);
                         const currentData = newD3Service.getCurrentData();
-                        console.log(currentData, data)
+                        console.log(data)
                         if (currentData.type === data.type && currentData.name == data.name) {
                             newD3Service.addRowToCurrentSet(data);
                             newD3Service.update();

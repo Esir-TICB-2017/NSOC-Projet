@@ -440,13 +440,17 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 
 	public static String getUserRole(String email) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT role FROM users WHERE email=?";
+		String sql = "SELECT roles.name " +
+				"FROM users " +
+				"INNER JOIN roles " +
+				"ON roles.id = users.role_id " +
+				"WHERE users.email=?";
 		String result = null;
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, email);
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
-					result = rs.getString("role");
+					result = rs.getString("name");
 				}
 				rs.close();
 			} catch (SQLException ex) {
@@ -458,6 +462,8 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		}
 		return result;
 	}
+
+	public static ArrayList<String>
 
 	public static JSONArray getUsers() {
 		JSONArray users = new JSONArray();

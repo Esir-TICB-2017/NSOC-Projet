@@ -34,7 +34,7 @@ public class main {
 		Indicators.getInstance().initIndicators();
 		JSONArray settings = ReadInDatabase.getSettings();
 
-		//BacNetToJava.getInstance();
+		BacNetToJava.getInstance();
 
 		// Get webapp directory
 		String pwdPath = System.getProperty("user.dir") + "/src/main/webapp/";
@@ -104,7 +104,7 @@ public class main {
 				}
 			}
 		};
-		thread.start();
+		//thread.start();
 
 		Server server = new Server();
 		ServerConnector connector = new ServerConnector(server);
