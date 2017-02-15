@@ -6,7 +6,8 @@ angular.module('nsoc')
 .controller('settingsController', ($scope, $http, _, websocketService) => {
 
 	$scope.changeValue = function(setting) {
-		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.defaultValue.itemValue}));
+		console.log(setting);
+		// websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.current.itemValue}));
 	}
 
 	getSettings = function () {
@@ -49,7 +50,7 @@ angular.module('nsoc')
 				if (index !== -1) {
 					const i = _.findIndex($scope.settings[key][index].allowedValues, (allowedValue) => allowedValue.itemValue === userSetting.value);
 					if (i !== -1) {
-							$scope.settings[key][index].defaultValue = $scope.settings[key][index].allowedValues[i];
+							$scope.settings[key][index].currentValue = $scope.settings[key][index].allowedValues[i];
 					}
 				}
 			});
