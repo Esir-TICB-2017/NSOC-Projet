@@ -5,6 +5,7 @@ import database.ReadInDatabase;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import webserver.SessionManager;
+import webserver.settings.Settings;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,11 +29,10 @@ public class GetSettingsServlet extends HttpServlet {
         String role = SessionManager.getRole(request);
 
         if(role.equals("admin") || role.equals("member")){
-            settings = ReadInDatabase.getSettings();
+            settings = Settings.getSettings();
             allObject.put("settings", settings);
             users = ReadInDatabase.getUsers();
             allObject.put("users", users);
-
         }
 
         if ( allObject!= null) {
