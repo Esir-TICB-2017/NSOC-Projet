@@ -17,6 +17,7 @@ import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
 import database.Database;
 import database.DatabaseEventsHandler;
+import database.ReadInDatabase;
 import indicators.Indicator;
 import indicators.Indicators;
 import sensor.sensorClass.Sensor;
@@ -87,9 +88,8 @@ public class BacNetToJava implements InterfaceReadBacnet {
 							if(sensor.getType().equals("consumption")) {
 					//			long currentTime = Utils.getCurrentTimeStamp().getTime();
 					//			long lastTime = sensor.getLastRecord().getDate();
-					//			long diffTimeInMs = (currentTime-lastTime);
+					//			long diffTimeInMs = (currentTime-lastTime); 9000 - 0 = 9000, 9500 - 9000 = 500
 					//			Double diffTimeInHour = ((double) diffTimeInMs)/3600000;
-					//			finalValue = (value-currentvalue)*diffTimeInHour*6;
 								finalValue = (value-currentvalue);
 								currentvalue = value;
 

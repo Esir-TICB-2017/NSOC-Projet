@@ -3,6 +3,7 @@ package webserver.servlets;
 import com.google.gson.Gson;
 import database.ReadInDatabase;
 import org.json.JSONArray;
+import webserver.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +19,13 @@ import java.util.ArrayList;
 public class GetSettingsServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JSONArray settings = ReadInDatabase.getSettings();
+
+        JSONArray settings = null;
+        String role = SessionManager.getRole(request);
+
+        if(role.equals("admin") || role.equals("member")){
+            settings = ReadInDatabase.getSettings();
+        }
 
         if (settings != null) {
             response.setContentType("application/json");

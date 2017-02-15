@@ -10,6 +10,8 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import io.jsonwebtoken.*;
 import utils.Constants;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.GeneralSecurityException;
 import java.security.Key;
@@ -112,6 +114,24 @@ public class SessionManager {
 				.parseClaimsJws(jwt).getBody();
 
 		return new Timestamp(claims.getExpiration().getTime());
+	}
+
+	public static String getRole(HttpServletRequest request){
+		String role=null;
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("Set-Cookie")) {
+					String token = cookie.getValue();
+					Claims claims = Jwts.parser()
+							.setSigningKey(DatatypeConverter.parseBase64Binary("projetnsoc"))
+							.parseClaimsJws(token).getBody();
+					role = claims.getAudience();
+				}
+
+			}
+		}
+		return role;
 	}
 }
 

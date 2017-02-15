@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	// TODO : refactor function with Sensor in input
+
 	public static DataRecord getLastValue(Sensor sensor) {
 		double data;
 		Long date;
