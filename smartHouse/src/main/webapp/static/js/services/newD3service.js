@@ -5,6 +5,25 @@
  * Created by loulou on 30/01/2017.
  */
 angular.module('nsoc').factory('newD3Service', ($rootScope) => {
+    const timeFormat = {
+        formatMillisecond: d3.timeFormat(".%L"),
+        formatSecond: d3.timeFormat(":%S"),
+        formatMinute: d3.timeFormat("%I:%M"),
+        formatHour: d3.timeFormat("%I %p"),
+        formatDay: d3.timeFormat("%a %d"),
+        formatWeek: d3.timeFormat("%b %d"),
+        formatMonth: d3.timeFormat("%B"),
+        formatYear: d3.timeFormat("%Y")
+    };
+    function multiFormat(date) {
+        return (d3.timeSecond(date) < date ? timeFormat.formatMillisecond
+            : d3.timeMinute(date) < date ? timeFormat.formatSecond
+                : d3.timeHour(date) < date ? timeFormat.formatMinute
+                    : d3.timeDay(date) < date ? timeFormat.formatHour
+                        : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? timeFormat.formatDay : timeFormat.formatWeek)
+                            : d3.timeYear(date) < date ? timeFormat.formatMonth
+                                : timeFormat.formatYear)(date);
+    };
     const constants = {};
     const currentData = {};
     const tooltip = {
@@ -40,54 +59,10 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
         const text = tooltipGroup.select('text')
             .attr('x', tooltip.xRect + tooltip.rectWidth / 2)
             .attr('y', tooltip.yRect + tooltip.rectHeight / 2)
-            .text(constants.yScale.invert(pos.y).toFixed(1));
+            .text(constants.yScale.invert(pos.y).toFixed(1) + " " + currentData.unit);
 
         rect.attr('width', tooltip.rectWidth = text.node().getBBox().width + 10)
         rect.attr('x', tooltip.xRect = x - tooltip.rectWidth / 2);
-    }
-
-    function closestPoint(pathNode, point) {
-        console.log(pathNode.getPointAtLength())
-        var pathLength = pathNode.getTotalLength(),
-            precision = 8,
-            best,
-            bestLength,
-            bestDistance = Infinity;
-
-        // linear scan for coarse approximation
-        for (var scan, scanLength = 0, scanDistance; scanLength <= pathLength; scanLength += precision) {
-            if ((scanDistance = distance2(scan = pathNode.getPointAtLength(scanLength))) < bestDistance) {
-                best = scan, bestLength = scanLength, bestDistance = scanDistance;
-            }
-        }
-
-        // binary search for precise estimate
-        precision /= 2;
-        while (precision > 0.5) {
-            var before,
-                after,
-                beforeLength,
-                afterLength,
-                beforeDistance,
-                afterDistance;
-            if ((beforeLength = bestLength - precision) >= 0 && (beforeDistance = distance2(before = pathNode.getPointAtLength(beforeLength))) < bestDistance) {
-                best = before, bestLength = beforeLength, bestDistance = beforeDistance;
-            } else if ((afterLength = bestLength + precision) <= pathLength && (afterDistance = distance2(after = pathNode.getPointAtLength(afterLength))) < bestDistance) {
-                best = after, bestLength = afterLength, bestDistance = afterDistance;
-            } else {
-                precision /= 2;
-            }
-        }
-
-        best = [best.x, best.y];
-        best.distance = Math.sqrt(bestDistance);
-        return best;
-
-        function distance2(p) {
-            var dx = p.x - point[0],
-                dy = p.y - point[1];
-            return dx * dx + dy * dy;
-        }
     }
 
     return {
@@ -100,11 +75,11 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
             constants.parseTime = d3.timeParse('%b %d, %Y %X');
             constants.curve = d3.curveBasis;
             constants.xScale = d3.scaleTime()
-                .rangeRound([-constants.widthMargin, constants.width + constants.widthMargin]);
+                .rangeRound([-constants.widthMargin, constants.width + constants.widthMargin])
             constants.yScale = d3.scaleLinear()
                 .rangeRound([constants.height, 0]);
-            constants.xAxis = d3.axisBottom(constants.xScale);
-            constants.yAxis = d3.axisLeft(constants.yScale);
+            constants.xAxis = d3.axisBottom(constants.xScale).ticks(5).tickFormat(multiFormat);
+            constants.yAxis = d3.axisLeft(constants.yScale).ticks(5);
             constants.lineGen = d3.line()
                 .x((d) => constants.xScale(d.date))
                 .y((d) => constants.yScale(d.data))
@@ -153,7 +128,7 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
                 .call(constants.xAxis);
             svg.append("g")
                 .attr('class', 'yAxis')
-                .attr("transform", "translate(60, 0)")
+                .attr("transform", "translate(40, 0)")
                 .call(constants.yAxis);
 
             const tooltipGroup = svg.append('g')
@@ -180,18 +155,19 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
                 .attr('fill', 'red')
                 .style('text-anchor', 'middle')
                 .style('font-size', 15);
-
+            console.log(currentData.unit)
             svg.append('text')
+                .attr('class', 'chartUnit')
                 .attr('x', constants.width /2)
                 .attr('y', constants.height /2)
-                .text($rootScope.unit)
+                .text(currentData.unit)
                 .attr('dy', '.35em')
-                .attr('fill', 'red')
+                .attr('fill', 'white')
                 .style('text-anchor', 'middle')
-                .style('font-size', 15)
+                .style('font-size', 20)
         },
         update: () => {
-
+            d3.select('.chartUnit').text(currentData.unit);
             d3.select('g.tooltip').attr('opacity', 0);
             constants.xScale
                 .domain([new Date(currentData.data[0].date), new Date(currentData.data[currentData.data.length - 1].date)]);
@@ -248,7 +224,8 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
         addRowToCurrentSet(row) {
             currentData.data.push(row);
         },
-        updateCurrentData(data) {
+        updateCurrentData(data, unit) {
+            currentData.unit = unit;
             currentData.type = data[0].type;
             currentData.name = data[0].name;
             currentData.data = data;
