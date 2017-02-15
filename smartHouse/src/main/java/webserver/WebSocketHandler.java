@@ -112,7 +112,6 @@ public class WebSocketHandler {
 					}
 					if (authorize){
 						WriteInDatabase.writeUserSetting(this.userId, result);
-
 						settings.put("id", result.get("setting_id"));
 						settings.put("name", "parameter");
 						settings.put("status", "success");

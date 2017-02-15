@@ -3,7 +3,7 @@
 */
 
 angular.module('nsoc')
-.controller('settingsController', ($scope, $http, _, websocketService) => {
+.controller('settingsController', ($scope, $rootScope, $http, _, websocketService) => {
 
 	$scope.changeValue = function(setting) {
 		console.log(setting);
@@ -15,10 +15,10 @@ angular.module('nsoc')
 					method: 'GET',
 					url: '/getSettings'
 			}).then(function success(res) {
-					$scope.settings = _.groupBy(res.data.settings, setting => setting.type);
+					$rootScope.settings = _.groupBy(res.data.settings, setting => setting.type);
 					$scope.actualSettingView = 'general';
 					if ($scope.role === 'admin') {
-						$scope.settings.users = res.data.users;
+						$rootScope.settings.users = res.data.users;
 					}
 					getUserSettings();
 			}, function error(err) {
@@ -43,14 +43,14 @@ angular.module('nsoc')
 	}
 
 	displayUserDefaultSettings = function () {
-		const keys = _.keys($scope.settings);
+		const keys = _.keys($rootScope.settings);
 		$scope.userSettings.forEach((userSetting) => {
 			keys.forEach((key) => {
-				const index = _.findIndex($scope.settings[key], (setting) => setting.id === userSetting.setting_id);
+				const index = _.findIndex($rootScope.settings[key], (setting) => setting.id === userSetting.setting_id);
 				if (index !== -1) {
-					const i = _.findIndex($scope.settings[key][index].allowedValues, (allowedValue) => allowedValue.itemValue === userSetting.value);
+					const i = _.findIndex($rootScope.settings[key][index].allowedValues, (allowedValue) => allowedValue.itemValue === userSetting.value);
 					if (i !== -1) {
-							$scope.settings[key][index].currentValue = $scope.settings[key][index].allowedValues[i];
+							$rootScope.settings[key][index].currentValue = $rootScope.settings[key][index].allowedValues[i];
 					}
 				}
 			});
