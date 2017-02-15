@@ -7,12 +7,26 @@ angular.module('nsoc')
 
 	$scope.changeValue = function(setting, newValue) {
 		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue.itemValue}));
+		//changer role : {key: userRole, role, email}
+		// add user: {key: addUser, role, email}
+		// supprimer: {key: deleteUser, email}
 	}
 
 	updateParameter = function(parameter) {
-		if (parameter.id) {
+		let setting;
+		if (parameter.setting_id) {
+			setting = getSetting({id: parameter.setting_id});
+			setting.currentValue = getAllowedValue(setting, parameter.value);
 		} else if (parameter.email) {
-
+			setting = getSetting({email: parameter.email});
+			switch(parameter.key) {
+				case 'userRole':
+						break;
+				case 'addUser' :
+						break;
+				case 'deleteUser':
+						break;
+			}
 		}
 	}
 
@@ -50,19 +64,33 @@ angular.module('nsoc')
 
 	displayUserDefaultSettings = function () {
 		$scope.userSettings.forEach((userSetting) => {
-			const setting = getSettingIndex(userSetting.setting_id);
+			const setting = getSetting({id: userSetting.setting_id});
 			if (setting!== -1) {
-				const i = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === userSetting.value);
-				if (i !== -1) {
-					setting.currentValue = setting.allowedValues[i];
+				const allowedValue = getAllowedValue(setting, userSetting.value);
+				if (allowedValue !== -1) {
+					setting.currentValue = allowedValue;
 				}
 			}
 		});
 	}
 
-	getSettingIndex = function (id) {
+	getAllowedValue = function (setting, value) {
+		const index = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === value);
+		if (index !== -1) {
+			return setting.allowedValues[index];
+		} else {
+			return -1;
+		}
+	}
+
+	getSetting = function (obj) {
 		for (var key in $rootScope.settings) {
-			const index = _.findIndex($rootScope.settings[key], (setting) => setting.id === id);
+			let index = -1;
+			if (obj.id) {
+				index = _.findIndex($rootScope.settings[key], (setting) => setting.id === obj.id);
+			} else if (obj.email) {
+				index = _.findIndex($rootScope.settings[key], (setting) => setting.email === obj.email);
+			}
 			if (index !== -1) {
 				return $rootScope.settings[key][index];
 			}
@@ -72,8 +100,10 @@ angular.module('nsoc')
 
 	function init() {
 		getSettings();
-		$scope.$on('settings', (parameter) => updateParameter(parameter));
-	}
+		$scope.$on('settings', (event, parameter) => {
+			updateParameter(parameter);
+	});
+}
 
 	init();
 });
