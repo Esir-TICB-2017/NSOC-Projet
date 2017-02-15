@@ -57,7 +57,6 @@ angular.module('nsoc')
             const startDate = moment().startOf($scope.actualSelector.value).format('X');
             const endDate = moment().format('X');
             getDataService.get(startDate, endDate, $scope.actualGraph.type, $scope.actualGraph.name, (data) => {
-                console.log($scope.actualGraph)
                 newD3Service.appendGradient();
                 newD3Service.updateCurrentData(data, $scope.actualGraph.unit);
                 newD3Service.init();

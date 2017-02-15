@@ -14,20 +14,12 @@ angular.module('nsoc')
 					method: 'GET',
 					url: '/getSettings'
 			}).then(function success(res) {
-				console.log('settings', res);
-					const data = _.sortBy(res.data.settings, setting => setting.order);
-					$scope.settings = _.groupBy(data, setting => setting.type);
-					const keys = _.keys($scope.settings);
-					keys.forEach((key) => {
-							$scope.settings[key].forEach((setting) => {
-									const index = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === setting.defaultValue);
-									if (index !== -1) {
-											setting.defaultValue = setting.allowedValues[index];
-									}
-							});
-					});
-					console.log($scope.settings);
-					$scope.actualSettingView = $scope.settings[keys[0]];
+					$scope.settings = _.groupBy(res.data.settings, setting => setting.type);
+					$scope.actualSettingView = 'general';
+					if ($scope.role === 'admin') {
+						$scope.users = res.data.users;
+					}
+					getUserSettings();
 			}, function error(err) {
 					console.log(err);
 			});
@@ -42,16 +34,30 @@ angular.module('nsoc')
 					method: 'GET',
 					url: '/getUserSettings'
 			}).then(function success(res) {
-				console.log('userSettings', res);
 					$scope.userSettings = res.data;
+					displayUserDefaultSettings();
 			}, function error(err) {
 					console.log(err);
 			});
 	}
 
+	displayUserDefaultSettings = function () {
+		const keys = _.keys($scope.settings);
+		$scope.userSettings.forEach((userSetting) => {
+			keys.forEach((key) => {
+				const index = _.findIndex($scope.settings[key], (setting) => setting.id === userSetting.setting_id);
+				if (index !== -1) {
+					const i = _.findIndex($scope.settings[key][index].allowedValues, (allowedValue) => allowedValue.itemValue === userSetting.value);
+					if (i !== -1) {
+							$scope.settings[key][index].defaultValue = $scope.settings[key][index].allowedValues[i];
+					}
+				}
+			});
+		});
+	}
+
 	function init() {
 		getSettings();
-		getUserSettings();
 	}
 
 	init();
