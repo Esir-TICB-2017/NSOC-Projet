@@ -57,8 +57,10 @@ public class Indicator {
 	}
 	public DataRecord getLastRecord() {
 		DataRecord record = ReadInDatabase.getLastIndicator(this);
-		record.setType("indicator");
-		record.setName(this.getType());
+		if(record != null) {
+			record.setType("indicator");
+			record.setName(this.getType());
+		}
 		return record;
 	}
 

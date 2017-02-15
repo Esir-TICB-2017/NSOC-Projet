@@ -27,16 +27,20 @@ public class GetFirstDataServlet extends HttpServlet {
 
         for (Sensor sensor : Sensors.getInstance().getSensors()){
             DataRecord lastRecord = sensor.getLastRecord();
-            data = lastRecord.toJson();
-            data.put("unit", sensor.getUnit());
-            data.put("connected", sensor.getStatus());
-            globalResults.put(data);
+            if (lastRecord != null) {
+                data = lastRecord.toJson();
+                data.put("unit", sensor.getUnit());
+                data.put("connected", sensor.getStatus());
+                globalResults.put(data);
+            }
         }
 
         for (Indicator indicator : Indicators.getInstance().getIndicators()){
             DataRecord lastRecord = indicator.getLastRecord();
-            data = lastRecord.toJson();
-            globalResults.put(data);
+            if (lastRecord != null) {
+                data = lastRecord.toJson();
+                globalResults.put(data);
+            }
         }
 
         String responseData = globalResults.toString();

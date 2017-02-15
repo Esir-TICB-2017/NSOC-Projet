@@ -4,7 +4,7 @@
 /**
  * Created by loulou on 30/01/2017.
  */
-angular.module('nsoc').factory('newD3Service', () => {
+angular.module('nsoc').factory('newD3Service', ($rootScope) => {
     const constants = {};
     const currentData = {};
     const tooltip = {
@@ -13,7 +13,6 @@ angular.module('nsoc').factory('newD3Service', () => {
         rectWidth: 60,
         rectHeight: 40,
     };
-
     function mousemoved() {
         var pathLength = d3.select('.line').node().getTotalLength();
         var x = d3.event.pageX;
@@ -28,7 +27,6 @@ angular.module('nsoc').factory('newD3Service', () => {
             else if (pos.x < x) beginning = target;
             else                break; //position found
         }
-
         const tooltipGroup = d3.select('g.tooltip')
             .attr('opacity', 1);
         tooltipGroup.select('circle').attr("cx", x).attr("cy", pos.y);
@@ -36,11 +34,16 @@ angular.module('nsoc').factory('newD3Service', () => {
         if (yTooltipRect < 0) {
             yTooltipRect = pos.y + 20;
         }
-        tooltipGroup.select('rect').attr('x', tooltip.xRect = x - tooltip.rectWidth / 2).attr('y', tooltip.yRect = yTooltipRect)
-        tooltipGroup.select('text')
+        const rect = tooltipGroup.select('rect')
+            .attr('x', tooltip.xRect = x - tooltip.rectWidth / 2)
+            .attr('y', tooltip.yRect = yTooltipRect);
+        const text = tooltipGroup.select('text')
             .attr('x', tooltip.xRect + tooltip.rectWidth / 2)
             .attr('y', tooltip.yRect + tooltip.rectHeight / 2)
             .text(constants.yScale.invert(pos.y).toFixed(1));
+
+        rect.attr('width', tooltip.rectWidth = text.node().getBBox().width + 10)
+        rect.attr('x', tooltip.xRect = x - tooltip.rectWidth / 2);
     }
 
     function closestPoint(pathNode, point) {
@@ -91,7 +94,6 @@ angular.module('nsoc').factory('newD3Service', () => {
         init: () => {
 
             const svg = d3.select(`svg#homeChart`).on("mousemove", mousemoved);
-            ;
             constants.width = parseInt(svg.style('width'), 0);
             constants.height = parseInt(svg.style('height'), 0);
             constants.widthMargin = 15;
@@ -174,6 +176,15 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .attr('ry', 4);
 
             tooltipGroup.append('text')
+                .attr('dy', '.35em')
+                .attr('fill', 'red')
+                .style('text-anchor', 'middle')
+                .style('font-size', 15);
+
+            svg.append('text')
+                .attr('x', constants.width /2)
+                .attr('y', constants.height /2)
+                .text($rootScope.unit)
                 .attr('dy', '.35em')
                 .attr('fill', 'red')
                 .style('text-anchor', 'middle')
