@@ -246,29 +246,51 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	public static void deleteUser(JSONObject user) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "DELETE  FROM users WHERE email = ?";
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, user.getString("email"));
-			preparedStatement.executeUpdate();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		JSONArray users = ReadInDatabase.getUsers();
+		boolean find = false;
+		for(int i = 0 ; i < users.length(); i++){
+			if (users.getJSONObject(i).getString("email").equals(user.getString("email"))){
+				find = true;
+			}
+		}
+
+		if (find){
+			String sql = "DELETE  FROM users WHERE email = ?";
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, user.getString("email"));
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public static void addUser(JSONObject user) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "INSERT INTO users (email, role) VALUES (?, ?)";
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, user.getString("email"));
-			preparedStatement.setString(2, user.getString("role"));
-			preparedStatement.executeQuery();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+		JSONArray users = ReadInDatabase.getUsers();
+		boolean find = false;
+		for(int i = 0 ; i < users.length(); i++){
+			if (users.getJSONObject(i).getString("email").equals(user.getString("email"))){
+				find = true;
+			}
 		}
+
+		if(!find){
+			String sql = "INSERT INTO users (email, role) VALUES (?, ?)";
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, user.getString("email"));
+				preparedStatement.setString(2, user.getString("role"));
+				preparedStatement.executeQuery();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	public static boolean isInteger(String s) {
