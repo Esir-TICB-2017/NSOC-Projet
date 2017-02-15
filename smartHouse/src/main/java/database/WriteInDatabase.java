@@ -210,19 +210,17 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 	public static void writeUserSetting(String userId, JSONObject settings) {
 
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "INSERT INTO users_settings(userid, setting_id, value) " +
-				"VALUES(?, ?, ?) " +
-				"ON DUPLICATE KEY UPDATE userid = VALUES(userid), setting_id = VALUES(setting_id), value = VALUES(value)";
+		String sql = "UPDATE users_settings SET value=? WHERE userid=? AND setting_id=?";
 
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-			int setting_id = (int) settings.get("setting_id");
-			String value = settings.get("value").toString();
+			int setting_id = settings.getInt("setting_id");
+			String value = settings.getString("value");
 
-			preparedStatement.setString(1, userId);
-			preparedStatement.setInt(2, setting_id);
-			preparedStatement.setString(3, value);
+			preparedStatement.setString(1, value);
+			preparedStatement.setString(2, userId);
+			preparedStatement.setInt(3, setting_id);
 
 			//query execution after checking value
 			if(isInteger(value)) {
