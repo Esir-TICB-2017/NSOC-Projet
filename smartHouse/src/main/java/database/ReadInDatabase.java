@@ -522,16 +522,16 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		JSONArray users = new JSONArray();
 		JSONObject user;
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "SELECT email,roles.name" +
-				" FROM users" +
-				"INNER JOIN roles" +
+		String sql = "SELECT email,roles.name " +
+				" FROM users " +
+				"INNER JOIN roles " +
 				"ON roles.id = users.role_id";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					String email = rs.getString("email");
-					String role = rs.getString("role");
+					String role = rs.getString("name");
 					user = new JSONObject();
 					user.put("email", email);
 					user.put("role", role);
