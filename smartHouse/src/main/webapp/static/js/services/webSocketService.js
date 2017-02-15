@@ -15,7 +15,7 @@ angular.module('nsoc')
 				onClose();
 			};
 			this.websocket.onmessage = (evt) => {
-				console.log(evt);
+				console.log(evt.data);
 				onMessage(evt);
 			};
 			this.websocket.onerror = (err) => {

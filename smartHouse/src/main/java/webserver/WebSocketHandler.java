@@ -98,6 +98,8 @@ public class WebSocketHandler {
 		if (result.has("key")) {
 			String key = result.get("key").toString();
 			String id;
+			JSONObject answer = new JSONObject();
+			JSONObject settings = new JSONObject();
 			switch (key){
 				case "settings" :
 					id = getMyUniqueId();
@@ -110,43 +112,73 @@ public class WebSocketHandler {
 					}
 					if (authorize){
 						WriteInDatabase.writeUserSetting(this.userId, result);
-						ConnectedClients.getInstance().writeSpecificMember(id, "Setting "+result.get("setting_id")+" sent. ");
-						System.out.println(result);
+
+						settings.put("id", result.get("setting_id"));
+						settings.put("name", "parameter");
+						settings.put("status", "success");
+						answer.put("settings", settings);
+						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString() );
 					}
 					else{
-						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
-						System.out.println("not ok");
-
+						settings.put("id", result.get("setting_id"));
+						settings.put("name", "parameter");
+						settings.put("status", "error");
+						answer.put("settings", settings);
+						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
 				case "userRole" :
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.writeNewRole(result);
-						ConnectedClients.getInstance().writeSpecificMember(id, "Role changed. ");
+						settings.put("email", result.get("email"));
+						settings.put("name", "user");
+						settings.put("status", "done");
+						answer.put("settings", settings);
+						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString() );
 					}
 					else {
-						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
+						settings.put("id", result.get("email"));
+						settings.put("name", "user");
+						settings.put("status", "error");
+						answer.put("settings", settings);
+						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
 				case "deleteUser" :
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.deleteUser(result);
-						ConnectedClients.getInstance().writeSpecificMember(id, "User deleted. ");
+						settings.put("id", result.get("email"));
+						settings.put("name", "user");
+						settings.put("status", "done");
+						answer.put("settings", settings);
+						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					else {
-						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
+						settings.put("id", result.get("email"));
+						settings.put("name", "user");
+						settings.put("status", "error");
+						answer.put("settings", settings);
+						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString() );
 					}
 					break;
 				case "addUser" :
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.addUser(result);
-						ConnectedClients.getInstance().writeSpecificMember(id, "User added. ");
+						settings.put("id", result.get("email"));
+						settings.put("name", "user");
+						settings.put("status", "done");
+						answer.put("settings", settings);
+						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString());
 					}
 					else {
-						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
+						settings.put("id", result.get("email"));
+						settings.put("name", "user");
+						settings.put("status", "error");
+						answer.put("settings", settings);
+						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString() );
 					}
 					break;
 				default:
