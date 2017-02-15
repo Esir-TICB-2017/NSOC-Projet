@@ -46,7 +46,7 @@ angular.module('nsoc')
 	}
 
 	function addNewDataToChard(data) {
-		const currentData = newD3Service.getCurrentData();
+        const currentData = newD3Service.getCurrentData();
 		if (currentData.type === data.type && currentData.name == data.name) {
 				newD3Service.addRowToCurrentSet(data);
 				newD3Service.update();

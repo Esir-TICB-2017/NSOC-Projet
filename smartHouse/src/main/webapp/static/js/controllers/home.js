@@ -53,7 +53,5 @@ angular.module('nsoc')
             $rootScope.loading = true;
             initSocket();
         }
-
         init();
-
     });

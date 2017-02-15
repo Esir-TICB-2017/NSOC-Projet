@@ -7,6 +7,13 @@
 angular.module('nsoc').factory('newD3Service', () => {
     const constants = {};
     const currentData = {};
+    function tooltip() {
+        console.log(d3.event.target.className.baseVal)
+        const elementClassName = d3.event.target.className.baseVal;
+        if(elementClassName === 'line' || elementClassName === 'area') {
+            console.log(d3.event)
+        }
+    }
     return {
         init: () => {
             const svg = d3.select(`svg#homeChart`);
@@ -41,8 +48,10 @@ angular.module('nsoc').factory('newD3Service', () => {
             const line = svg.append('path')
                 .attr("class", "line")
                 .attr("d", constants.lineGen(currentData.data))
-                .on('mouseover', () => {
-                    console.log('ici');
+                .on('mouseover', (d) => {
+                    tooltip();
+                    // console.log(d3.event.target.className.baseVal)
+                    //  if(d3.event.target === 'path' )
                 });
             /*
             var totalLength = line.node().getTotalLength();
@@ -56,6 +65,9 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .attr("stroke-dashoffset", 0);
             */
             svg.append("path")
+                .on('mouseover', (d) => {
+                    tooltip();
+                })
                 .attr("class", "area")
                 .style('opacity', 0)
                 .transition()
@@ -63,6 +75,17 @@ angular.module('nsoc').factory('newD3Service', () => {
                 .ease(d3.easeLinear)
                 .style('opacity', 1)
                 .attr("d", constants.areaGen(currentData.data));
+console.log(currentData.data)
+            svg.append("circle")
+                .data(currentData.data)
+                .attr('fill', 'red')
+                .attr("r", 5)
+                .attr("cx", function(d) {
+                    console.log(d)
+                    return constants.xScale(d.date); })
+                .attr("cy", function(d) { return constants.yScale(d.data); })
+
+
 
             svg.append("g")
                 .attr('class', 'xAxis')
