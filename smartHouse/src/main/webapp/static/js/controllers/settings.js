@@ -6,17 +6,7 @@ angular.module('nsoc')
 .controller('settingsController', ($scope, $rootScope, $http, _, websocketService) => {
 
 	$scope.changeValue = function(setting, newValue) {
-		let valueToSend;
-		if (newValue) {
-			valueToSend = newValue.itemValue;
-		} else {
-			if (setting.currentValue.itemValue) {
-				valueToSend = setting.currentValue.itemValue;
-			} else {
-				valueToSend = setting.currentValue;
-			}
-		}
-		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: valueToSend}));
+		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue}));
 		//changer role : {key: userRole, role, email}
 		// add user: {key: addUser, role, email}
 		// supprimer: {key: deleteUser, email}
@@ -26,7 +16,12 @@ angular.module('nsoc')
 		let setting;
 		if (parameter.setting_id) {
 			setting = getSetting({id: parameter.setting_id});
-			setting.currentValue = getAllowedValue(setting, parameter.value);
+		const allowedValue = getAllowedValue(setting, parameter.value);
+			if (allowedValue !== -1) {
+				setting.currentValue = allowedValue;
+			} else {
+				setting.currentValue = parameter.value;
+			}
 		} else if (parameter.email) {
 			setting = getSetting({email: parameter.email});
 			switch(parameter.key) {
@@ -80,6 +75,8 @@ angular.module('nsoc')
 				const allowedValue = getAllowedValue(setting, userSetting.value);
 				if (allowedValue !== -1) {
 					setting.currentValue = allowedValue;
+				} else {
+					setting.currentValue = userSetting.value;
 				}
 			}
 		});
