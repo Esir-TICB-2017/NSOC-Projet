@@ -47,7 +47,14 @@
 							width      : 100%;
 						}
 						&>input {
-							border-bottom  : 2px solid silver;
+							display: block;
+							font-size: 1.2em;
+							padding: 0.25em;
+							width: 100%;
+							margin-bottom: 1em;
+							border-radius: 3px;
+							border: 1px solid white;
+							background:  transparent;
 						}
 						&>select {
 							text-transform : capitalize;
