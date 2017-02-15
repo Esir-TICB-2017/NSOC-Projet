@@ -17,7 +17,7 @@ angular.module('nsoc')
 					$scope.settings = _.groupBy(res.data.settings, setting => setting.type);
 					$scope.actualSettingView = 'general';
 					if ($scope.role === 'admin') {
-						$scope.users = res.data.users;
+						$scope.settings.users = res.data.users;
 					}
 					getUserSettings();
 			}, function error(err) {
