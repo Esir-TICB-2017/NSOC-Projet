@@ -80,7 +80,7 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
             constants.yScale = d3.scaleLinear()
                 .rangeRound([constants.height, 0]);
             constants.xAxis = d3.axisBottom(constants.xScale).ticks(5).tickFormat(multiFormat);
-            constants.yAxis = d3.axisLeft(constants.yScale).ticks(5);
+            constants.yAxis = d3.axisLeft(constants.yScale).ticks(4);
             constants.lineGen = d3.line()
                 .x((d) => constants.xScale(d.date))
                 .y((d) => constants.yScale(d.data))
@@ -206,7 +206,7 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
                         opacity: "0.3"
                     },
                     {
-                        offset: "85%",
+                        offset: "100%",
                         color: "#FFFFFF",
                         opacity: "0.3"
                     },
