@@ -28,13 +28,6 @@
 				background-color : rgba(255, 255, 255, 0.1);
 			}
 
-			&.disconnected {
-				background-color: rgba(33, 33, 33, 0.3);
-				&>.value {
-					font-size  : 70%;
-				}
-			}
-
 			&.active {
 				background-color : rgba(255, 255, 255, 0.4);
 			}
@@ -56,18 +49,8 @@
 				margin     : auto;
 				overflow   : hidden;
 				text-align : center;
-				&>.disconnected-message {
-					&>.status {
-						font-weight: bold;
-						color: #c62121;
-					}
-					&>.last-value {
-						text-decoration: underline;
-					}
-				}
 			}
 		}
-
 
 		&>.data {
 			display: flex;
@@ -80,7 +63,11 @@
 				flex-direction : column;
 				align-items    : center;
 				color          : white;
-
+				&>.disconnected {
+					font-size: 70%;
+					font-weight: bold;
+					color: #c62121;
+				}
 				&>.name {
 					&:first-letter {
 						text-transform: uppercase;
