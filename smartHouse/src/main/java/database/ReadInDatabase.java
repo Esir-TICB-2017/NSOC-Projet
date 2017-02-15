@@ -185,6 +185,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				while (rs.next()) {
 					String name = rs.getString("name");
 					String description = rs.getString(("description"));
+					String id = rs.getString("id");
 					String dataType = rs.getString("data_type");
 					Double minValue = rs.getDouble("min_value");
 					Double maxValue = rs.getDouble("max_value");
@@ -203,6 +204,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					} else {
 						JSONObject setting = new JSONObject();
 						setting.put("name", name);
+						setting.put("id", id);
 						setting.put("description", description);
 						setting.put("minValue", minValue);
 						setting.put("maxValue", maxValue);
