@@ -93,9 +93,7 @@ public class WebSocketHandler {
 		 value:
 		}
 		*/
-
 		JSONObject result = new JSONObject(message);
-
 		if (result.has("key")) {
 			String key = result.get("key").toString();
 			String id;
@@ -150,7 +148,5 @@ public class WebSocketHandler {
 					break;
 			}
 		}
-
-
 	}
 }

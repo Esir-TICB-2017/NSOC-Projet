@@ -236,6 +236,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		JSONArray userSettings = new JSONArray();
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "SELECT setting_id, value FROM users_settings WHERE userid=?";
+		int i=0;
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, userId);
@@ -247,6 +248,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					userSetting.put("setting_id", setting_id);
 					userSetting.put("value", value);
 					userSettings.put(userSetting);
+					i+=1;
 				}
 				rs.close();
 			} catch (SQLException e) {
@@ -256,7 +258,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return userSettings;
+		if(i==0){
+			return null;
+		} else {
+			return userSettings;
+		}
 	}
 
 	public static JSONArray getDefaultSettings(){

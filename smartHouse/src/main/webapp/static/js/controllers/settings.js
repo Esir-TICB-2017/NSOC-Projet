@@ -6,7 +6,7 @@ angular.module('nsoc')
 .controller('settingsController', ($scope, $http, _, websocketService) => {
 
 	$scope.changeValue = function(setting) {
-		websocketService.send('settings', JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.defaultValue.itemValue}));
+		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.defaultValue.itemValue}));
 	}
 
 	getSettings = function () {
@@ -14,9 +14,9 @@ angular.module('nsoc')
 					method: 'GET',
 					url: '/getSettings'
 			}).then(function success(res) {
-					const data = _.sortBy(res.data, setting => setting.order);
+				console.log('settings', res);
+					const data = _.sortBy(res.data.settings, setting => setting.order);
 					$scope.settings = _.groupBy(data, setting => setting.type);
-					console.log($scope.settings);
 					const keys = _.keys($scope.settings);
 					keys.forEach((key) => {
 							$scope.settings[key].forEach((setting) => {
@@ -26,6 +26,7 @@ angular.module('nsoc')
 									}
 							});
 					});
+					console.log($scope.settings);
 					$scope.actualSettingView = $scope.settings[keys[0]];
 			}, function error(err) {
 					console.log(err);
@@ -41,8 +42,8 @@ angular.module('nsoc')
 					method: 'GET',
 					url: '/getUserSettings'
 			}).then(function success(res) {
+				console.log('userSettings', res);
 					$scope.userSettings = res.data;
-					console.log(res.data);
 			}, function error(err) {
 					console.log(err);
 			});
