@@ -160,7 +160,6 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
                 .attr('fill', 'red')
                 .style('text-anchor', 'middle')
                 .style('font-size', 15);
-            console.log(currentData.unit)
             svg.append('text')
                 .attr('class', 'chartUnit')
                 .attr('x', constants.width /2)

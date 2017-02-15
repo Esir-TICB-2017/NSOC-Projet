@@ -1,5 +1,5 @@
 angular.module('nsoc')
-.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService, utils, Flash) => {
+.controller('homeController', ($scope, $rootScope, $http, $cookies, $location, _, websocketService, utils, toastService) => {
 
 	$scope.changeTab = function (newTab) {
 		$scope.actualTab = newTab;
@@ -40,23 +40,23 @@ angular.module('nsoc')
 					}
 					if (data.settings.status === 'error') {
 						message = '<strong>Error : </strong> Can\'t update setting';
-						Flash.create('danger', message);
+						toastService.create('danger', message);
 					} else if (data.settings.status === 'success'){
 						message = '<strong>Setting </strong> updated';
-						Flash.create('success', message);
+						toastService.create('success', message);
 						$scope.$broadcast('settings', data.settings);
 					}
 				} else {
 					if ($scope.actualTab.name !== $scope.tabs[0].name){
 						$scope.tabs[0].notifications++;
 						message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data;
-						Flash.create('success', message);
 					}
 					$scope.$broadcast('data', data);
 				}
 			});
 		}
 	};
+
 
 	init = function () {
 		$scope.role = $cookies.get('role');
@@ -68,6 +68,7 @@ angular.module('nsoc')
 		};
 		$rootScope.loading = true;
 		initSocket();
+        toastService.create('success', 'EZ');
 	}
 	init();
 });

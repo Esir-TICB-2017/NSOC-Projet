@@ -3,9 +3,9 @@
 */
 
 angular.module('nsoc')
-.controller('settingsController', ($scope, $rootScope, $http, _, websocketService) => {
-
+.controller('settingsController', ($scope, $rootScope, $http, _, websocketService, toastService) => {
 	$scope.changeValue = function(setting, newValue) {
+
 		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue.itemValue}));
 		//changer role : {key: userRole, role, email}
 		// add user: {key: addUser, role, email}
