@@ -28,6 +28,7 @@ angular.module('nsoc')
 		} else if ($location.path() === '/login' && authenticate) {
 			e.preventDefault();
 			Flash.create('success', 'Already logged in');
+			$location.path('/home');
 		}
 	});
 

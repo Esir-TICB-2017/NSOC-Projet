@@ -181,6 +181,7 @@ angular.module('nsoc')
 					$rootScope.loading = false;
 			}, function error(err) {
 					console.log(err);
+					$rootScope.loading = false;
 					if (err.status === 403) {
 							$cookies.put('authenticate', false);
 							$location.path('/login');

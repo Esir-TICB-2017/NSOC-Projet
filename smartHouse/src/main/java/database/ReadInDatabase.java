@@ -22,7 +22,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	public static DataRecord getLastValue(Sensor sensor) {
 		double data;
 		Long date;
-		DataRecord result = null;
+		DataRecord result = new DataRecord(-1.0,(long)-1,"null","null");;
 		String sensorType = sensor.getType();
 		Connection connection = ConnectionManager.getConnection();
 		String sql =
@@ -322,7 +322,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 	}
 
 	public static DataRecord getLastIndicator(Indicator indicator) {
-		DataRecord result = null;
+		DataRecord result = new DataRecord(-1.0,(long)-1,"null","null");
 		double data;
 		Long date;
 		Connection connection = ConnectionManager.getConnection();
