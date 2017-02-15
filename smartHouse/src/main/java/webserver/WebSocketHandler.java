@@ -89,7 +89,7 @@ public class WebSocketHandler {
 		/*receiving a string like:
 		{
 		 key:
-		 setting_id:
+		 id:
 		 value:
 		}
 		*/
