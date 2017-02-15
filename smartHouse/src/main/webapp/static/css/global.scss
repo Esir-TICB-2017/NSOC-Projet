@@ -50,3 +50,37 @@ button.switchButton {
 		background-color: rgba(255, 255, 255, 0.45);
 	}
 }
+
+button.button {
+	cursor           : pointer;
+	color            : white;
+	display          : block;
+	margin-bottom    : 2px;
+	background-color : rgba(255, 255, 255, 0);
+	border           : none;
+	border-top       : 1px solid rgba(255, 255, 255, 1);
+	border-bottom    : 1px solid rgba(255, 255, 255, 1);
+	padding          : 10px 25px;
+	transition       : background-color .2s ease-out;
+	border-collapse  : collapse;
+	&.leftBorder {
+		border-top-left-radius    : 25px;
+		border-bottom-left-radius : 25px;
+	}
+
+	&.rightBorder {
+		border-top-right-radius    : 25px;
+		border-bottom-right-radius : 25px;
+	}
+
+	&:focus {
+		outline: none;
+	}
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.3);
+	}
+	&.active {
+		background-color: rgba(255, 255, 255, 0.3);
+
+	}
+}

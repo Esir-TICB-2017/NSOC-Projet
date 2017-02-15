@@ -28,13 +28,6 @@
 				background-color : rgba(255, 255, 255, 0.1);
 			}
 
-			&.disconnected {
-				background-color: rgba(33, 33, 33, 0.3);
-				&>.value {
-					font-size  : 70%;
-				}
-			}
-
 			&.active {
 				background-color : rgba(255, 255, 255, 0.4);
 			}
@@ -56,18 +49,8 @@
 				margin     : auto;
 				overflow   : hidden;
 				text-align : center;
-				&>.disconnected-message {
-					&>.status {
-						font-weight: bold;
-						color: #c62121;
-					}
-					&>.last-value {
-						text-decoration: underline;
-					}
-				}
 			}
 		}
-
 
 		&>.data {
 			display: flex;
@@ -80,7 +63,11 @@
 				flex-direction : column;
 				align-items    : center;
 				color          : white;
-
+				&>.disconnected {
+					font-size: 60%;
+					font-weight: bold;
+					color: #c62121;
+				}
 				&>.name {
 					&:first-letter {
 						text-transform: uppercase;
@@ -96,32 +83,6 @@
 			display        : flex;
 			flex-direction : column;
 			align-items    : flex-end;
-			& > .aggregationSelector {
-				cursor                    : pointer;
-				color                     : white;
-				display                   : block;
-				background-color          : rgba(255, 255, 255, 0);
-				border-left               : 1px solid rgba(255, 255, 255, 1);
-				border-top                : 1px solid rgba(255, 255, 255, 1);
-				border-bottom             : 1px solid rgba(255, 255, 255, 1);
-				border-right              : none;
-				padding                   : 10px 25px;
-				border-top-left-radius    : 25px;
-				border-bottom-left-radius : 25px;
-				transition                : background-color .2s ease-out;
-				border-collapse           : collapse;
-
-				&:focus {
-					outline: none;
-				}
-				&:hover {
-					background-color: rgba(255, 255, 255, 0.3);
-				}
-				&.active {
-					background-color: rgba(255, 255, 255, 0.3);
-
-				}
-			}
 		}
 	}
 	&>.graphParameters {
