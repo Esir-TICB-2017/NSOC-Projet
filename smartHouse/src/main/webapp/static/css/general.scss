@@ -67,9 +67,11 @@
 				align-items    : center;
 				color          : white;
 				&>.status {
-					font-size: 60%;
-					font-weight: bold;
-					color: #c62121;
+					font-size   : 60%;
+					font-weight : bold;
+					color       : #c62121;
+					position    : absolute;
+					top         : 100%;
 				}
 				&>.name {
 					&:first-letter {
