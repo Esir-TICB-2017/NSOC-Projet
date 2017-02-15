@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 			String email = (String) idToken.getPayload().get("email");
 			if (ReadInDatabase.checkExistingUser(email)) {
 				String role = ReadInDatabase.getUserRole(email);
-				String token = SessionManager.createJWT("http://smarthouseapp.com", userId, 15 * 60 * 1000, role);
+				String token = SessionManager.createJWT("http://smarthouseapp.com", userId, 60 * 60 * 1000, role);
 				WriteInDatabase.writeNewToken(email, token);
 				Cookie cookie = new Cookie("Set-Cookie", token);
 				cookie.setPath(";Path=/;HttpOnly;");

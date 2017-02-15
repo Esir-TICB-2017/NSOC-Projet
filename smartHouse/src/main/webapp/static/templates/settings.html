@@ -6,11 +6,14 @@
 				<div class='row' ng-repeat='setting in value'>
 					<div class='text'>{{setting.name}}</div>
 					<div class='value'>
-						<button ng-repeat='allowedValue in setting.allowedValues' ng-class="{active: setting.defaultValue == allowedValue}" ng-model="setting.defaultValue" ng-if='setting.dataType === "boolean"' ng-click="changeValue(setting)" class="switchButton small">
+						<button ng-repeat='allowedValue in setting.allowedValues' ng-class="{active: setting.currentValue == allowedValue}" ng-model="setting.currentValue" ng-if='setting.dataType === "boolean"' ng-click="changeValue(setting)" class="switchButton small">
 							{{allowedValue.caption}}
 						</button>
-						<select ng-model="setting.defaultValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="changeValue(setting)"></select>
-						<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.defaultValue" ng-if='setting.dataType === "double"' ng-change="changeValue(setting)" ng-model-options='{ debounce: 1500 }'></input>
+						<select ng-model="setting.currentValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="changeValue(setting)"></select>
+						<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.currentValue" ng-if='setting.dataType === "double"' ng-change="changeValue(setting)" ng-model-options='{ debounce: 1500 }'></input>
+						<div class='users' ng-if='!setting.dataType'>
+							{{setting.email}}{{setting.role}}
+						</div>
 					</div>
 				</div>
 			</div>

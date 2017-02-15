@@ -6,8 +6,6 @@
 	flex-direction : column;
 
 	&>.type {
-		margin-top : 1%;
-		flex       : 1;
 		&:first-child {
 			margin-top: 0;
 		}
@@ -16,7 +14,6 @@
 			margin-bottom: 1%;
 		}
 		&>.container {
-			margin: auto;
 			&>.button {
 				width          : 20%;
 				text-transform : uppercase;
@@ -55,6 +52,9 @@
 						&>select {
 							text-transform : capitalize;
 							cursor         : pointer;
+						}
+						&>.users {
+							
 						}
 					}
 				}

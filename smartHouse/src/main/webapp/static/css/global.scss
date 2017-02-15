@@ -66,11 +66,13 @@ button.button {
 	&.leftBorder {
 		border-top-left-radius    : 25px;
 		border-bottom-left-radius : 25px;
+		border-left    : 1px solid rgba(255, 255, 255, 1);
 	}
 
 	&.rightBorder {
 		border-top-right-radius    : 25px;
 		border-bottom-right-radius : 25px;
+		border-right    : 1px solid rgba(255, 255, 255, 1);
 	}
 
 	&:focus {
