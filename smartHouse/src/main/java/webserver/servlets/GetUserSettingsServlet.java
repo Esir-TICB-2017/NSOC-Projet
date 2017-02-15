@@ -20,7 +20,6 @@ public class GetUserSettingsServlet extends HttpServlet {
 
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            System.out.println("la");
             String userid = SessionManager.getUserId(request);
 
             JSONArray userSettings = ReadInDatabase.getUserSettings(userid);
@@ -28,15 +27,12 @@ public class GetUserSettingsServlet extends HttpServlet {
             //if users already have saved settings in db, get it
             //if not, get default ones
             if (userSettings != null) {
-                System.out.println("us "+userSettings);
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(userSettings);
             } else {
                 JSONArray defaultSettings = ReadInDatabase.getDefaultSettings();
                 WriteInDatabase.resetUserSettings(userid);
-                System.out.println("ds "+defaultSettings);
-
 
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
