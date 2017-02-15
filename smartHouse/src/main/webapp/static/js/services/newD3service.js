@@ -65,11 +65,15 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
         rect.attr('width', tooltip.rectWidth = text.node().getBBox().width + 10)
         rect.attr('x', tooltip.xRect = x - tooltip.rectWidth / 2);
     }
+    function mouseout() {
+        d3.select('g.tooltip').attr('opacity', 0);
+    }
 
     return {
         init: () => {
 
             const svg = d3.select(`svg#homeChart`).on("mousemove", mousemoved);
+            d3.select(`svg#homeChart`).on('mouseout', mouseout);
             constants.width = parseInt(svg.style('width'), 0);
             constants.height = parseInt(svg.style('height'), 0);
             constants.widthMargin = 15;
