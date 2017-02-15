@@ -1,16 +1,18 @@
 <div class='settings'>
 	<div class='type' ng-repeat="(key, value) in settings">
-		<div class='header'>
-			<div class='leftBar'></div>
-			<div class='title'>{{key}}</div>
-			<div class='rightBar'></div>
-		</div>
-		<div class='row' ng-repeat='setting in value'>
-			<div class='text'>{{setting.name}}</div>
-			<div class='value'>
-				<switch ng-model="setting.defaultValue" ng-if='setting.dataType === "boolean"'></switch>
-				<select ng-model="setting.defaultValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="changeValue()"></select>
-				<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.defaultValue" ng-if='setting.dataType === "double"' ng-change="changeValue()" ng-model-options='{ debounce: 2000 }'></input>
+		<div class='container'>
+			<button ng-class="{active: actualSettingView == key}" class="button leftBorder rightBorder" ng-click="changeSettingView(key)">{{key}}</button>
+			<div ng-if='actualSettingView == key' class='data'>
+				<div class='row' ng-repeat='setting in value'>
+					<div class='text'>{{setting.name}}</div>
+					<div class='value'>
+						<button ng-repeat='allowedValue in setting.allowedValues' ng-class="{active: setting.defaultValue == allowedValue}" ng-model="setting.defaultValue" ng-if='setting.dataType === "boolean"' ng-click="changeValue(setting)" class="switchButton small">
+							{{allowedValue.caption}}
+						</button>
+						<select ng-model="setting.defaultValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="changeValue(setting)"></select>
+						<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.defaultValue" ng-if='setting.dataType === "double"' ng-change="changeValue(setting)" ng-model-options='{ debounce: 1500 }'></input>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

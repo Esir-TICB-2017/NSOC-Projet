@@ -22,12 +22,18 @@ public class GetUserSettingsServlet extends HttpServlet {
 
             JSONArray userSettings = ReadInDatabase.getUserSettings(userid);
 
+            //if users already have saved settings in db, get it
+            //if not, get default ones
             if (userSettings != null) {
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(userSettings);
             } else {
-                response.sendError(403);
+                JSONArray defaultSettings = ReadInDatabase.getDefaultSettings();
+
+                response.setContentType("application/json");
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(defaultSettings);
             }
         }
 }
