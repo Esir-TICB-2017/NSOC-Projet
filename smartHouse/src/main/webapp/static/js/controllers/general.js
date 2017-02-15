@@ -120,21 +120,21 @@ angular.module('nsoc')
 			getHouseHealth(obj.data);
 		} else {
 			let index = -1;
-			$scope.data.some((object, i) => {
+			$rootScope.data.some((object, i) => {
 				if (object.name == obj.name && object.type == obj.type) {
 					index = i;
 					return true;
 				}
 			});
 			if (index !== -1) {
-				$scope.data[index].date = obj.date;
-				$scope.data[index].data = obj.data;
-				$scope.data[index].lastUpdate = obj.lastUpdate;
+                $rootScope.data[index].date = obj.date;
+                $rootScope.data[index].data = obj.data;
+                $rootScope.data[index].lastUpdate = obj.lastUpdate;
 				if (obj.connected !== undefined) {
-					$scope.data[index].connected = obj.connected;
+                    $rootScope.data[index].connected = obj.connected;
 				}
 			} else {
-				$scope.data.push(obj);
+                $rootScope.data.push(obj);
 			}
 		}
 	};
@@ -156,7 +156,7 @@ angular.module('nsoc')
 	}
 	function updateDisplayedDates() {
 		$interval(() => {
-			$scope.data.forEach((obj) => {
+			$rootScope.data.forEach((obj) => {
 				obj.lastUpdate = moment(obj.date).fromNow();
 			});
 			$scope.globalIndicator.lastUpdate = moment($scope.globalIndicator.date).fromNow();
@@ -190,7 +190,7 @@ angular.module('nsoc')
 	}
 
 	function init() {
-		$scope.data = [];
+		$rootScope.data = [];
 		$scope.selectors = [
 			{name: 'Monthly', value: 'month'},
 			{name: 'Weekly', value: 'week'},
