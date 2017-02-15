@@ -98,7 +98,6 @@ public class WebSocketHandler {
 			String key = result.get("key").toString();
 			String id;
 			JSONObject answer = new JSONObject();
-			JSONObject settings = new JSONObject();
 			switch (key){
 				case "settings" :
 					id = getMyUniqueId();
@@ -111,17 +110,13 @@ public class WebSocketHandler {
 					}
 					if (authorize){
 						WriteInDatabase.writeUserSetting(this.userId, result);
-						settings.put("id", result.get("setting_id"));
-						settings.put("name", "parameter");
-						settings.put("status", "success");
-						answer.put("settings", settings);
+						result.put("status", "success");
+						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString() );
 					}
 					else{
-						settings.put("id", result.get("setting_id"));
-						settings.put("name", "parameter");
-						settings.put("status", "error");
-						answer.put("settings", settings);
+						result.put("status", "error");
+						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
@@ -129,17 +124,13 @@ public class WebSocketHandler {
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.writeNewRole(result);
-						settings.put("email", result.get("email"));
-						settings.put("name", "user");
-						settings.put("status", "success");
-						answer.put("settings", settings);
+						result.put("status", "success");
+						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString() );
 					}
 					else {
-						settings.put("id", result.get("email"));
-						settings.put("name", "user");
-						settings.put("status", "error");
-						answer.put("settings", settings);
+						result.put("status", "error");
+						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
@@ -147,17 +138,13 @@ public class WebSocketHandler {
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.deleteUser(result);
-						settings.put("id", result.get("email"));
-						settings.put("name", "user");
-						settings.put("status", "success");
-						answer.put("settings", settings);
+						result.put("status", "success");
+						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					else {
-						settings.put("id", result.get("email"));
-						settings.put("name", "user");
-						settings.put("status", "error");
-						answer.put("settings", settings);
+						result.put("status", "error");
+						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString() );
 					}
 					break;
@@ -165,17 +152,13 @@ public class WebSocketHandler {
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.addUser(result);
-						settings.put("id", result.get("email"));
-						settings.put("name", "user");
-						settings.put("status", "success");
-						answer.put("settings", settings);
+						result.put("status", "success");
+						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString());
 					}
 					else {
-						settings.put("id", result.get("email"));
-						settings.put("name", "user");
-						settings.put("status", "error");
-						answer.put("settings", settings);
+						result.put("status", "error");
+						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString() );
 					}
 					break;
