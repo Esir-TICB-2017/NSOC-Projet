@@ -44,6 +44,7 @@ angular.module('nsoc')
         };
 
         init = function () {
+						$scope.role = $cookies.get('role');
             $scope.tabs = [{name: 'general', notifications: 0}, {name: 'settings', notifications: 0}];
             $scope.actualTab = $scope.tabs[0];
             $scope.userInfo = {

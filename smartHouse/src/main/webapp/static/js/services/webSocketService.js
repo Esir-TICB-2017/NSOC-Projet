@@ -15,11 +15,15 @@ angular.module('nsoc')
 				onClose();
 			};
 			this.websocket.onmessage = (evt) => {
+				console.log(evt);
 				onMessage(evt);
 			};
 			this.websocket.onerror = (err) => {
 				console.log("Error: " + err);
 			};
-		}
+		},
+		send: function(name, message) {
+			this.websocket.send(name, message);
+		},
 	}
 });
