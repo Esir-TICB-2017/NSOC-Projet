@@ -1,5 +1,5 @@
 <div class='settings'>
-	<div class='type' ng-repeat="(key, value) in settings">
+	<div class='type' ng-repeat="(key, value) in $root.settings">
 		<div class='container'>
 			<button ng-class="{active: actualSettingView == key}" class="button leftBorder rightBorder" ng-click="changeSettingView(key)">{{key}}</button>
 			<div ng-if='actualSettingView == key' class='data'>
