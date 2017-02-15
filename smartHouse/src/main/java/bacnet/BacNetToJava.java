@@ -92,9 +92,11 @@ public class BacNetToJava implements InterfaceReadBacnet {
 					//			Double diffTimeInHour = ((double) diffTimeInMs)/3600000;
 								finalValue = (value-currentvalue);
 								currentvalue = value;
+								if (finalValue < 3000){
+									if(finalValue != 0.0) {
+										sensor.setNewValue(finalValue);
+									}
 
-								if(finalValue != 0.0) {
-									sensor.setNewValue(finalValue);
 								}
 
 							} else{
