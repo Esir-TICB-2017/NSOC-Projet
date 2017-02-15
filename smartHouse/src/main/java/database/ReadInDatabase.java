@@ -185,10 +185,10 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				while (rs.next()) {
 					String name = rs.getString("name");
 					String description = rs.getString(("description"));
+					int id = rs.getInt("id");
 					String dataType = rs.getString("data_type");
 					Double minValue = rs.getDouble("min_value");
 					Double maxValue = rs.getDouble("max_value");
-					String defaultValue = rs.getString("default_value");
 					String itemValue = rs.getString("item_value");
 					String caption = rs.getString("caption");
 					String type = rs.getString("type");
@@ -202,11 +202,11 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 					} else {
 						JSONObject setting = new JSONObject();
 						setting.put("name", name);
+						setting.put("id", id);
 						setting.put("description", description);
 						setting.put("minValue", minValue);
 						setting.put("maxValue", maxValue);
 						setting.put("dataType", dataType);
-						setting.put("defaultValue", defaultValue);
 						setting.put("type", type);
 						JSONArray allowedValues = new JSONArray();
 						JSONObject newItemValue = new JSONObject();

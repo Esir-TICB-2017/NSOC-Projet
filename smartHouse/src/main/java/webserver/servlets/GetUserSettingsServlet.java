@@ -23,6 +23,7 @@ public class GetUserSettingsServlet extends HttpServlet {
 
             String userId = SessionManager.getUserId(request);
 
+
             JSONArray userSettings = Settings.getUserSettings(userId);
 
             //if users already have saved settings in db, get it
