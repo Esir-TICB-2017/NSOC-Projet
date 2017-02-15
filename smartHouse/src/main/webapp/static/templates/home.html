@@ -4,7 +4,7 @@
 			<img class='picture' ng-src="{{userInfo.pictureUrl}}"></img>
 			<div class='name'>Hi {{userInfo.givenName}}!</div>
 		</div>
-		<div class='tabs'>
+		<div class='tabs' ng-if='role !== "guest"'>
 				<button ng-repeat='tab in tabs' ng-class="{active: actualTab.name == tab.name}" ng-click="changeTab(tab)"	class="switchButton medium">
 					{{tab.name}}
 					<div ng-if='tab.notifications !== 0' class='notifications'>{{tab.notifications}}</div>

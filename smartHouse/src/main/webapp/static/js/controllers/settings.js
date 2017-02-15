@@ -6,7 +6,17 @@ angular.module('nsoc')
 .controller('settingsController', ($scope, $rootScope, $http, _, websocketService) => {
 
 	$scope.changeValue = function(setting, newValue) {
-		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue.itemValue}));
+		let valueToSend;
+		if (newValue) {
+			valueToSend = newValue.itemValue;
+		} else {
+			if (setting.currentValue.itemValue) {
+				valueToSend = setting.currentValue.itemValue;
+			} else {
+				valueToSend = setting.currentValue;
+			}
+		}
+		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: valueToSend}));
 		//changer role : {key: userRole, role, email}
 		// add user: {key: addUser, role, email}
 		// supprimer: {key: deleteUser, email}
@@ -21,11 +31,11 @@ angular.module('nsoc')
 			setting = getSetting({email: parameter.email});
 			switch(parameter.key) {
 				case 'userRole':
-						break;
+				break;
 				case 'addUser' :
-						break;
+				break;
 				case 'deleteUser':
-						break;
+				break;
 			}
 		}
 	}
@@ -56,6 +66,7 @@ angular.module('nsoc')
 			url: '/getUserSettings'
 		}).then(function success(res) {
 			$scope.userSettings = res.data;
+			console.log(res.data);
 			displayUserDefaultSettings();
 		}, function error(err) {
 			console.log(err);
@@ -102,8 +113,8 @@ angular.module('nsoc')
 		getSettings();
 		$scope.$on('settings', (event, parameter) => {
 			updateParameter(parameter);
-	});
-}
+		});
+	}
 
 	init();
 });
