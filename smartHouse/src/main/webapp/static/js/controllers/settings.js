@@ -16,19 +16,25 @@ angular.module('nsoc')
 			}).then(function success(res) {
 					const data = _.sortBy(res.data, setting => setting.order);
 					$scope.settings = _.groupBy(data, setting => setting.type);
-					for (key in $scope.settings) {
+					console.log($scope.settings);
+					const keys = _.keys($scope.settings);
+					keys.forEach((key) => {
 							$scope.settings[key].forEach((setting) => {
 									const index = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === setting.defaultValue);
 									if (index !== -1) {
 											setting.defaultValue = setting.allowedValues[index];
 									}
 							});
-					}
-					console.log($scope.settings);
+					});
+					$scope.actualSettingView = $scope.settings[keys[0]];
 			}, function error(err) {
 					console.log(err);
 			});
-	}
+	};
+
+	$scope.changeSettingView = function(view) {
+		$scope.actualSettingView = view;
+	};
 
 	getUserSettings = function () {
 			$http({
