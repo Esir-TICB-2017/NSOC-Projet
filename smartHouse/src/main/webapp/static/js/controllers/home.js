@@ -33,12 +33,23 @@ angular.module('nsoc')
                     },
                     function onMessage(evt) {
                         const data = JSON.parse(evt.data);
-                        if ($scope.actualTab.name !== $scope.tabs[0].name) {
-                            $scope.tabs[0].notifications++;
-                        }
-                        const message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data;
-                        Flash.create('success', message);
-                        $scope.$broadcast('data', data);
+												let message;
+												if ($scope.data.settings && $scope.actualTab.name !== $scope.tabs[1].name) {
+													$scope.tabs[1].notifications++;
+													if (data.settings.status === 'error') {
+														message = '<strong>Error : </strong> Can\'t update ' + data.settings.name;
+														Flash.create('danger', message);
+													} else if (data.settings.status === 'success'){
+														message = '<strong>' + data.settings.name + '</strong> updated';
+														Flash.create('danger', message);
+														$scope.$broadcast('settings', data.settings);
+													}
+												} else if ($scope.actualTab.name !== $scope.tabs[0].name){
+													$scope.$broadcast('data', data);
+													$scope.tabs[0].notifications++;
+													message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data;
+													Flash.create('success', message);
+												}
                     });
             }
         };
