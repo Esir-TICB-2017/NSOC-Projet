@@ -111,9 +111,12 @@ public class WebSocketHandler {
 					if (authorize){
 						WriteInDatabase.writeUserSetting(this.userId, result);
 						ConnectedClients.getInstance().writeSpecificMember(id, "Setting "+result.get("setting_id")+" sent. ");
+						System.out.println("ok");
 					}
 					else{
 						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
+						System.out.println("not ok");
+
 					}
 					break;
 				case "userRole" :
