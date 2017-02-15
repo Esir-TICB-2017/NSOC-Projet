@@ -89,10 +89,11 @@ public class WebSocketHandler {
 		/*receiving a string like:
 		{
 		 key:
-		 id:
+		 setting_id:
 		 value:
 		}
 		*/
+
 		JSONObject result = new JSONObject(message);
 		if (result.has("key")) {
 			String key = result.get("key").toString();
@@ -109,7 +110,7 @@ public class WebSocketHandler {
 					}
 					if (authorize){
 						WriteInDatabase.writeUserSetting(this.userId, result);
-						ConnectedClients.getInstance().writeSpecificMember(id, "Done");
+						ConnectedClients.getInstance().writeSpecificMember(id, "Setting "+result.get("setting_id")+" sent. ");
 					}
 					else{
 						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
@@ -119,6 +120,7 @@ public class WebSocketHandler {
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.writeNewRole(result);
+						ConnectedClients.getInstance().writeSpecificMember(id, "Role changed. ");
 					}
 					else {
 						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
@@ -128,7 +130,7 @@ public class WebSocketHandler {
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.deleteUser(result);
-						ConnectedClients.getInstance().writeSpecificMember(id, "Done");
+						ConnectedClients.getInstance().writeSpecificMember(id, "User deleted. ");
 					}
 					else {
 						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
@@ -138,7 +140,7 @@ public class WebSocketHandler {
 					id = getMyUniqueId();
 					if (this.role.equals("admin")){
 						WriteInDatabase.addUser(result);
-						ConnectedClients.getInstance().writeSpecificMember(id, "Done");
+						ConnectedClients.getInstance().writeSpecificMember(id, "User added. ");
 					}
 					else {
 						ConnectedClients.getInstance().writeSpecificMember(id, "impossible");
