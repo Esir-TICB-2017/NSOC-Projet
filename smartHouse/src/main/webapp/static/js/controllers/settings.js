@@ -3,9 +3,10 @@
 */
 
 angular.module('nsoc')
-.controller('settingsController', ($scope, $http, _) => {
-	$scope.changeValue = function() {
-		console.log('here');
+.controller('settingsController', ($scope, $http, _, websocketService) => {
+
+	$scope.changeValue = function(setting) {
+		websocketService.send('settings', JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.defaultValue.itemValue}));
 	}
 
 	getSettings = function () {
@@ -23,6 +24,7 @@ angular.module('nsoc')
 									}
 							});
 					}
+					console.log($scope.settings);
 			}, function error(err) {
 					console.log(err);
 			});
@@ -34,6 +36,7 @@ angular.module('nsoc')
 					url: '/getUserSettings'
 			}).then(function success(res) {
 					$scope.userSettings = res.data;
+					console.log(res.data);
 			}, function error(err) {
 					console.log(err);
 			});
