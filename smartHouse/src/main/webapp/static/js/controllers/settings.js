@@ -6,7 +6,7 @@ angular.module('nsoc')
 .controller('settingsController', ($scope, $http, _, websocketService) => {
 
 	$scope.changeValue = function(setting) {
-		// websocketService.send('settings', {key: 'settings', name: setting.name, value: setting.defaultValue.itemValue});
+		websocketService.send('settings', JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.defaultValue.itemValue}));
 	}
 
 	getSettings = function () {
