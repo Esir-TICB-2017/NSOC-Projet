@@ -185,15 +185,13 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				while (rs.next()) {
 					String name = rs.getString("name");
 					String description = rs.getString(("description"));
-					String id = rs.getString("id");
+					int id = rs.getInt("id");
 					String dataType = rs.getString("data_type");
 					Double minValue = rs.getDouble("min_value");
 					Double maxValue = rs.getDouble("max_value");
-					String defaultValue = rs.getString("default_value");
 					String itemValue = rs.getString("item_value");
 					String caption = rs.getString("caption");
 					String type = rs.getString("type");
-					int order = rs.getInt("order");
 					Integer found = findSettingInJson(settings, name);
 					if (found != -1) {
 						JSONObject setting = settings.getJSONObject(found);
@@ -209,9 +207,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 						setting.put("minValue", minValue);
 						setting.put("maxValue", maxValue);
 						setting.put("dataType", dataType);
-						setting.put("defaultValue", defaultValue);
 						setting.put("type", type);
-						setting.put("order", order);
 						JSONArray allowedValues = new JSONArray();
 						JSONObject newItemValue = new JSONObject();
 						newItemValue.put("itemValue", itemValue);
