@@ -65,11 +65,15 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
         rect.attr('width', tooltip.rectWidth = text.node().getBBox().width + 10)
         rect.attr('x', tooltip.xRect = x - tooltip.rectWidth / 2);
     }
+    function mouseout() {
+        d3.select('g.tooltip').attr('opacity', 0);
+    }
 
     return {
         init: () => {
 
             const svg = d3.select(`svg#homeChart`).on("mousemove", mousemoved);
+            d3.select(`svg#homeChart`).on('mouseout', mouseout);
             constants.width = parseInt(svg.style('width'), 0);
             constants.height = parseInt(svg.style('height'), 0);
             constants.widthMargin = 15;
@@ -80,7 +84,7 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
             constants.yScale = d3.scaleLinear()
                 .rangeRound([constants.height, 0]);
             constants.xAxis = d3.axisBottom(constants.xScale).ticks(5).tickFormat(multiFormat);
-            constants.yAxis = d3.axisLeft(constants.yScale).ticks(5);
+            constants.yAxis = d3.axisLeft(constants.yScale).ticks(4);
             constants.lineGen = d3.line()
                 .x((d) => constants.xScale(d.date))
                 .y((d) => constants.yScale(d.data))
@@ -206,7 +210,7 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
                         opacity: "0.3"
                     },
                     {
-                        offset: "85%",
+                        offset: "100%",
                         color: "#FFFFFF",
                         opacity: "0.3"
                     },
