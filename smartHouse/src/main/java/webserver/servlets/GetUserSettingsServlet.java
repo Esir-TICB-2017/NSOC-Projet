@@ -5,6 +5,7 @@ import database.ReadInDatabase;
 import database.WriteInDatabase;
 import org.json.JSONArray;
 import webserver.SessionManager;
+import webserver.settings.Settings;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,9 +21,10 @@ public class GetUserSettingsServlet extends HttpServlet {
 
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            String userid = SessionManager.getUserId(request);
+            String userId = SessionManager.getUserId(request);
 
-            JSONArray userSettings = ReadInDatabase.getUserSettings(userid);
+
+            JSONArray userSettings = Settings.getUserSettings(userId);
 
             //if users already have saved settings in db, get it
             //if not, get default ones
@@ -31,9 +33,8 @@ public class GetUserSettingsServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(userSettings);
             } else {
-                JSONArray defaultSettings = ReadInDatabase.getDefaultSettings();
-                WriteInDatabase.resetUserSettings(userid);
-
+                JSONArray defaultSettings = Settings.getDefaultSettings();
+                Settings.writeUserDefaultSettings(userId);
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().println(defaultSettings);

@@ -56,10 +56,11 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
         const rect = tooltipGroup.select('rect')
             .attr('x', tooltip.xRect = x - tooltip.rectWidth / 2)
             .attr('y', tooltip.yRect = yTooltipRect);
+        const date = moment(constants.xScale.invert(x)).format('DD-MM HH:mm');
         const text = tooltipGroup.select('text')
             .attr('x', tooltip.xRect + tooltip.rectWidth / 2)
             .attr('y', tooltip.yRect + tooltip.rectHeight / 2)
-            .text(constants.yScale.invert(pos.y).toFixed(1) + " " + currentData.unit);
+            .text(constants.yScale.invert(pos.y).toFixed(1) + " " + currentData.unit + " on " + date);
 
         rect.attr('width', tooltip.rectWidth = text.node().getBBox().width + 10)
         rect.attr('x', tooltip.xRect = x - tooltip.rectWidth / 2);
@@ -202,12 +203,12 @@ angular.module('nsoc').factory('newD3Service', ($rootScope) => {
                     {
                         offset: "0%",
                         color: "#FFFFFF",
-                        opacity: "0.7"
+                        opacity: "0.3"
                     },
                     {
-                        offset: "100%",
+                        offset: "85%",
                         color: "#FFFFFF",
-                        opacity: "0.09"
+                        opacity: "0.3"
                     },
                 ])
                 .enter().append("stop")
