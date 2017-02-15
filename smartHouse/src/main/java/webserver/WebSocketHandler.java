@@ -93,7 +93,6 @@ public class WebSocketHandler {
 		 value:
 		}
 		*/
-
 		JSONObject result = new JSONObject(message);
 		if (result.has("key")) {
 			String key = result.get("key").toString();
@@ -132,7 +131,7 @@ public class WebSocketHandler {
 						WriteInDatabase.writeNewRole(result);
 						settings.put("email", result.get("email"));
 						settings.put("name", "user");
-						settings.put("status", "done");
+						settings.put("status", "success");
 						answer.put("settings", settings);
 						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString() );
 					}
@@ -150,7 +149,7 @@ public class WebSocketHandler {
 						WriteInDatabase.deleteUser(result);
 						settings.put("id", result.get("email"));
 						settings.put("name", "user");
-						settings.put("status", "done");
+						settings.put("status", "success");
 						answer.put("settings", settings);
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
@@ -168,7 +167,7 @@ public class WebSocketHandler {
 						WriteInDatabase.addUser(result);
 						settings.put("id", result.get("email"));
 						settings.put("name", "user");
-						settings.put("status", "done");
+						settings.put("status", "success");
 						answer.put("settings", settings);
 						ConnectedClients.getInstance().writeSpecificMember(id,answer.toString());
 					}
