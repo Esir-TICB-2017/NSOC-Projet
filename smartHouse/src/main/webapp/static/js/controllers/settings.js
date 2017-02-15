@@ -16,7 +16,6 @@ angular.module('nsoc')
 			}).then(function success(res) {
 					const data = _.sortBy(res.data, setting => setting.order);
 					$scope.settings = _.groupBy(data, setting => setting.type);
-					console.log($scope.settings);
 					const keys = _.keys($scope.settings);
 					keys.forEach((key) => {
 							$scope.settings[key].forEach((setting) => {

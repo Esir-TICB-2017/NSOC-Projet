@@ -96,12 +96,12 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	public static void resetUserSettings(String userId) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "String sql = INSERT INTO users_settings " +
-				"(userid, setting_id, value) " +
-				"SELECT ?, id, default_value " +
-				"FROM settings";
+		String sql = "INSERT INTO users_settings(userid, setting_id, value) " +
+				"SELECT ?, id, default_value FROM settings";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, userId);
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

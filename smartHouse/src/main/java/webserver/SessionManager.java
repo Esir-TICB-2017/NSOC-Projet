@@ -133,5 +133,23 @@ public class SessionManager {
 		}
 		return role;
 	}
+
+	public static String getUserId(HttpServletRequest request){
+		String email=null;
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("Set-Cookie")) {
+					String token = cookie.getValue();
+					Claims claims = Jwts.parser()
+							.setSigningKey(DatatypeConverter.parseBase64Binary("projetnsoc"))
+							.parseClaimsJws(token).getBody();
+					email = claims.getSubject();
+				}
+
+			}
+		}
+		return email;
+	}
 }
 

@@ -192,10 +192,6 @@ body {
               cursor: pointer; }
               body > .view > .home > .body > .ng-scope > .general > .mainInfo .round:hover {
                 background-color: rgba(255, 255, 255, 0.1); }
-              body > .view > .home > .body > .ng-scope > .general > .mainInfo .round.disconnected {
-                background-color: rgba(33, 33, 33, 0.3); }
-                body > .view > .home > .body > .ng-scope > .general > .mainInfo .round.disconnected > .value {
-                  font-size: 70%; }
               body > .view > .home > .body > .ng-scope > .general > .mainInfo .round.active {
                 background-color: rgba(255, 255, 255, 0.4); }
               body > .view > .home > .body > .ng-scope > .general > .mainInfo .round.houseIndicator {
@@ -213,11 +209,6 @@ body {
                 margin: auto;
                 overflow: hidden;
                 text-align: center; }
-                body > .view > .home > .body > .ng-scope > .general > .mainInfo .round > .value > .disconnected-message > .status {
-                  font-weight: bold;
-                  color: #c62121; }
-                body > .view > .home > .body > .ng-scope > .general > .mainInfo .round > .value > .disconnected-message > .last-value {
-                  text-decoration: underline; }
             body > .view > .home > .body > .ng-scope > .general > .mainInfo > .data {
               display: flex;
               margin: 0 20% auto 20%; }
@@ -228,6 +219,10 @@ body {
                 flex-direction: column;
                 align-items: center;
                 color: white; }
+                body > .view > .home > .body > .ng-scope > .general > .mainInfo > .data > .sensors-or-indicators > .disconnected {
+                  font-size: 60%;
+                  font-weight: bold;
+                  color: #c62121; }
                 body > .view > .home > .body > .ng-scope > .general > .mainInfo > .data > .sensors-or-indicators > .name:first-letter {
                   text-transform: uppercase; }
             body > .view > .home > .body > .ng-scope > .general > .mainInfo > .aggregationSelectorButtonList {
