@@ -9,7 +9,7 @@
 		</div>
 		<div class='data'>
 			<div class='sensors-or-indicators' ng-repeat="obj in data | filter : {type : actualMode} : true | orderBy:'name'">
-				<div class='round' ng-class="{active: actualGraph.name === obj.name && actualMode === obj.type}" ng-mouseenter='displayDate()' ng-mouseleave='hideDate()' ng-click='changeGraph()'>
+				<div class='round' ng-class="{active: actualGraph.name === obj.name && actualMode === obj.type, disconnected: !obj.connected && obj.type === 'sensor'}" ng-mouseenter='displayDate()' ng-mouseleave='hideDate()' ng-click='changeGraph()'>
 					<div ng-show='!showDate' class='value'>
 						<div ng-if='!obj.connected && obj.type === "sensor"' class='last-value'>Last value</div>
 						{{obj.data}}{{obj.unit}}

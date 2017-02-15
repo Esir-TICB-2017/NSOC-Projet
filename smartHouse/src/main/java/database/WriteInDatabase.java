@@ -210,19 +210,17 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 	public static void writeUserSetting(String userId, JSONObject settings) {
 
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "INSERT INTO users_settings(userid, setting_id, value) " +
-				"VALUES(?, ?, ?) " +
-				"ON DUPLICATE KEY UPDATE userid = VALUES(userid), setting_id = VALUES(setting_id), value = VALUES(value)";
+		String sql = "UPDATE users_settings SET value=? WHERE userid=? AND setting_id=?";
 
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-			int setting_id = (int) settings.get("setting_id");
-			String value = settings.get("value").toString();
+			int setting_id = settings.getInt("setting_id");
+			String value = settings.getString("value");
 
-			preparedStatement.setString(1, userId);
-			preparedStatement.setInt(2, setting_id);
-			preparedStatement.setString(3, value);
+			preparedStatement.setString(1, value);
+			preparedStatement.setString(2, userId);
+			preparedStatement.setInt(3, setting_id);
 
 			//query execution after checking value
 			if(isInteger(value)) {
@@ -248,29 +246,51 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 	public static void deleteUser(JSONObject user) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "DELETE  FROM users WHERE email = ?";
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, user.getString("email"));
-			preparedStatement.executeUpdate();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		JSONArray users = ReadInDatabase.getUsers();
+		boolean find = false;
+		for(int i = 0 ; i < users.length(); i++){
+			if (users.getJSONObject(i).getString("email").equals(user.getString("email"))){
+				find = true;
+			}
+		}
+
+		if (find){
+			String sql = "DELETE  FROM users WHERE email = ?";
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, user.getString("email"));
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public static void addUser(JSONObject user) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "INSERT INTO users (email, role) VALUES (?, ?)";
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, user.getString("email"));
-			preparedStatement.setString(2, user.getString("role"));
-			preparedStatement.executeQuery();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+		JSONArray users = ReadInDatabase.getUsers();
+		boolean find = false;
+		for(int i = 0 ; i < users.length(); i++){
+			if (users.getJSONObject(i).getString("email").equals(user.getString("email"))){
+				find = true;
+			}
 		}
+
+		if(!find){
+			String sql = "INSERT INTO users (email, role) VALUES (?, ?)";
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, user.getString("email"));
+				preparedStatement.setString(2, user.getString("role"));
+				preparedStatement.executeQuery();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	public static boolean isInteger(String s) {

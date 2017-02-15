@@ -9,18 +9,18 @@ angular.module('nsoc')
 			this.websocket.onopen = () => {
 				console.log("Opened!");
 				onOpen(this.websocket);
-			};
+            };
 			this.websocket.onclose = () => {
 				console.log("Closed!");
 				onClose();
 			};
 			this.websocket.onmessage = (evt) => {
-				console.log(evt);
 				onMessage(evt);
 			};
 			this.websocket.onerror = (err) => {
 				console.log("Error: " + err);
 			};
+
 		},
 		send: function(name, message) {
 			this.websocket.send(name, message);

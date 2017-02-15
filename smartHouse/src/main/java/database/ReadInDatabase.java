@@ -506,7 +506,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 				"ON roles.id = roles_settings.role_id " +
 				"WHERE roles_settings.setting_id=?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setInt(1, setting.getInt(setting.getString("setting_id")));
+			preparedStatement.setInt(1, setting.getInt("setting_id"));
 			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					roles.add(rs.getString("name"));
@@ -554,7 +554,7 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 
 
 	public static ArrayList<String> checkIfValueIsAllowed(int setting_id) {
-		ArrayList<String> result = null;
+		ArrayList<String> result = new ArrayList<String>();
 
 		Connection connection = ConnectionManager.getConnection();
 		String sql = "SELECT item_value FROM allowed_setting_value WHERE setting_id=?";

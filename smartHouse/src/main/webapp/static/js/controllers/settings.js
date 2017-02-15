@@ -3,26 +3,47 @@
 */
 
 angular.module('nsoc')
-.controller('settingsController', ($scope, $http, _, websocketService) => {
+.controller('settingsController', ($scope, $rootScope, $http, _, websocketService) => {
 
-	$scope.changeValue = function(setting) {
-		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.defaultValue.itemValue}));
+	$scope.changeValue = function(setting, newValue) {
+		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue.itemValue}));
+		//changer role : {key: userRole, role, email}
+		// add user: {key: addUser, role, email}
+		// supprimer: {key: deleteUser, email}
+	}
+
+	updateParameter = function(parameter) {
+		let setting;
+		if (parameter.setting_id) {
+			setting = getSetting({id: parameter.setting_id});
+			setting.currentValue = getAllowedValue(setting, parameter.value);
+		} else if (parameter.email) {
+			setting = getSetting({email: parameter.email});
+			switch(parameter.key) {
+				case 'userRole':
+						break;
+				case 'addUser' :
+						break;
+				case 'deleteUser':
+						break;
+			}
+		}
 	}
 
 	getSettings = function () {
-			$http({
-					method: 'GET',
-					url: '/getSettings'
-			}).then(function success(res) {
-					$scope.settings = _.groupBy(res.data.settings, setting => setting.type);
-					$scope.actualSettingView = 'general';
-					if ($scope.role === 'admin') {
-						$scope.users = res.data.users;
-					}
-					getUserSettings();
-			}, function error(err) {
-					console.log(err);
-			});
+		$http({
+			method: 'GET',
+			url: '/getSettings'
+		}).then(function success(res) {
+			$rootScope.settings = _.groupBy(res.data.settings, setting => setting.type);
+			$scope.actualSettingView = 'general';
+			if ($scope.role === 'admin') {
+				$rootScope.settings.users = res.data.users;
+			}
+			getUserSettings();
+		}, function error(err) {
+			console.log(err);
+		});
 	};
 
 	$scope.changeSettingView = function(view) {
@@ -30,35 +51,59 @@ angular.module('nsoc')
 	};
 
 	getUserSettings = function () {
-			$http({
-					method: 'GET',
-					url: '/getUserSettings'
-			}).then(function success(res) {
-					$scope.userSettings = res.data;
-					displayUserDefaultSettings();
-			}, function error(err) {
-					console.log(err);
-			});
+		$http({
+			method: 'GET',
+			url: '/getUserSettings'
+		}).then(function success(res) {
+			$scope.userSettings = res.data;
+			displayUserDefaultSettings();
+		}, function error(err) {
+			console.log(err);
+		});
 	}
 
 	displayUserDefaultSettings = function () {
-		const keys = _.keys($scope.settings);
 		$scope.userSettings.forEach((userSetting) => {
-			keys.forEach((key) => {
-				const index = _.findIndex($scope.settings[key], (setting) => setting.id === userSetting.setting_id);
-				if (index !== -1) {
-					const i = _.findIndex($scope.settings[key][index].allowedValues, (allowedValue) => allowedValue.itemValue === userSetting.value);
-					if (i !== -1) {
-							$scope.settings[key][index].defaultValue = $scope.settings[key][index].allowedValues[i];
-					}
+			const setting = getSetting({id: userSetting.setting_id});
+			if (setting!== -1) {
+				const allowedValue = getAllowedValue(setting, userSetting.value);
+				if (allowedValue !== -1) {
+					setting.currentValue = allowedValue;
 				}
-			});
+			}
 		});
+	}
+
+	getAllowedValue = function (setting, value) {
+		const index = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === value);
+		if (index !== -1) {
+			return setting.allowedValues[index];
+		} else {
+			return -1;
+		}
+	}
+
+	getSetting = function (obj) {
+		for (var key in $rootScope.settings) {
+			let index = -1;
+			if (obj.id) {
+				index = _.findIndex($rootScope.settings[key], (setting) => setting.id === obj.id);
+			} else if (obj.email) {
+				index = _.findIndex($rootScope.settings[key], (setting) => setting.email === obj.email);
+			}
+			if (index !== -1) {
+				return $rootScope.settings[key][index];
+			}
+		}
+		return -1;
 	}
 
 	function init() {
 		getSettings();
-	}
+		$scope.$on('settings', (event, parameter) => {
+			updateParameter(parameter);
+	});
+}
 
 	init();
 });
