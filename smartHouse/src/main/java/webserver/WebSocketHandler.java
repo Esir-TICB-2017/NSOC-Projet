@@ -44,9 +44,9 @@ public class WebSocketHandler {
 			case "member":
 				return 2;
 			case "guest":
-				 return 1;
+				 return 3;
 			default:
-				return 1;
+				return 3;
 
 		}
 	}
@@ -135,21 +135,7 @@ public class WebSocketHandler {
 					answer.put("name", "user role updated");
 					id = getMyUniqueId();
 					if (this.role.equals("admin")) {
-						Integer roleId;
-						switch (result.getString("role")) {
-							case "admin":
-								roleId = 1;
-								break;
-							case "member":
-								roleId = 2;
-								break;
-							case "guest":
-								roleId = 3;
-								break;
-							default:
-								roleId = 3;
-								break;
-						}
+						Integer roleId = getUserRole(result.getString("role"));
 						WriteInDatabase.writeNewRole(roleId, result.getString("email"));
 						answer.put("status", "success");
 					} else {
@@ -174,23 +160,7 @@ public class WebSocketHandler {
 					EmailValidator ev = EmailValidator.getInstance();
 					Boolean isValid =  ev.isValid(result.getString("email"));
 					if (this.role.equals("admin") && isValid) {
-						Integer roleId;
-						switch (result.getString("role")) {
-							case "admin":
-								roleId = 1;
-								break;
-							case "member":
-								roleId = 2;
-								break;
-							case "guest":
-								roleId = 3;
-								break;
-							default:
-								roleId = 3;
-								break;
-
-						}
-
+						Integer roleId = getUserRole(result.getString("role"));
 						WriteInDatabase.addUser(result.getString("email"), roleId);
 
 						answer.put("status", "success");
