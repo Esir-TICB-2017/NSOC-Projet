@@ -110,13 +110,13 @@ public class WebSocketHandler {
 					}
 					if (authorize){
 						WriteInDatabase.writeUserSetting(this.userId, result);
-						result.put("status", "success");
-						answer.put("settings", result);
+						answer.put("status", "success");
+						answer.put("name", "settings");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					else{
-						result.put("status", "error");
-						answer.put("settings", result);
+						answer.put("status", "error");
+						answer.put("name", "settings");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
