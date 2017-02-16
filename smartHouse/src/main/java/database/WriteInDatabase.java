@@ -1,5 +1,6 @@
 package database;
 
+import com.sun.org.apache.regexp.internal.RE;
 import database.data.DataRecord;
 import database.databaseInterface.InterfaceWriteDatabase;
 import indicators.Indicator;
@@ -267,24 +268,20 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		}
 	}
 
-	public static void addUser(JSONObject user) {
+
+
+	public static void addUser(String email, Integer roleId) {
+		System.out.println(email);
 		Connection connection = ConnectionManager.getConnection();
-
-		JSONArray users = ReadInDatabase.getUsers();
-		boolean find = false;
-		for(int i = 0 ; i < users.length(); i++){
-			if (users.getJSONObject(i).getString("email").equals(user.getString("email"))){
-				find = true;
-			}
-		}
-
+		Boolean find = ReadInDatabase.findUser(email);
+		System.out.println(find.toString());
 		if(!find){
-			String sql = "INSERT INTO users (email, role) VALUES (?, ?)";
+			String sql = "INSERT INTO users (email, role_id) VALUES (?, ?)";
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement(sql);
-				preparedStatement.setString(1, user.getString("email"));
-				preparedStatement.setString(2, user.getString("role"));
-				preparedStatement.executeQuery();
+				preparedStatement.setString(1, email);
+				preparedStatement.setInt(2, roleId);
+				preparedStatement.executeUpdate();
 				preparedStatement.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
