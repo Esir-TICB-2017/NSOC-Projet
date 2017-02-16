@@ -32,10 +32,10 @@ public class LoginServlet extends HttpServlet {
 				response.getWriter().println(token);
 				response.setStatus(HttpServletResponse.SC_OK);
 			} else {
-				request.getRequestDispatcher("/login").include(request, response);
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			}
 		} else {
-			request.getRequestDispatcher("/login").include(request, response);
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		}
 	}
 }
