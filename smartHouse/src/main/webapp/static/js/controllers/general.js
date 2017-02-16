@@ -22,7 +22,6 @@ angular.module('nsoc')
         $scope.changeGraph = function (target) {
             const oldGraph = angular.copy($scope.actualGraph);
             if (target) {
-                console.log($scope.actualGraph)
                 $scope.actualGraph = target;
             } else if (this.obj) {
                 $scope.actualGraph = this.obj;
@@ -176,7 +175,6 @@ angular.module('nsoc')
                 res.data.forEach((obj) => {
                     displayHouseInfo(obj);
                 });
-                $scope.actualGraph = $scope.globalIndicator;
                 drawChart();
                 updateDisplayedDates();
                 $rootScope.loading = false;
@@ -212,11 +210,11 @@ angular.module('nsoc')
                 const currentPrefered = preferedHomeData.currentValue.itemValue;
                 const mode = currentPrefered.match('indicator') ? 'indicator' : 'sensor';
                 const name = currentPrefered.substr(0, currentPrefered.indexOf('_'));
-                $scope.actualGraph = {
+								$scope.actualGraph = {
                     type: mode,
                     name:name,
                 }
-                $scope.changeMode(mode);
+								$scope.changeMode(mode);
                 getFirstData();
                 $scope.$on('data', (event, data) => {
                     displayHouseInfo(data);

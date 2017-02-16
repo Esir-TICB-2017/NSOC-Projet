@@ -1,7 +1,7 @@
 <div class='general'>
 	<div class="mainInfo">
 		<div class='houseHealth'>Your home is doing {{houseHealth}} now!</div>
-		<div class='houseIndicator round' ng-class="{active: actualGraph === globalIndicator}" ng-mouseenter='displayDate(globalIndicator)' ng-mouseleave='hideDate(globalIndicator)' ng-click='changeGraph(globalIndicator)'>
+		<div class='houseIndicator round' ng-class="{active: actualGraph.name === 'global'}" ng-mouseenter='displayDate(globalIndicator)' ng-mouseleave='hideDate(globalIndicator)' ng-click='changeGraph(globalIndicator)'>
 			<div ng-show='!globalIndicator.showDate' class='value'>{{globalIndicator.data}}%</div>
 			<div ng-show='globalIndicator.showDate' class='date'>
 				Updated {{globalIndicator.lastUpdate}}

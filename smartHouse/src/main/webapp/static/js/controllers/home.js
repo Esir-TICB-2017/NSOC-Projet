@@ -12,8 +12,8 @@ angular.module('nsoc')
 				method: 'GET',
 				url: '/logout'
 			}).then(function success(res) {
-				$rootScope.loading = false;
 				console.log('User signed out.');
+				$rootScope.loading = false;
 				$cookies.put('authenticate', false);
 				$cookies.remove('role');
 				$location.path('/login');

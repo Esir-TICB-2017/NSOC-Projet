@@ -22,7 +22,6 @@ angular.module('nsoc')
 				role = atob(parts[1]);
 				$cookies.put('role',JSON.parse(role).aud);
 				$cookies.put('authenticate', true);
-				// redirect on home
 				$location.path('/home');
 			}, function error(err) {
 				$cookies.put('authenticate', false);
