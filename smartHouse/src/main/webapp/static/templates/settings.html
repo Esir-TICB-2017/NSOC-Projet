@@ -3,16 +3,38 @@
 		<div class='container'>
 			<button ng-class="{active: actualSettingView == key}" class="button leftBorder rightBorder" ng-click="changeSettingView(key)">{{key}}</button>
 			<div ng-if='actualSettingView == key' class='data'>
-				<div class='row' ng-repeat='setting in value'>
+				<div class='row' ng-repeat='setting in value' ng-if='key !== "users"'>
 					<div class='text'>{{setting.name}}</div>
 					<div class='value'>
-						<button ng-repeat='allowedValue in setting.allowedValues' ng-class="{active: setting.currentValue == allowedValue}" ng-if='setting.dataType === "boolean"' ng-click="changeValue(setting, allowedValue.itemValue)" class="switchButton small">
+						<button ng-repeat='allowedValue in setting.allowedValues' ng-class="{active: setting.currentValue == allowedValue}" ng-if='setting.dataType === "boolean"' ng-click="updateParameterValue(setting, allowedValue.itemValue)" class="switchButton small">
 							{{allowedValue.caption}}
 						</button>
-						<select ng-model="setting.currentValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="changeValue(setting, setting.currentValue.itemValue)"></select>
-						<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.currentValue" ng-if='setting.dataType === "double"' ng-change="changeValue(setting, setting.currentValue)" ng-model-options='{ debounce: 500 }'>
-						<div class='users' ng-if='!setting.dataType && role === "admin"'>
-							{{setting.email}}{{setting.role}}
+						<select ng-model="setting.currentValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="updateParameterValue(setting, setting.currentValue.itemValue)"></select>
+						<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.currentValue" ng-if='setting.dataType === "double"' ng-change="updateParameterValue(setting, setting.currentValue)" ng-model-options='{ debounce: 500 }'>
+					</div>
+				</div>
+				<div class='users' ng-if='key === "users" && role === "admin"'>
+					<div class='addUser'>
+						<div class='header'>Add a new user</div>
+						<div class='content'>
+							<input placeholder="robert@hotmail.fr" ng-model='newUser.email'>
+							<select ng-model='newUser.role'>
+								<option>admin</option>
+								<option>member</option>
+								<option>guest</option>
+							</select>
+							<img ng-click='addUser(newUser)' src='../../icons/add.png'></img>
+						</div>
+					</div>
+					<div class='row' ng-repeat='setting in value'>
+						<div class='text'>{{setting.email}}</div>
+						<div class='value'>
+							<select ng-model='setting.role'>
+								<option>admin</option>
+								<option>member</option>
+								<option>guest</option>
+							</select>
+							<img ng-click='deleteUser(setting)' src='../../icons/delete.png'></img>
 						</div>
 					</div>
 				</div>
