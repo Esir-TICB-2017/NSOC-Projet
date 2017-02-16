@@ -10,7 +10,7 @@
 							{{allowedValue.caption}}
 						</button>
 						<select ng-model="setting.currentValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="updateParameterValue(setting, setting.currentValue.itemValue)"></select>
-						<input type="string" ng-min="setting.min" ng-max="setting.max" ng-model="setting.currentValue" ng-if='setting.dataType === "double"' ng-change="updateParameterValue(setting, setting.currentValue)" ng-model-options='{ debounce: 500 }'>
+						<input type="number" ng-min="setting.min" ng-max="setting.max" ng-model="setting.currentValue" ng-if='setting.dataType === "double"' ng-change="updateParameterValue(setting, setting.currentValue)" ng-model-options='{ debounce: 500 }'>
 					</div>
 				</div>
 				<div class='users' ng-if='key === "users" && role === "admin"'>

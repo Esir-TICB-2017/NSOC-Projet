@@ -7,7 +7,7 @@ angular.module('nsoc')
 
 	$scope.updateParameterValue = function(setting, newValue) {
 		if ($scope.role === 'admin' || $scope.role === 'member') {
-			websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue}));
+				websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue}));
 		}
 	}
 
@@ -45,6 +45,7 @@ angular.module('nsoc')
 				if ($scope.role === 'admin') {
 					$rootScope.settings.users = res.data.users;
 				}
+				$scope.keys = _.keys($rootScope.settings);
 				getUserSettings(resolve, reject);
 			}, function error(err) {
 				console.log(err);
@@ -52,7 +53,6 @@ angular.module('nsoc')
 		});
 		$rootScope.promiseArray = [];
 		$rootScope.promiseArray.push(p);
-
 	};
 
 	$scope.changeSettingView = function (view) {
@@ -66,6 +66,7 @@ angular.module('nsoc')
 		}).then(function success(res) {
 			$scope.userSettings = res.data;
 			displayUserDefaultSettings();
+			transformSettingsType();
 			resolve();
 		}, function error(err) {
 			reject();
@@ -79,7 +80,7 @@ angular.module('nsoc')
 			if (setting !== -1) {
 				const index = _.findIndex($rootScope.settings[setting.key][setting.index].allowedValues, (allowedValue) => allowedValue.itemValue === userSetting.value);
 				if (index !== -1) {
-					$rootScope.settings[setting.key][setting.index].currentValue = $rootScope.settings[setting.key][setting.index].allowedValues[setting.index];
+					$rootScope.settings[setting.key][setting.index].currentValue = $rootScope.settings[setting.key][setting.index].allowedValues[index];
 				} else {
 					$rootScope.settings[setting.key][setting.index].currentValue = userSetting.value;
 				}
@@ -87,19 +88,35 @@ angular.module('nsoc')
 		});
 	}
 
+	transformSettingsType = function () {
+		$scope.keys.forEach((key) => {
+			$rootScope.settings[key].forEach((setting) => {
+				if (setting.min && setting.max) {
+					setting.currentValue = parseInt(setting.currentValue);
+					setting.min = parseInt(setting.min);
+					setting.max = parseInt(setting.max);
+				}
+			});
+		});
+	}
+
 	getSettingKeyAndIndex = function (obj) {
-		for (var key in $rootScope.settings) {
-			let index = -1;
+		let res = -1;
+		let index = -1;
+		$scope.keys.some((key) => {
 			if (obj.id) {
 				index = _.findIndex($rootScope.settings[key], (setting) => setting.id === obj.id);
 			} else if (obj.email) {
 				index = _.findIndex($rootScope.settings[key], (setting) => setting.email === obj.email);
 			}
 			if (index !== -1) {
-				return {key, index};
+				res = {key, index};
+				return true;
+			} else {
+				res = -1;
 			}
-		}
-		return -1;
+		});
+		return res;
 	}
 
 	function init() {
