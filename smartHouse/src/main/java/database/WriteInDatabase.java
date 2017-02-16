@@ -277,7 +277,6 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public static boolean isInteger(String s) {

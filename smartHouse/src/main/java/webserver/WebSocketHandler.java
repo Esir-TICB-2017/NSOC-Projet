@@ -171,15 +171,16 @@ public class WebSocketHandler {
 								roleId = 2;
 								break;
 							case "guest":
-								roleId = 1;
+								roleId = 3;
 								break;
 							default:
-								roleId = 1;
+								roleId = 3;
 								break;
 
 						}
 
 						WriteInDatabase.addUser(result.getString("email"), roleId);
+
 						answer.put("status", "success");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					} else {
