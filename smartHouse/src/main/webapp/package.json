@@ -12,6 +12,8 @@
     "d3": "^4.5.0"
   },
   "devDependencies": {
-    "babel": "^6.5.2"
+    "angular-sanitize": "^1.6.2",
+    "babel": "^6.5.2",
+    "ng-toast": "^2.0.0"
   }
 }
