@@ -1,1 +1,1 @@
-angular.module('nsoc', ['ngRoute', 'ngCookies', 'underscore', 'uiSwitch', 'ngToast']);
+angular.module('nsoc', ['ngRoute', 'ngCookies', 'underscore', 'uiSwitch', 'ngFlash']);

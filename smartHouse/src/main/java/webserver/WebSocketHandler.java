@@ -94,6 +94,7 @@ public class WebSocketHandler {
 		}
 		*/
 		JSONObject result = new JSONObject(message);
+		System.out.println(message.toString());
 		if (result.has("key")) {
 			String key = result.get("key").toString();
 			String id;
