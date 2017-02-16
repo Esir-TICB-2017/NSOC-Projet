@@ -31,6 +31,8 @@ public class LoginServlet extends HttpServlet {
 				response.addCookie(cookie);
 				response.getWriter().println(token);
 				response.setStatus(HttpServletResponse.SC_OK);
+			} else {
+				request.getRequestDispatcher("/login").include(request, response);
 			}
 		} else {
 			request.getRequestDispatcher("/login").include(request, response);
