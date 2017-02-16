@@ -27,11 +27,14 @@ public class GetSettingsServlet extends HttpServlet {
         JSONArray users = new JSONArray();
 
         String role = SessionManager.getRole(request);
-        settings = Settings.getSettings();
-        allObject.put("settings", settings);
-        users = ReadInDatabase.getUsers();
-        allObject.put("users", users);
 
+            settings = Settings.getSettings();
+            allObject.put("settings", settings);
+
+        if(role.equals("admin") || role.equals("member")){
+            users = ReadInDatabase.getUsers();
+            allObject.put("users", users);
+        }
 
         if ( allObject!= null) {
             response.setContentType("application/json");

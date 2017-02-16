@@ -225,7 +225,13 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 
 			//query execution after checking value
 			if(isInteger(value)) {
-				preparedStatement.executeUpdate();
+				int intValue = Integer.parseInt(value);
+				int maxValue = ReadInDatabase.checkMaximumValue(setting_id);
+				int minValue = ReadInDatabase.checkMinimumValue(setting_id);
+
+				if(intValue <= maxValue && intValue >= minValue){
+					preparedStatement.executeUpdate();
+				}
 			}
 			else{
 				ArrayList<String> allowedValues = ReadInDatabase.checkIfValueIsAllowed(setting_id);

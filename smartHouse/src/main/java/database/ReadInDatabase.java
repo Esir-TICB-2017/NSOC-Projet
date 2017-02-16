@@ -598,6 +598,53 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 			e.printStackTrace();
 		}
 		return result;
+	}
 
+	public static int checkMinimumValue(int settingId){
+		int minValue=0;
+
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT min_value FROM settings WHERE id=?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, settingId);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					double dMinValue = rs.getDouble("min_value");
+					minValue = (int) dMinValue;
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return minValue;
+	}
+
+	public static int checkMaximumValue(int settingId){
+		int maxValue=0;
+
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT max_value FROM settings WHERE id=?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, settingId);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				while (rs.next()) {
+					double dMaxValue = rs.getDouble("max_value");
+					maxValue = (int) dMaxValue;
+				}
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maxValue;
 	}
 }
