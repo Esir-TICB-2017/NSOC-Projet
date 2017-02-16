@@ -5,10 +5,9 @@
 angular.module('nsoc')
 .controller('settingsController', ($scope, $rootScope, $http, _, websocketService, toastService) => {
 
-	$scope.updateParameterValue = function(setting) {
+	$scope.updateParameterValue = function(setting, newValue) {
 		if ($scope.role === 'admin' || $scope.role === 'member') {
-			console.log(setting);
-			websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.currentValue.itemValue}));
+			websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue}));
 		}
 		//changer role : {key: userRole, role, email}
 		// add user: {key: addUser, role, email}
@@ -24,9 +23,9 @@ angular.module('nsoc')
 
 	$scope.deleteUser = function (user) {
 		if (user.email && $scope.role === 'admin') {
-			const setting = getSetting(user);
-			console.log(setting);
-			// websocketService.send(JSON.stringify({key: 'deleteUser', email: user.email}));
+			const setting = getSettingKeyAndIndex(user);
+			$rootScope.settings[setting.key].splice(setting.index, 1);
+			websocketService.send(JSON.stringify({key: 'deleteUser', email: user.email}));
 		}
 	}
 
@@ -71,28 +70,19 @@ angular.module('nsoc')
 
 	displayUserDefaultSettings = function () {
 		$scope.userSettings.forEach((userSetting) => {
-			const setting = getSetting({id: userSetting.setting_id});
-			if (setting!== -1) {
-				const allowedValue = getAllowedValue(setting, userSetting.value);
-				if (allowedValue !== -1) {
-					setting.currentValue = allowedValue;
+			const setting = getSettingKeyAndIndex({id: userSetting.setting_id});
+			if (setting !== -1) {
+				const index = _.findIndex($rootScope.settings[setting.key][setting.index].allowedValues, (allowedValue) => allowedValue.itemValue === userSetting.value);
+				if (index !== -1) {
+					$rootScope.settings[setting.key][setting.index].currentValue = $rootScope.settings[setting.key][setting.index].allowedValues[setting.index];
 				} else {
-					setting.currentValue = userSetting.value;
+					$rootScope.settings[setting.key][setting.index].currentValue = userSetting.value;
 				}
 			}
 		});
 	}
 
-	getAllowedValue = function (setting, value) {
-		const index = _.findIndex(setting.allowedValues, (allowedValue) => allowedValue.itemValue === value);
-		if (index !== -1) {
-			return setting.allowedValues[index];
-		} else {
-			return -1;
-		}
-	}
-
-	getSetting = function (obj) {
+	getSettingKeyAndIndex = function (obj) {
 		for (var key in $rootScope.settings) {
 			let index = -1;
 			if (obj.id) {
@@ -101,11 +91,12 @@ angular.module('nsoc')
 				index = _.findIndex($rootScope.settings[key], (setting) => setting.email === obj.email);
 			}
 			if (index !== -1) {
-				return $rootScope.settings[key][index];
+				return {key, index};
 			}
 		}
 		return -1;
 	}
+
 	function init() {
 		getSettings();
 		$scope.newUser = {email: "", role: "member"};

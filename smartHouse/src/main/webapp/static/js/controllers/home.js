@@ -34,14 +34,14 @@ angular.module('nsoc')
 			function onMessage(evt) {
 				const data = JSON.parse(evt.data);
 				let message;
-				if (data.name && data.name === 'setting') {
+				if (data.name && data.name === 'settings') {
 					if ($scope.actualTab.name !== $scope.tabs[1].name){
 						$scope.tabs[1].notifications++;
 					}
-					if (data.settings.status === 'error') {
+					if (data.status === 'error') {
 						message = '<strong>Error : </strong> Can\'t update setting';
 						toastService.create('danger', message);
-					} else if (data.settings.status === 'success'){
+					} else if (data.status === 'success'){
 						message = '<strong>Setting </strong> updated';
 						toastService.create('success', message);
 					}
@@ -49,6 +49,7 @@ angular.module('nsoc')
 					if ($scope.actualTab.name !== $scope.tabs[0].name){
 						$scope.tabs[0].notifications++;
 						message = 'New <strong>' + data.type + '</strong> value. <strong>' + data.name + '</strong> : ' + data.data;
+						toastService.create('success', message);
 					}
 					$scope.$broadcast('data', data);
 				}

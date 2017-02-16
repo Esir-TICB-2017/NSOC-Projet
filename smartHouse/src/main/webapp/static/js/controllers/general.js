@@ -198,7 +198,6 @@ angular.module('nsoc')
                     {name: 'Weekly', value: 'week'},
                     {name: 'Daily', value: 'day'},
                 ];
-                console.log($rootScope.settings)
                 $scope.modes = ['indicator', 'sensor'];
                 const preferedHomePeriod = _.find($rootScope.settings.general, (item) => {
                     return item.name === 'prefered home period';
