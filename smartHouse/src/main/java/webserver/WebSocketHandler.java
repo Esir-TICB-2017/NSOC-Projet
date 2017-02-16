@@ -37,6 +37,20 @@ public class WebSocketHandler {
 		return Integer.toHexString(this.hashCode());
 	}
 
+	private Integer getUserRole (String role) {
+		switch (role) {
+			case "admin":
+				return 1;
+			case "member":
+				return 2;
+			case "guest":
+				 return 1;
+			default:
+				return 1;
+
+		}
+	}
+
 	private void disconnect(Session session) {
 		try {
 			session.disconnect();
@@ -94,7 +108,6 @@ public class WebSocketHandler {
 		}
 		*/
 		JSONObject result = new JSONObject(message);
-		System.out.println(message.toString());
 		if (result.has("key")) {
 			String key = result.get("key").toString();
 			String id;
@@ -122,22 +135,7 @@ public class WebSocketHandler {
 					answer.put("name", "user role updated");
 					id = getMyUniqueId();
 					if (this.role.equals("admin")) {
-						Integer roleId;
-						switch (result.getString("role")) {
-							case "admin":
-								roleId = 1;
-								break;
-							case "member":
-								roleId = 2;
-								break;
-							case "guest":
-								roleId = 1;
-								break;
-							default:
-								roleId = 1;
-								break;
-
-						}
+						Integer roleId = getUserRole(result.getString("role"));
 						WriteInDatabase.writeNewRole(roleId, result.getString("email"));
 						answer.put("status", "success");
 					} else {
@@ -162,22 +160,7 @@ public class WebSocketHandler {
 					EmailValidator ev = EmailValidator.getInstance();
 					Boolean isValid =  ev.isValid(result.getString("email"));
 					if (this.role.equals("admin") && isValid) {
-						Integer roleId;
-						switch (result.getString("role")) {
-							case "admin":
-								roleId = 1;
-								break;
-							case "member":
-								roleId = 2;
-								break;
-							case "guest":
-								roleId = 1;
-								break;
-							default:
-								roleId = 1;
-								break;
-
-						}
+						Integer roleId = getUserRole(result.getString("role"));
 
 						WriteInDatabase.addUser(result.getString("email"), roleId);
 						answer.put("status", "success");
