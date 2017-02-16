@@ -552,6 +552,30 @@ public class ReadInDatabase extends Database implements InterfaceReadDatabase {
 		return users;
 	}
 
+	public static Boolean findUser(String email) {
+		Connection connection = ConnectionManager.getConnection();
+		String sql = "SELECT email " +
+				"FROM users " +
+				"WHERE email=?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setString(1, email);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				if(!rs.next()) {
+					return false;
+				} else {
+					return true;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 
 	public static ArrayList<String> checkIfValueIsAllowed(int setting_id) {
 		ArrayList<String> result = new ArrayList<String>();
