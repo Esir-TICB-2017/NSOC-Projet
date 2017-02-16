@@ -135,7 +135,21 @@ public class WebSocketHandler {
 					answer.put("name", "user role updated");
 					id = getMyUniqueId();
 					if (this.role.equals("admin")) {
-						Integer roleId = getUserRole(result.getString("role"));
+						Integer roleId;
+						switch (result.getString("role")) {
+							case "admin":
+								roleId = 1;
+								break;
+							case "member":
+								roleId = 2;
+								break;
+							case "guest":
+								roleId = 3;
+								break;
+							default:
+								roleId = 3;
+								break;
+						}
 						WriteInDatabase.writeNewRole(roleId, result.getString("email"));
 						answer.put("status", "success");
 					} else {
