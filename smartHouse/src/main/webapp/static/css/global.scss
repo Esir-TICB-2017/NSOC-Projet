@@ -17,7 +17,7 @@ button.switchButton {
 	transition       : background-color .2s ease-out;
 	box-sizing       : border-box;
 	margin-left      : 1px;
-	background-color : rgba(255, 255, 255, 0.3);
+	background-color : rgba(255, 255, 255, 0.2);
 	border           : $button-border-width solid rgba(255, 255, 255, 0);
 
 	&.medium {
@@ -44,10 +44,10 @@ button.switchButton {
 	}
 
 	&:hover {
-		background-color: rgba(255, 255, 255, 0.45);
+		background-color: rgba(255, 255, 255, 0.4);
 	}
 	&.active {
-		background-color: rgba(255, 255, 255, 0.45);
+		background-color: rgba(255, 255, 255, 0.4);
 	}
 }
 

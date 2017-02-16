@@ -5,9 +5,10 @@
 angular.module('nsoc')
 .controller('settingsController', ($scope, $rootScope, $http, _, websocketService, toastService) => {
 
-	$scope.updateParameterValue = function(setting, newValue) {
+	$scope.updateParameterValue = function(setting) {
 		if ($scope.role === 'admin' || $scope.role === 'member') {
-			websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue}));
+			console.log(setting);
+			websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: setting.currentValue.itemValue}));
 		}
 		//changer role : {key: userRole, role, email}
 		// add user: {key: addUser, role, email}
@@ -17,35 +18,15 @@ angular.module('nsoc')
 	$scope.addUser = function(user){
 		if (user.email && user.role && $scope.role === 'admin') {
 			websocketService.send(JSON.stringify({key: 'addUser', role: user.role, email: user.email}));
+			$scope.settings.users.push(user);
 		}
 	}
 
 	$scope.deleteUser = function (user) {
 		if (user.email && $scope.role === 'admin') {
-			websocketService.send(JSON.stringify({key: 'deleteUser', email: user.email}));
-		}
-	}
-
-	updateParameter = function(parameter) {
-		let setting;
-		if (parameter.setting_id) {
-			setting = getSetting({id: parameter.setting_id});
-			const allowedValue = getAllowedValue(setting, parameter.value);
-			if (allowedValue !== -1) {
-				setting.currentValue = allowedValue;
-			} else {
-				setting.currentValue = parameter.value;
-			}
-		} else if (parameter.email) {
-			setting = getSetting({email: parameter.email});
-			switch(parameter.key) {
-				case 'userRole':
-				break;
-				case 'addUser' :
-				break;
-				case 'deleteUser':
-				break;
-			}
+			const setting = getSetting(user);
+			console.log(setting);
+			// websocketService.send(JSON.stringify({key: 'deleteUser', email: user.email}));
 		}
 	}
 
@@ -128,9 +109,6 @@ angular.module('nsoc')
 	function init() {
 		getSettings();
 		$scope.newUser = {email: "", role: "member"};
-		$scope.$on('settings', (event, parameter) => {
-			updateParameter(parameter);
-		});
 	}
 
 	init();

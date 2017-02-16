@@ -6,7 +6,7 @@
 				<div class='row' ng-repeat='setting in value' ng-if='key !== "users"'>
 					<div class='text'>{{setting.name}}</div>
 					<div class='value'>
-						<button ng-repeat='allowedValue in setting.allowedValues' ng-class="{active: setting.currentValue == allowedValue}" ng-if='setting.dataType === "boolean"' ng-click="updateParameterValue(setting, allowedValue.itemValue)" class="switchButton small">
+						<button ng-repeat='allowedValue in setting.allowedValues' ng-class="{active: setting.currentValue == allowedValue}" ng-if='setting.dataType === "boolean"' ng-click="setting.currentValue = allowedValue.itemValue; updateParameterValue(setting, setting.currentValue.itemValue)" class="switchButton small">
 							{{allowedValue.caption}}
 						</button>
 						<select ng-model="setting.currentValue" ng-options="allowedValue.caption for allowedValue in setting.allowedValues" ng-if='setting.dataType === "varchar"' ng-change="updateParameterValue(setting, setting.currentValue.itemValue)"></select>

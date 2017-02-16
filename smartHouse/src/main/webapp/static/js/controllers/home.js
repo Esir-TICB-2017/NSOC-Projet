@@ -34,7 +34,7 @@ angular.module('nsoc')
 			function onMessage(evt) {
 				const data = JSON.parse(evt.data);
 				let message;
-				if (data.settings) {
+				if (data.name && data.name === 'setting') {
 					if ($scope.actualTab.name !== $scope.tabs[1].name){
 						$scope.tabs[1].notifications++;
 					}
@@ -44,7 +44,6 @@ angular.module('nsoc')
 					} else if (data.settings.status === 'success'){
 						message = '<strong>Setting </strong> updated';
 						toastService.create('success', message);
-						$scope.$broadcast('settings', data.settings);
 					}
 				} else {
 					if ($scope.actualTab.name !== $scope.tabs[0].name){
