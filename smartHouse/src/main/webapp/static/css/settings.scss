@@ -24,11 +24,17 @@
 				&>.users {
 					img {
 						margin-left: 10px;
+						cursor: pointer;
 					}
 					&>.row {
 						&>.text {
 							&:first-letter {
 								text-transform : none;
+							}
+						}
+						&>.value {
+							&>img {
+								width: 13px;
 							}
 						}
 					}
@@ -44,6 +50,9 @@
 							display     : flex;
 							width       : 30%;
 							align-items : center;
+							&>img {
+								width:20px;
+							}
 							&>input {
 								margin-right: 10px;
 							}

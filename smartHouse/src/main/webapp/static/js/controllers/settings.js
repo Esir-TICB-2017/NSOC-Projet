@@ -35,19 +35,29 @@ angular.module('nsoc')
 	$scope.changeValue = function(setting, newValue) {
 =======
 	$scope.updateParameterValue = function(setting, newValue) {
+<<<<<<< HEAD
 >>>>>>> 1b879d62d09b291a1c2f9474e2e84e3dadd5796d
 		websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue}));
+=======
+		if ($scope.role === 'admin' || $scope.role === 'member') {
+			websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue}));
+		}
+>>>>>>> 51d86e748fc3a5ac3e3d2e7e1e2103e513d5b3fd
 		//changer role : {key: userRole, role, email}
 		// add user: {key: addUser, role, email}
 		// supprimer: {key: deleteUser, email}
 	}
 
 	$scope.addUser = function(user){
-		console.log(user);
+		if (user.email && user.role && $scope.role === 'admin') {
+				websocketService.send(JSON.stringify({key: 'addUser', role: user.role, email: user.email}));
+		}
 	}
 
 	$scope.deleteUser = function (user) {
-		console.log(user);
+		if (user.email && $scope.role === 'admin') {
+			websocketService.send(JSON.stringify({key: 'deleteUser', email: user.email}));
+		}
 	}
 
 	updateParameter = function(parameter) {
