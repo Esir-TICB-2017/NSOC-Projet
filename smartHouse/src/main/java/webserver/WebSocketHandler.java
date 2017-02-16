@@ -11,6 +11,7 @@ import database.WriteInDatabase;
 import database.data.DataRecord;
 import indicators.Indicator;
 import indicators.Indicators;
+import org.apache.commons.validator.EmailValidator;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -99,6 +100,7 @@ public class WebSocketHandler {
 			JSONObject answer = new JSONObject();
 			switch (key) {
 				case "settings":
+					answer.put("name", "settings");
 					id = getMyUniqueId();
 					Boolean authorize = false;
 					ArrayList<String> roles = ReadInDatabase.getSettingRole(result);
@@ -110,44 +112,43 @@ public class WebSocketHandler {
 					if (authorize) {
 						WriteInDatabase.writeUserSetting(this.userId, result);
 						answer.put("status", "success");
-						answer.put("name", "settings");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					} else {
 						answer.put("status", "error");
-						answer.put("name", "settings");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
 				case "userRole":
+					answer.put("name", "user role updated");
 					id = getMyUniqueId();
 					if (this.role.equals("admin")) {
-						WriteInDatabase.writeNewRole(result);
+						WriteInDatabase.writeNewRole(result.getString("role"), result.getString("email"));
 						result.put("status", "success");
-						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					} else {
 						result.put("status", "error");
-						answer.put("settings", result);
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
 				case "deleteUser":
+					answer.put("name", "user deleted");
 					id = getMyUniqueId();
 					if (this.role.equals("admin")) {
-						WriteInDatabase.deleteUser(result);
+						WriteInDatabase.deleteUser(result.getString("email"));
 						answer.put("status", "success");
-						answer.put("name", "user deleted");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					} else {
 						answer.put("status", "error");
-						answer.put("name", "user deleted");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
 				case "addUser":
+					answer.put("name", "user added");
 					id = getMyUniqueId();
-					if (this.role.equals("admin")) {
-						Integer roleId = null;
+					EmailValidator ev = EmailValidator.getInstance();
+					Boolean isValid =  ev.isValid(result.getString("email"));
+					if (this.role.equals("admin") && isValid) {
+						Integer roleId;
 						switch (result.getString("role")) {
 							case "admin":
 								roleId = 1;
@@ -163,13 +164,12 @@ public class WebSocketHandler {
 								break;
 
 						}
+
 						WriteInDatabase.addUser(result.getString("email"), roleId);
 						answer.put("status", "success");
-						answer.put("name", "user added");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					} else {
 						answer.put("status", "error");
-						answer.put("name", "user added");
 						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					break;
