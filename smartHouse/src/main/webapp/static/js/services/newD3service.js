@@ -60,7 +60,7 @@ angular.module('nsoc').factory('newD3Service', () => {
         const text = tooltipGroup.select('text')
             .attr('x', tooltip.xRect + tooltip.rectWidth / 2)
             .attr('y', tooltip.yRect + tooltip.rectHeight / 2)
-            .text(constants.yScale.invert(pos.y).toFixed(1) + " " + currentData.unit + " on " + date);
+            .text(constants.yScale.invert(pos.y).toFixed(1) + " " + currentData.unit + " [" + date + "]");
 
         rect.attr('width', tooltip.rectWidth = text.node().getBBox().width + 10)
         rect.attr('x', tooltip.xRect = x - tooltip.rectWidth / 2);
