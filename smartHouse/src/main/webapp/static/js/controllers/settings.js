@@ -6,13 +6,9 @@ angular.module('nsoc')
 .controller('settingsController', ($scope, $rootScope, $http, _, websocketService, toastService) => {
 
 	$scope.updateParameterValue = function(setting, newValue) {
-		console.log(setting, newValue);
 		if ($scope.role === 'admin' || $scope.role === 'member') {
 			websocketService.send(JSON.stringify({key: 'settings', setting_id: setting.id, value: newValue}));
 		}
-		//changer role : {key: userRole, role, email}
-		// add user: {key: addUser, role, email}
-		// supprimer: {key: deleteUser, email}
 	}
 
 	$scope.addUser = function(user){
