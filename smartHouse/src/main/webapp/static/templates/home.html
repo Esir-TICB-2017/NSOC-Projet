@@ -16,6 +16,6 @@
 	</div>
 	<div class="body">
 		<ng-include  ng-show='actualTab.name === "settings"' ng-controller='settingsController' src="'static/templates/settings.html'"></ng-include>
-		<ng-include  ng-show='actualTab.name === "general"' ng-controller='generalController' src="'static/templates/general.html'"></ng-include>
+		<ng-include  ng-show='actualTab.name === "general" && role !== "guest"' ng-controller='generalController' src="'static/templates/general.html'"></ng-include>
 	</div>
 </div>

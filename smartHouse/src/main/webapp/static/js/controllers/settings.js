@@ -30,6 +30,14 @@ angular.module('nsoc')
 		}
 	}
 
+	$scope.changeUserRole = function (user) {
+		if (user.email && user.role && $scope.role === 'admin') {
+			const setting = getSettingKeyAndIndex(user);
+			$rootScope.settings[setting.key][setting.index].role = user.role;
+			websocketService.send(JSON.stringify({key: 'userRole', email: user.email, role: user.role}));
+		}
+	}
+
 	getSettings = function () {
 		const p = new Promise((resolve, reject) => {
 			$http({

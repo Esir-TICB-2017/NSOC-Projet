@@ -29,7 +29,7 @@
 					<div class='row' ng-repeat='setting in value'>
 						<div class='text'>{{setting.email}}</div>
 						<div class='value'>
-							<select ng-model='setting.role'>
+							<select ng-model='setting.role' ng-change='changeUserRole(setting)'>
 								<option>admin</option>
 								<option>member</option>
 								<option>guest</option>

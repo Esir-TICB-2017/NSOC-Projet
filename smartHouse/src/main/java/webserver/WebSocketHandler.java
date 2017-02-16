@@ -112,23 +112,37 @@ public class WebSocketHandler {
 					if (authorize) {
 						WriteInDatabase.writeUserSetting(this.userId, result);
 						answer.put("status", "success");
-						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					} else {
 						answer.put("status", "error");
-						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
+					ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					break;
 				case "userRole":
 					answer.put("name", "user role updated");
 					id = getMyUniqueId();
 					if (this.role.equals("admin")) {
-						WriteInDatabase.writeNewRole(result.getString("role"), result.getString("email"));
-						result.put("status", "success");
-						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
+						Integer roleId;
+						switch (result.getString("role")) {
+							case "admin":
+								roleId = 1;
+								break;
+							case "member":
+								roleId = 2;
+								break;
+							case "guest":
+								roleId = 1;
+								break;
+							default:
+								roleId = 1;
+								break;
+
+						}
+						WriteInDatabase.writeNewRole(roleId, result.getString("email"));
+						answer.put("status", "success");
 					} else {
-						result.put("status", "error");
-						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
+						answer.put("status", "error");
 					}
+					ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					break;
 				case "deleteUser":
 					answer.put("name", "user deleted");
@@ -136,11 +150,10 @@ public class WebSocketHandler {
 					if (this.role.equals("admin")) {
 						WriteInDatabase.deleteUser(result.getString("email"));
 						answer.put("status", "success");
-						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					} else {
 						answer.put("status", "error");
-						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
+					ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					break;
 				case "addUser":
 					answer.put("name", "user added");

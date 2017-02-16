@@ -194,12 +194,12 @@ public class WriteInDatabase extends Database implements InterfaceWriteDatabase 
 		}
 	}
 
-	public static void writeNewRole(String role, String email) {
+	public static void writeNewRole(Integer roleId, String email) {
 		Connection connection = ConnectionManager.getConnection();
-		String sql = "UPDATE users SET role = ? WHERE email = ?";
+		String sql = "UPDATE users SET role_id = ? WHERE email = ?";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, role);
+			preparedStatement.setInt(1, roleId);
 			preparedStatement.setString(2, email);
 			preparedStatement.executeUpdate();
 			preparedStatement.close();

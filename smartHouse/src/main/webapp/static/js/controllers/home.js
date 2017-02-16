@@ -35,15 +35,23 @@ angular.module('nsoc')
 			function onMessage(evt) {
 				const data = JSON.parse(evt.data);
 				let message;
-				if (data.name && data.name === 'settings') {
+				if (data.name && (data.name === 'settings' || data.name.includes('user'))) {
 					if ($scope.actualTab.name !== $scope.tabs[1].name){
 						$scope.tabs[1].notifications++;
 					}
 					if (data.status === 'error') {
-						message = '<strong>Error : </strong> Can\'t update setting';
+						if (data.name === 'settings') {
+							message = '<strong>Error : </strong> Can\'t update setting';
+						} else if (data.name.includes('user')) {
+							message = data.name;
+						}
 						toastService.create('danger', message);
 					} else if (data.status === 'success'){
-						message = '<strong>Setting </strong> updated';
+						if (data.name === 'settings') {
+							message = '<strong>Setting </strong> updated';
+						} else if (data.name.includes('user')) {
+							message = data.name;
+						}
 						toastService.create('success', message);
 					}
 				} else {
