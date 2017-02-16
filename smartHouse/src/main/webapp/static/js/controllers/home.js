@@ -15,6 +15,7 @@ angular.module('nsoc')
 				$rootScope.loading = false;
 				console.log('User signed out.');
 				$cookies.put('authenticate', false);
+				$cookies.remove('role');
 				$location.path('/login');
 			}, function error(err) {
 				console.log(err);
@@ -68,7 +69,6 @@ angular.module('nsoc')
 		};
 		$rootScope.loading = true;
 		initSocket();
-        toastService.create('success', 'EZ');
 	}
 	init();
 });

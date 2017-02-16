@@ -147,7 +147,6 @@ public class WebSocketHandler {
 					id = getMyUniqueId();
 					EmailValidator ev = EmailValidator.getInstance();
 					Boolean isValid =  ev.isValid(result.getString("email"));
-					System.out.println(isValid);
 					if (this.role.equals("admin") && isValid) {
 						Integer roleId;
 						switch (result.getString("role")) {
