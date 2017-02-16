@@ -66,7 +66,6 @@ angular.module('nsoc')
 		}).then(function success(res) {
 			$scope.userSettings = res.data;
 			displayUserDefaultSettings();
-			transformSettingsType();
 			resolve();
 		}, function error(err) {
 			reject();
@@ -85,18 +84,6 @@ angular.module('nsoc')
 					$rootScope.settings[setting.key][setting.index].currentValue = userSetting.value;
 				}
 			}
-		});
-	}
-
-	transformSettingsType = function () {
-		$scope.keys.forEach((key) => {
-			$rootScope.settings[key].forEach((setting) => {
-				if (setting.min && setting.max) {
-					setting.currentValue = parseInt(setting.currentValue);
-					setting.min = parseInt(setting.min);
-					setting.max = parseInt(setting.max);
-				}
-			});
 		});
 	}
 
