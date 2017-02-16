@@ -4,7 +4,7 @@
 /**
  * Created by loulou on 30/01/2017.
  */
-angular.module('nsoc').factory('newD3Service', ($rootScope) => {
+angular.module('nsoc').factory('newD3Service', () => {
     const timeFormat = {
         formatMillisecond: d3.timeFormat(".%L"),
         formatSecond: d3.timeFormat(":%S"),

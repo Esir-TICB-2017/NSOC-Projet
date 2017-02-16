@@ -1,5 +1,5 @@
 angular.module('nsoc')
-.controller('mainController', function($scope, $rootScope, $http, $location, $cookies, utils, Flash) {
+.controller('mainController', function($scope, $rootScope, $http, $location, $cookies, utils, toastService) {
 	gapi.load('auth2', function() {
 		gapi.auth2.init(
 			{
@@ -23,11 +23,11 @@ angular.module('nsoc')
 		const authenticate = utils.getBoolean($cookies.get('authenticate'));
 		if($location.path() === '/home' && !authenticate){
 			e.preventDefault();
-			Flash.create('danger', 'Please login first');
+			toastService.create('danger', 'Please login first');
 			$location.path('/login');
 		} else if ($location.path() === '/login' && authenticate) {
 			e.preventDefault();
-			Flash.create('success', 'Already logged in');
+			toastService.create('success', 'Already logged in');
 			$location.path('/home');
 		}
 	});

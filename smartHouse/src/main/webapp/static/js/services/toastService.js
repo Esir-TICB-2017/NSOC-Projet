@@ -7,7 +7,6 @@
 angular.module('nsoc').factory('toastService', ($rootScope, Flash, _) => {
     return {
         create: function (type, message) {
-            console.log('ici')
             if($rootScope.settings) {
                 const globalNotifications = _.find($rootScope.settings.general, (item) => {
                     return item.name === 'global notifications';
@@ -19,3 +18,4 @@ angular.module('nsoc').factory('toastService', ($rootScope, Flash, _) => {
         }
     }
 });
+

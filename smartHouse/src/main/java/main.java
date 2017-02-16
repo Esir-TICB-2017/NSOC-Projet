@@ -96,8 +96,14 @@ public class main {
 						}
 					}
 					try {
+
+						List<Indicator> indicators = Indicators.getInstance().getIndicators();
+						for (Indicator indicator : indicators) {
+							System.out.println("ici");
+							indicator.calculateIndicator();
+						}
 						//Fill DB every 10 minutes
-						Thread.sleep(10000);
+						Thread.sleep(1000 * 60);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -105,6 +111,7 @@ public class main {
 			}
 		};
 //		thread.start();
+
 
 		Server server = new Server();
 		ServerConnector connector = new ServerConnector(server);

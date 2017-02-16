@@ -112,7 +112,7 @@ public class WebSocketHandler {
 						WriteInDatabase.writeUserSetting(this.userId, result);
 						result.put("status", "success");
 						answer.put("settings", result);
-						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString() );
+						ConnectedClients.getInstance().writeSpecificMember(id, answer.toString());
 					}
 					else{
 						result.put("status", "error");

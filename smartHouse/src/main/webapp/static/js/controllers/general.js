@@ -1,5 +1,5 @@
 angular.module('nsoc')
-    .controller('generalController', function ($scope, $rootScope, getDataService, newD3Service, $http, _, $interval, $timeout, Flash) {
+    .controller('generalController', function ($scope, $rootScope, getDataService, newD3Service, $http, _, $interval, $timeout, toastService) {
 
         $scope.getData = function (selector) {
             $scope.actualSelector = selector;
@@ -22,6 +22,7 @@ angular.module('nsoc')
         $scope.changeGraph = function (target) {
             const oldGraph = angular.copy($scope.actualGraph);
             if (target) {
+                console.log($scope.actualGraph)
                 $scope.actualGraph = target;
             } else if (this.obj) {
                 $scope.actualGraph = this.obj;
@@ -40,7 +41,7 @@ angular.module('nsoc')
                     newD3Service.updateCurrentData(data, $scope.actualGraph.unit);
                     newD3Service.update();
                 } else {
-                    Flash.create('info', 'No data for this configuration');
+                    toastService.create('info', 'No data for this configuration');
                 }
             });
         }
@@ -171,7 +172,7 @@ angular.module('nsoc')
                 if ($scope.actualTab.name !== $scope.tabs[0].name) {
                     $scope.tabs[0].notifications++;
                 }
-                Flash.create('success', 'Received new data!');
+                toastService.create('success', 'Received new data!');
                 res.data.forEach((obj) => {
                     displayHouseInfo(obj);
                 });
@@ -184,27 +185,45 @@ angular.module('nsoc')
                 if (err.status === 403) {
                     $cookies.put('authenticate', false);
                     $location.path('/login');
-                    Flash.create('danger', 'Access denied');
+                    toastService.create('danger', 'Access denied');
                 }
             });
         }
 
         function init() {
-            $scope.data = [];
-            $scope.selectors = [
-                {name: 'Monthly', value: 'month'},
-                {name: 'Weekly', value: 'week'},
-                {name: 'Daily', value: 'day'},
-            ];
-            $scope.modes = ['indicator', 'sensor'];
-            $scope.actualSelector = $scope.selectors[0];
-            $scope.changeMode($scope.modes[1]);
-            getFirstData();
-            $scope.$on('data', (event, data) => {
-                displayHouseInfo(data);
-                addNewDataToChard(data);
+            Promise.all($rootScope.promiseArray).then(values => {
+                $scope.data = [];
+                $scope.selectors = [
+                    {name: 'Monthly', value: 'month'},
+                    {name: 'Weekly', value: 'week'},
+                    {name: 'Daily', value: 'day'},
+                ];
+                console.log($rootScope.settings)
+                $scope.modes = ['indicator', 'sensor'];
+                const preferedHomePeriod = _.find($rootScope.settings.general, (item) => {
+                    return item.name === 'prefered home period';
+                });
+                const selectorIndex = _.findIndex($scope.selectors, (item) => {
+                    return item.value === preferedHomePeriod.currentValue.itemValue;
+                });
+                $scope.actualSelector = $scope.selectors[selectorIndex];
+                const preferedHomeData = _.find($rootScope.settings.general, (item) => {
+                    return item.name === 'prefered home data';
+                });
+                const currentPrefered = preferedHomeData.currentValue.itemValue;
+                const mode = currentPrefered.match('indicator') ? 'indicator' : 'sensor';
+                const name = currentPrefered.substr(0, currentPrefered.indexOf('_'));
+                $scope.actualGraph = {
+                    type: mode,
+                    name:name,
+                }
+                $scope.changeMode(mode);
+                getFirstData();
+                $scope.$on('data', (event, data) => {
+                    displayHouseInfo(data);
+                    addNewDataToChard(data);
+                });
             });
         }
-
         init();
     });
