@@ -175,6 +175,12 @@ angular.module('nsoc')
                 res.data.forEach((obj) => {
                     displayHouseInfo(obj);
                 });
+								const actualGraph = _.find($scope.data, (object) => object.name === $scope.actualGraph.name && object.type === $scope.actualGraph.type);
+								if (actualGraph) {
+									$scope.actualGraph = actualGraph;
+								} else {
+									$scope.actualGraph = $scope.globalIndicator;
+								}
                 drawChart();
                 updateDisplayedDates();
                 $rootScope.loading = false;
